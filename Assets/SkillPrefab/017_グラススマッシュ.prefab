@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5374971977987365393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1122721202147737463}
+  - component: {fileID: 5374971977987365394}
+  - component: {fileID: 5980538742494956645}
+  m_Layer: 0
+  m_Name: "017_\u30B0\u30E9\u30B9\u30B9\u30DE\u30C3\u30B7\u30E5"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1122721202147737463
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374971977987365393}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 28.455875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 50.063984, y: 9.613813}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5374971977987365394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374971977987365393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398831e0f78a7af4fbc33436326e3947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillID: 18
+  skillName: "\u30B0\u30E9\u30B9\u30B9\u30DE\u30C3\u30B7\u30E5"
+  damage: 40
+  skillHelpText: "\u25A0\u5C5E\u6027\uFF1A\u7DD1\u3000\u25A0\u30C0\u30E1\u30FC\u30B8\u6307\u6570\uFF1A30\n\u25A0\u30AF\u30FC\u30EB\u30BF\u30A4\u30E0\uFF1A800\n\u65B0\u7DD1\u306E\u529B\u3092\u89E3\u304D\u653E\u3064\u3002\u9EC4\u5C5E\u6027\u306E\u6575\u306B\u5927\u30C0\u30E1\u30FC\u30B8\u3002"
+  effect: {fileID: 100006, guid: bc015426619ef584fbdac5a0359c7a98, type: 3}
+  effectSound: {fileID: 8300000, guid: c34316e3f7829b24797cf4cb435e6790, type: 3}
+  skillDescription: {fileID: 0}
+  usedMp: 0
+  addedCoolTime: 800
+  skillType: 1
+  skillElement: 6
+--- !u!222 &5980538742494956645
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5374971977987365393}
+  m_CullTransparentMesh: 0
