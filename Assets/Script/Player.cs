@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] Animator animator;
     [SerializeField] float moveSpeed = 3.0f;
+    [SerializeField] bool walkEffect = default;
     [SerializeField] FloorEffectGenerator effectGenerator;
 
     public static bool canMove = true;
@@ -47,7 +48,10 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(tempVector, transform.up);
             rigidBody.velocity = tempVector * moveSpeed;
             animator.SetInteger("ActionState", 1);
-            effectGenerator.OnUpdate(this.transform);
+            if (walkEffect == true)
+            {
+                effectGenerator.OnUpdate(this.transform);
+            }
 
         }
 

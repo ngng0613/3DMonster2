@@ -7,9 +7,8 @@ public class EventBase : MonoBehaviour
 {
     public UnityEvent eventTask = new UnityEvent();
 
-    public void A()
+    public virtual void Setup()
     {
-        
+                
     }
-    
 }
