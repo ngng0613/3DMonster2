@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardBase : MonoBehaviour
+public class CardObject : MonoBehaviour
 {
     public string cardName;
     public Sprite mainImage;
