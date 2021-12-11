@@ -22,6 +22,7 @@ public class CardObject : MonoBehaviour
     Action playedAction;
 
     public CardData CardData { get => cardData;}
+    public bool InHand = false;
 
     public void Setup(Func func)
     {

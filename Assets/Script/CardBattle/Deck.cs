@@ -6,21 +6,24 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    [SerializeField] List<CardData> cardList = new List<CardData>();
-
-    private void Start()
-    {
-        Shuffle();
-    }
+    [SerializeField] List<CardObject> cardList = new List<CardObject>();
 
     /// <summary>
     /// デッキの初期設定
     /// </summary>
     /// <param name="cardList"></param>
-    public void Setup(List<CardData> cardList)
+    public void Setup(List<CardObject> cardList)
     {
         this.cardList = cardList;
         Shuffle();
+    }
+
+    public CardObject Draw()
+    {
+        CardObject drawCard = cardList[0];
+        cardList.RemoveAt(0);
+        drawCard.InHand = true;
+        return drawCard;
     }
 
     /// <summary>
@@ -28,15 +31,12 @@ public class Deck : MonoBehaviour
     /// </summary>
     public void Shuffle()
     {
-        System.Random random = new System.Random();
-
-        List<CardData> temp = cardList.OrderBy(a => Guid.NewGuid()).ToList();
+        List<CardObject> temp = cardList.OrderBy(a => Guid.NewGuid()).ToList();
         cardList = temp;
-        foreach (CardData item in cardList)
+        foreach (CardObject item in cardList)
         {
-            Debug.Log(item.cardName);
+            Debug.Log(item.CardData.cardName);
         }
-
     }
 
     /// <summary>
@@ -44,6 +44,5 @@ public class Deck : MonoBehaviour
     /// </summary>
     public void Search()
     {
-        Shuffle();
     }
 }
