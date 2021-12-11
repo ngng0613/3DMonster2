@@ -276,8 +276,6 @@ public class CardBattleManager : MonoBehaviour
         //battleCamera.AllEnemyView(() => PhaseEnemyView());
         turnOrder = 0;
         phase = Phase.Wait;
-
-
     }
 
     public void PhaseEnemyView()
@@ -292,7 +290,6 @@ public class CardBattleManager : MonoBehaviour
                     phase = Phase.Wait;
                 });
     }
-
 
     void PhaseCommand()
     {

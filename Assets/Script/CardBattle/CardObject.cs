@@ -9,15 +9,15 @@ public class CardObject : MonoBehaviour
 {
     [SerializeField] CardData cardData;
     [SerializeField] Canvas canvas;
-    [SerializeField]TextMeshProUGUI nameText;
-    [SerializeField]Image image;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] Image image;
 
     Vector3 relativePos;
     Vector3 firstMousePos;
 
     public delegate void Func();
     Func handUpdateDelegate;
-        
+
     public void Setup(Func func)
     {
         handUpdateDelegate = func;
@@ -28,6 +28,24 @@ public class CardObject : MonoBehaviour
     {
         nameText.text = cardData.cardName;
         image.sprite = cardData.mainImage;
+    }
+
+    IEnumerator PlayUpdate()
+    {
+        while (true)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                Debug.Log("解除");
+                if (Input.mousePosition.y >= 600)
+                {
+                    Debug.Log($"{this.cardData.cardName}をプレイした");
+                }
+                break;
+            }
+            yield return null;
+        }
+        yield return null;
     }
 
     public void OnPointerEnter()
@@ -45,19 +63,28 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseDown()
     {
-        relativePos = this.gameObject.transform.position;
-        firstMousePos = Input.mousePosition;
-        Debug.Log($"relative = {relativePos},  firstPos = {firstMousePos}");
+        if (Input.GetMouseButton(0))
+        {
+            relativePos = this.gameObject.transform.position;
+            firstMousePos = Input.mousePosition;
+            StartCoroutine(PlayUpdate());
+        }
     }
 
     public void OnMouseDrag()
     {
-        this.gameObject.transform.position = relativePos + Input.mousePosition - firstMousePos;
+        if (Input.GetMouseButton(0))
+        {
+            this.gameObject.transform.position = relativePos + Input.mousePosition - firstMousePos;
+        }
     }
 
     public void OnMouseUp()
     {
-        handUpdateDelegate.Invoke();
+        if (Input.GetMouseButtonUp(0))
+        {
+            handUpdateDelegate.Invoke();
+        }
     }
 
     public void ResetSortingOrder()
