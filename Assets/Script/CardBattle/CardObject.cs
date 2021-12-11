@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,16 +19,29 @@ public class CardObject : MonoBehaviour
     public delegate void Func();
     Func handUpdateDelegate;
 
+    Action playedAction;
+
+    public CardData CardData { get => cardData;}
+
     public void Setup(Func func)
     {
         handUpdateDelegate = func;
         UpdateText();
     }
 
+    /// <summary>
+    /// カードをプレイした際の処理を追加する
+    /// </summary>
+    /// <param name="func">追加したい関数</param>
+    public void SetAction(Func func)
+    {
+        playedAction += () => func();
+    }
+
     private void UpdateText()
     {
-        nameText.text = cardData.cardName;
-        image.sprite = cardData.mainImage;
+        nameText.text = CardData.cardName;
+        image.sprite = CardData.mainImage;
     }
 
     IEnumerator PlayUpdate()
@@ -39,7 +53,11 @@ public class CardObject : MonoBehaviour
                 Debug.Log("解除");
                 if (Input.mousePosition.y >= 600)
                 {
-                    Debug.Log($"{this.cardData.cardName}をプレイした");
+                    Debug.Log($"{this.CardData.cardName}をプレイした");
+                    if (playedAction != null)
+                    {
+                        playedAction.Invoke();
+                    }
                 }
                 break;
             }

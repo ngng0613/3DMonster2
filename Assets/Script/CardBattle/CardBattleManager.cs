@@ -172,17 +172,6 @@ public class CardBattleManager : MonoBehaviour
         skillView.BackToPhaseForBattleManager = BackToBeforePhase;
         targetView.BackToBeforePhaseForBattleManager = BackToBeforePhase;
 
-        /*
-        //フェードアウト
-        if (fade.isActiveAndEnabled == true)
-        {
-            fade.FadeOut(1.0f, () => PhasePreparation());
-        }
-        else
-        {
-            PhasePreparation();
-        }
-        */
         PhaseStart();
     }
 
@@ -226,8 +215,6 @@ public class CardBattleManager : MonoBehaviour
                 }
             }
         }
-
-
     }
 
     public void WriteMessage(string message)
@@ -283,9 +270,7 @@ public class CardBattleManager : MonoBehaviour
         sequence.AppendInterval(1.0f)
                 .AppendCallback(() =>
                 {
-
                     battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-
                     turnOrder = 0;
                     phase = Phase.Wait;
                 });
@@ -298,15 +283,15 @@ public class CardBattleManager : MonoBehaviour
         switch (thisTurnActor)
         {
             case BattleMonsterTag.CharactorTag.Player1:
-                battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
+                //battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
                 statusListPlayerSide[0].ChangeState(true);
                 break;
             case BattleMonsterTag.CharactorTag.Player2:
-                battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
+                //battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
                 statusListPlayerSide[1].ChangeState(true);
                 break;
             case BattleMonsterTag.CharactorTag.Player3:
-                battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
+                //battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
                 statusListPlayerSide[2].ChangeState(true);
                 break;
             case BattleMonsterTag.CharactorTag.Enemy1:
@@ -326,8 +311,8 @@ public class CardBattleManager : MonoBehaviour
         }
 
         phase = Phase.Command;
-        commandBoxManager.Setup(SetUseSkill);
-        commandBoxManager.PhaseSkill = PhaseChooseSkill;
+        //commandBoxManager.Setup(SetUseSkill);
+        //commandBoxManager.PhaseSkill = PhaseChooseSkill;
 
         keyReception = true;
     }
@@ -627,7 +612,6 @@ public class CardBattleManager : MonoBehaviour
                 if (Element.CheckAdvantage(useSkill.GetElement(), thisTurnTargetMonsterBase.GetElement()) > 1)
                 {
                     damageViewColor = damageWeakColor;
-                    Debug.Log("WEAK!!");
                 }
                 else if (Element.CheckAdvantage(useSkill.GetElement(), thisTurnTargetMonsterBase.GetElement()) < 1)
                 {
@@ -850,7 +834,6 @@ public class CardBattleManager : MonoBehaviour
                 VictoryProduction();
                 return;
             }
-
         }
 
         if (targetTag == BattleMonsterTag.CharactorTag.Player1 || targetTag == BattleMonsterTag.CharactorTag.Player2 || targetTag == BattleMonsterTag.CharactorTag.Player3)
@@ -935,7 +918,23 @@ public class CardBattleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// スキルを使用する
+    /// </summary>
+    public void PlaySkill(SkillBase skill)
+    {
+        useSkill = skill;
 
+        //アニメーションの再生
+
+        //ダメージ処理
+
+    }
+
+    public void TurnEnd()
+    {
+    
+    }
 
     /// <summary>
     /// 味方モンスターデータの設定
