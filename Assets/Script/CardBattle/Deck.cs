@@ -1,11 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    List<CardData> cardList = new List<CardData>();
+    [SerializeField] List<CardData> cardList = new List<CardData>();
+
+    private void Start()
+    {
+        Shuffle();
+    }
 
     /// <summary>
     /// デッキの初期設定
@@ -22,7 +28,15 @@ public class Deck : MonoBehaviour
     /// </summary>
     public void Shuffle()
     {
-        
+        System.Random random = new System.Random();
+
+        List<CardData> temp = cardList.OrderBy(a => Guid.NewGuid()).ToList();
+        cardList = temp;
+        foreach (CardData item in cardList)
+        {
+            Debug.Log(item.cardName);
+        }
+
     }
 
     /// <summary>
@@ -30,6 +44,6 @@ public class Deck : MonoBehaviour
     /// </summary>
     public void Search()
     {
-        
+        Shuffle();
     }
 }
