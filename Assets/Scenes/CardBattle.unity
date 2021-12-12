@@ -1271,7 +1271,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2094221056}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &294590807
 GameObject:
@@ -2853,7 +2853,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1500910598}
   elementImage: {fileID: 0}
-  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -2940,7 +2939,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1963500332}
   elementImage: {fileID: 0}
-  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -5381,7 +5379,7 @@ Transform:
   - {fileID: 1861694742}
   - {fileID: 90068978}
   m_Father: {fileID: 2094221056}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1012331103
 MonoBehaviour:
@@ -5482,60 +5480,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08d63a1d13b3902438425500ac19e44c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageDataForDebug: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae,
+  _stageDataForDebug: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae,
     type: 3}
-  phase: 0
-  tweenSpeed: 1
-  guardSkill: {fileID: 0}
-  soundManager: {fileID: 1564234113}
+  _phase: 0
+  _tweenSpeed: 1
+  _guardSkill: {fileID: 9148528428298755344, guid: 72fab6aadffa6db4aa30cd284b9201cb,
+    type: 3}
+  _soundManager: {fileID: 1564234113}
   monsterManager: {fileID: 2015057881}
-  skillManager: {fileID: 1296853415}
-  commandManager3: {fileID: 0}
-  commandBoxManager: {fileID: 0}
-  battleCamera: {fileID: 783636375}
-  seManager: {fileID: 0}
-  targetView: {fileID: 572671944}
-  effectManager: {fileID: 975222644}
-  turnManager: {fileID: 0}
-  timelineManager: {fileID: 1861694743}
-  skillView: {fileID: 1872390989}
-  damageManager: {fileID: 1865492388}
-  enemyStatusPrefab: {fileID: 1533402286778313435, guid: b6444a1c0d53c224b87be96191b00597,
+  _skillManager: {fileID: 1296853415}
+  _commandManager3: {fileID: 0}
+  _commandBoxManager: {fileID: 0}
+  _battleCamera: {fileID: 783636375}
+  _seManager: {fileID: 0}
+  _targetView: {fileID: 572671944}
+  _effectManager: {fileID: 975222644}
+  _turnManager: {fileID: 0}
+  _timelineManager: {fileID: 1861694743}
+  _skillView: {fileID: 1872390989}
+  _damageManager: {fileID: 1865492388}
+  _enemyStatusPrefab: {fileID: 1533402286778313435, guid: b6444a1c0d53c224b87be96191b00597,
     type: 3}
-  playerHpList:
+  _playerHpList: []
+  _playerHpListInWorld: []
+  _enemyHpListInWorld: []
+  _turnDisplay: {fileID: 90068979}
+  _iconManager: {fileID: 286915369}
+  _playerMonsterObjectsList: []
+  _enemyMonsterObjectsList: []
+  _playerMonstersPositionList:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  playerHpListInWorld:
-  - {fileID: 1272951366}
-  - {fileID: 672885181}
-  - {fileID: 592922170}
-  enemyHpListInWorld: []
-  turnDisplay: {fileID: 90068979}
-  iconManager: {fileID: 286915369}
-  playerMonsterObjectsList: []
-  enemyMonsterObjectsList: []
-  playerMonstersPositionList: []
-  enemyMonsterPositionList: []
-  playerMonsterBaseList: []
-  enemyMonsterBaseList: []
-  playerMonsterLookPositionList: []
-  enemyMonsterLookPositionList: []
-  battleMessage: {fileID: 4404076650137510278, guid: cdb20ba9d5763e7468f1ee6a51e7d24b,
+  _enemyMonsterPositionList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _playerMonsterBaseList: []
+  _enemyMonsterBaseList: []
+  _playerMonsterLookPositionList: []
+  _enemyMonsterLookPositionList: []
+  _battleMessage: {fileID: 4404076650137510278, guid: cdb20ba9d5763e7468f1ee6a51e7d24b,
     type: 3}
-  damageViewPrefab: {fileID: 4876555772437428324, guid: 1ea9304caa6d67a42aea2b11fe19cad3,
+  _damageViewPrefab: {fileID: 4876555772437428324, guid: 1ea9304caa6d67a42aea2b11fe19cad3,
     type: 3}
-  statusListPlayerSide:
-  - {fileID: 1344852030}
-  - {fileID: 299166616}
-  - {fileID: 1641275102}
-  damageWeakColor: {r: 1, g: 0.73361737, b: 0.5235849, a: 1}
-  damageResistColor: {r: 0.48584908, g: 0.7365771, b: 1, a: 1}
-  fade: {fileID: 1908121368}
-  gameVictoryObjects: {fileID: 240668735}
-  gameLoseObjects: {fileID: 2127187978}
-  nextButton: {fileID: 1723414017}
-  startAnimationCanvasGroup: {fileID: 2061020704}
+  _statusListPlayerSide:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _damageWeakColor: {r: 1, g: 0.73361737, b: 0.5235849, a: 1}
+  _damageResistColor: {r: 0.48584908, g: 0.7365771, b: 1, a: 1}
+  _fade: {fileID: 1908121368}
+  _gameVictoryObjects: {fileID: 240668735}
+  _gameLoseObjects: {fileID: 2127187978}
+  _nextButton: {fileID: 13786606}
+  _startAnimationCanvasGroup: {fileID: 2061020704}
 --- !u!1 &1016307794
 GameObject:
   m_ObjectHideFlags: 0
@@ -7613,7 +7612,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1996309351}
   elementImage: {fileID: 0}
-  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -7720,7 +7718,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2094221056}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1296853415
 MonoBehaviour:
@@ -7734,14 +7732,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb73474235ef0743b78768ea07193c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillList:
-  - {fileID: 677698149994435337, guid: 9ff22c381734c234897faa214f8ec420, type: 3}
-  effectList:
-  - {fileID: 677698149994435338, guid: 9ff22c381734c234897faa214f8ec420, type: 3}
-  skillTemp: {fileID: 677698149994435337, guid: 9ff22c381734c234897faa214f8ec420,
-    type: 3}
-  effectTemp: {fileID: 677698149994435338, guid: 9ff22c381734c234897faa214f8ec420,
-    type: 3}
+  _skillList: []
+  _effectList: []
+  _skillTemp: {fileID: 0}
+  _effectTemp: {fileID: 0}
 --- !u!1 &1304292856
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,10 +8329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3108ab0f9e994a74e9b4200f4977cc92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardList:
-  - {fileID: 11400000, guid: 937e0e6a0712fe243a84d0ce5d17ac7e, type: 2}
-  - {fileID: 11400000, guid: 2c5c19e71714d1e4b9b7847062db8c30, type: 2}
-  - {fileID: 11400000, guid: 937e0e6a0712fe243a84d0ce5d17ac7e, type: 2}
+  _cardList: []
 --- !u!4 &1394623841
 Transform:
   m_ObjectHideFlags: 0
@@ -10031,15 +10022,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af63ec4382cd1c14195af04a399fbda6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1565893860}
-  fadeTime: 0.3
-  gameStart: {fileID: 0}
-  battleStart: {fileID: 8300000, guid: b07b024312572184da943bbefd4ae63c, type: 3}
-  select: {fileID: 8300000, guid: 1f086e61960f37d4d8110b090a003512, type: 3}
-  decided: {fileID: 8300000, guid: ba978591fb005194ca22a1c67ade94c3, type: 3}
-  cancel: {fileID: 8300000, guid: a1fcf41e371362145bdd2bba7d7a293f, type: 3}
-  openMenu: {fileID: 8300000, guid: 996c4ab474c7ce6459cbd7cc310fd9ae, type: 3}
-  closeMenu: {fileID: 0}
+  _audioSource: {fileID: 0}
+  _fadeTime: 0.3
+  _gameStart: {fileID: 0}
+  _battleStart: {fileID: 0}
+  _select: {fileID: 0}
+  _decided: {fileID: 0}
+  _cancel: {fileID: 0}
+  _openMenu: {fileID: 0}
+  _closeMenu: {fileID: 0}
 --- !u!4 &1564234114
 Transform:
   m_ObjectHideFlags: 0
@@ -12588,7 +12579,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2094221056}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2015057881
 MonoBehaviour:
@@ -12602,50 +12593,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24926ce450db0ed46bb7a2d10e88c608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allMonsterList:
-  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
-  - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
-  - {fileID: 7083189008419335091, guid: 74f997979a2326d4eb4b26a03f32dd3d, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5900899175728794046, guid: 291f037205cf2a64eb159177505771ee, type: 3}
-  - {fileID: 8828157770266204477, guid: 2bb5239fa1c6a7049aa8fb4d45238ce7, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: -8474042915010463981, guid: 5ce639692980e1047965da8d3ac1a836, type: 3}
-  possessionMonsterList:
-  - {fileID: -8474042915010463981, guid: 5ce639692980e1047965da8d3ac1a836, type: 3}
-  - {fileID: -8474042915010463981, guid: 5ce639692980e1047965da8d3ac1a836, type: 3}
-  - {fileID: -8474042915010463981, guid: 5ce639692980e1047965da8d3ac1a836, type: 3}
-  numberOfPossessionMonster: 3
-  monsterNullData: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-    type: 3}
-  individual_IDList:
-  - 0
-  - 0
-  - 0
-  isFirst: 1
+  _allMonsterList: []
+  _possessionMonsterList: []
+  NumberOfPossessionMonster: 1
+  MonsterNullData: {fileID: 0}
+  _individualIDList: []
+  _isFirst: 0
 --- !u!1 &2020998775
 GameObject:
   m_ObjectHideFlags: 0
@@ -13161,10 +13114,10 @@ Transform:
   - {fileID: 1682834706}
   - {fileID: 1069608716}
   - {fileID: 1564234114}
-  - {fileID: 1012331102}
   - {fileID: 2015057880}
   - {fileID: 1296853414}
   - {fileID: 286915370}
+  - {fileID: 1012331102}
   m_Father: {fileID: 1713038950}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13247,9 +13200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e83493702cc63459bfd66fcb4de0cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardList: []
-  debugCard: {fileID: 7982862276775126173, guid: 318fed3647a9bbc439af41824303560b,
-    type: 3}
+  _cardList: []
+  _debugCard: {fileID: 0}
 --- !u!1 &2127187978
 GameObject:
   m_ObjectHideFlags: 0
