@@ -32,7 +32,7 @@ public class MonsterManager : MonoBehaviour
 
 
     [System.Serializable]
-    public class Monster_SaveData
+    public class MonsterSaveData
     {
         //ID
         public int id;
@@ -102,9 +102,12 @@ public class MonsterManager : MonoBehaviour
         {
             MonsterManager.partyMonsterList = possessionMonsterList;
         }
-
-  
         //gameManager = GetComponent<GameManager>();
+    }
+
+    public void SetDebugParty()
+    {
+        MonsterManager.partyMonsterList = possessionMonsterList;
     }
 
     public void Setup()
@@ -131,11 +134,6 @@ public class MonsterManager : MonoBehaviour
     int saveNumber = 0;
     string savedWord = "SAVEDATA:";
 
-    /// <summary>
-    /// 指定された番号のプレイヤー所持モンスターの情報を返す
-    /// ※使用不可
-    /// </summary>
-    /// <returns></returns>
     public int GetPossessionMonsterID(int number)
     {
         int id = 0;
@@ -167,7 +165,7 @@ public class MonsterManager : MonoBehaviour
             }
 
 
-            Monster_SaveData saveData = new Monster_SaveData();
+            MonsterSaveData saveData = new MonsterSaveData();
 
             saveData.id = possessionMonsterList[i].GetId();
             saveData.nickName = possessionMonsterList[i].GetNickname();
@@ -206,7 +204,7 @@ public class MonsterManager : MonoBehaviour
             {
                 return;
             }
-            Monster_SaveData savedata = loadMonsterData_temp(i);
+            MonsterSaveData savedata = loadMonsterData_temp(i);
 
             possessionMonsterList[i].SetNickName(savedata.nickName);
             possessionMonsterList[i].SetID(savedata.id);
@@ -237,7 +235,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="i"> パーティ内の読み込みたいモンスターの先頭からの番号</param>
     public void TemporarilyPlayerMonstersLoad(GameObject friend, int i)
     {
-        Monster_SaveData savedata = loadMonsterData_temp(i);
+        MonsterSaveData savedata = loadMonsterData_temp(i);
 
         friend.GetComponent<MonsterBase>().SetNickName(savedata.nickName);
         friend.GetComponent<MonsterBase>().SetID(savedata.id);
@@ -315,7 +313,7 @@ public class MonsterManager : MonoBehaviour
     /// </summary>
     /// <param name="monster"></param>
     /// <param name="monster_Id"></param>
-    public void saveMonsterData_temp(Monster_SaveData monster, int monster_Id)
+    public void saveMonsterData_temp(MonsterSaveData monster, int monster_Id)
     {
         StreamWriter writer;
 
@@ -327,7 +325,7 @@ public class MonsterManager : MonoBehaviour
         writer.Close();
     }
 
-    public Monster_SaveData loadMonsterData_temp(int monster_Id)
+    public MonsterSaveData loadMonsterData_temp(int monster_Id)
     {
         string datastr = "";
         StreamReader reader;
@@ -336,7 +334,7 @@ public class MonsterManager : MonoBehaviour
         datastr = reader.ReadToEnd();
         reader.Close();
 
-        return JsonUtility.FromJson<Monster_SaveData>(datastr);
+        return JsonUtility.FromJson<MonsterSaveData>(datastr);
     }
 
 
@@ -347,7 +345,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="saveID">セーブ番号</param>
     /// <param name="monster"></param>
     /// <param name="monster_Id"></param>
-    public void saveMonsterData(int saveID, Monster_SaveData monster, int monster_Id)
+    public void saveMonsterData(int saveID, MonsterSaveData monster, int monster_Id)
     {
         StreamWriter writer;
 
@@ -365,7 +363,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="loadID">ロード番号</param>
     /// <param name="monster_Id"></param>
     /// <returns></returns>
-    public Monster_SaveData loadMonsterData(int loadID, int monster_Id)
+    public MonsterSaveData loadMonsterData(int loadID, int monster_Id)
     {
         string datastr = "";
         StreamReader reader;
@@ -383,7 +381,7 @@ public class MonsterManager : MonoBehaviour
         {
             return null;
         }
-        return JsonUtility.FromJson<Monster_SaveData>(datastr);
+        return JsonUtility.FromJson<MonsterSaveData>(datastr);
     }
 
 
@@ -401,7 +399,7 @@ public class MonsterManager : MonoBehaviour
             }
 
 
-            Monster_SaveData saveData = new Monster_SaveData();
+            MonsterSaveData saveData = new MonsterSaveData();
 
             saveData.id = possessionMonsterList[i].GetId();
             saveData.nickName = possessionMonsterList[i].GetNickname();
@@ -437,7 +435,7 @@ public class MonsterManager : MonoBehaviour
     {
         for (int i = 0; i < possessionMonsterList.Count; i++)
         {
-            Monster_SaveData savedata = loadMonsterData(id, i);
+            MonsterSaveData savedata = loadMonsterData(id, i);
             if (savedata == null)
             {
                 return;
