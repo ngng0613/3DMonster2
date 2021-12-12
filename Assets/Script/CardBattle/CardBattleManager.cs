@@ -61,8 +61,6 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] SoundManager _soundManager;
     [SerializeField] MonsterManager monsterManager;
     [SerializeField] SkillManager _skillManager;
-    [SerializeField] CommandManager3 _commandManager3;
-    [SerializeField] CommandBoxManager _commandBoxManager;
     [SerializeField] BattleCamera _battleCamera;
     [SerializeField] SEManager _seManager;
     [SerializeField] TargetView _targetView;
@@ -161,10 +159,10 @@ public class CardBattleManager : MonoBehaviour
         //デフォルトスキルの設定(通常攻撃に当たるスキル)
         _defaultSkill = _skillManager.GetDefaultSkill();
 
-        for (int i = 0; i < _statusListPlayerSide.Length; i++)
-        {
-            _statusListPlayerSide[i].Setup(_playerMonsterBaseList[i]);
-        }
+        //for (int i = 0; i < _statusListPlayerSide.Length; i++)
+        //{
+        //    _statusListPlayerSide[i].Setup(_playerMonsterBaseList[i]);
+        //}
 
         //前の処理に戻るときの、戻り先設定
         _skillView.BackToPhaseForBattleManager = BackToBeforePhase;
@@ -356,7 +354,6 @@ public class CardBattleManager : MonoBehaviour
     void PhaseTarget()
     {
         _phase = Phase.Target;
-        _commandBoxManager.DisplayCommand(false);
         List<bool> targetList = new List<bool>();
         for (int i = 0; i < _maximumNumberOfMonster; i++)
         {

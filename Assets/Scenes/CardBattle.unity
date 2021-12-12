@@ -5489,8 +5489,6 @@ MonoBehaviour:
   _soundManager: {fileID: 1564234113}
   monsterManager: {fileID: 2015057881}
   _skillManager: {fileID: 1296853415}
-  _commandManager3: {fileID: 0}
-  _commandBoxManager: {fileID: 0}
   _battleCamera: {fileID: 783636375}
   _seManager: {fileID: 0}
   _targetView: {fileID: 572671944}
@@ -13200,8 +13198,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e83493702cc63459bfd66fcb4de0cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardList: []
-  _debugCard: {fileID: 0}
+  _cardList:
+  - {fileID: 7982862276775126173, guid: 318fed3647a9bbc439af41824303560b, type: 3}
+  _debugCard: {fileID: 7982862276775126173, guid: 318fed3647a9bbc439af41824303560b,
+    type: 3}
 --- !u!1 &2127187978
 GameObject:
   m_ObjectHideFlags: 0
