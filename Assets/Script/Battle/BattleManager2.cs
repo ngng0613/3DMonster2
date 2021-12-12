@@ -122,7 +122,7 @@ public class BattleManager2 : MonoBehaviour
         //ステージデータ読み込み
         if (stageData != null)
         {
-            for (int i = 0; i < stageData.enemyData.Count; i++)
+            for (int i = 0; i < stageData.EnemyData.Count; i++)
             {
                 SetEnemyMonsterBase(enemyMonsterObjectsList[i], i, enemyMonsterPositionList[i], enemyMonsterBaseList[i]);
             }
@@ -145,7 +145,7 @@ public class BattleManager2 : MonoBehaviour
             }
         }
 
-        playerMonsterBaseList = MonsterManager.partyMonsterList;
+        playerMonsterBaseList = MonsterManager.PartyMonsterList;
         //味方情報のセット
         for (int i = 0; i < playerMonsterObjectsList.Count; i++)
         {
@@ -154,7 +154,7 @@ public class BattleManager2 : MonoBehaviour
 
         }
         //マネージャーのセット
-        numberOfPossessionMonster = monsterManager.numberOfPossessionMonster;
+        numberOfPossessionMonster = monsterManager.NumberOfPossessionMonster;
         targetView.Setup(playerMonsterBaseList, enemyMonsterBaseList);
         targetView.maximumNumberOfMonster = this.maximumNumberOfMonster;
 
@@ -193,10 +193,10 @@ public class BattleManager2 : MonoBehaviour
     {
         if (phase == Phase.Wait)
         {
-            if (attackWaitingList == null)
-            {
-                attackWaitingList = timelineManager.UpdateTimeline(true);
-            }
+            //if (attackWaitingList == null)
+            //{
+            //    attackWaitingList = timelineManager.UpdateTimeline(true);
+            //}
             if (attackWaitingList != null)
             {
                 if (attackWaitingList.Count > 1) //2体より多い場合はソートする
@@ -230,6 +230,24 @@ public class BattleManager2 : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator WaitForAttackList(bool advanceTime)
+    {
+        while (true)
+        {
+            attackWaitingList = timelineManager.UpdateTimeline(advanceTime);
+            if (attackWaitingList == null)
+            {
+                Debug.Log("hey");
+                yield return null;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
     }
 
     public void WriteMessage(string message)
@@ -278,6 +296,7 @@ public class BattleManager2 : MonoBehaviour
         //battleCamera.AllEnemyView(() => PhaseEnemyView());
         turnOrder = 0;
         phase = Phase.Wait;
+        StartCoroutine(WaitForAttackList(true));
 
 
     }
@@ -783,10 +802,12 @@ public class BattleManager2 : MonoBehaviour
         {
             battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
             attackWaitingList = null;
+            StartCoroutine(WaitForAttackList(true));
             phase = Phase.Wait;
         }
         else
         {
+            StartCoroutine(WaitForAttackList(false));
             phase = Phase.Wait;
         }
     }
@@ -882,10 +903,12 @@ public class BattleManager2 : MonoBehaviour
         {
             battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
             attackWaitingList = null;
+            StartCoroutine(WaitForAttackList(true));
             phase = Phase.Wait;
         }
         else
         {
+            StartCoroutine(WaitForAttackList(false));
             phase = Phase.Wait;
         }
     }
@@ -979,7 +1002,7 @@ public class BattleManager2 : MonoBehaviour
     /// <param name="enemyMonsterBase">敵の情報</param>
     void SetEnemyMonsterBase(GameObject enemyObject, int enemyNumber, Transform enemyPos, MonsterBase enemyMonsterBase)
     {
-        enemyObject = Instantiate(monsterManager.GetMonsterPrefab(stageData.enemyData[enemyNumber].GetId()), enemyPos.transform.position, Quaternion.identity);
+        enemyObject = Instantiate(monsterManager.GetMonsterPrefab(stageData.EnemyData[enemyNumber].GetId()), enemyPos.transform.position, Quaternion.identity);
 
         Vector3 tempDir = enemyObject.transform.localEulerAngles;
         tempDir.y += 180;

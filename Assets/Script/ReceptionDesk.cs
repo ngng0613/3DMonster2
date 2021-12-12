@@ -18,7 +18,7 @@ public class ReceptionDesk : MonoBehaviour
         {
             if (Input.GetButtonDown("決定"))
             {
-                if (GameManager2.canTalk == true)
+                if (GameManager2.CanTalk == true)
                 {
                     messageBox.Setup(message1, () => stageSelectUi.Activate());
                     messageBox.Activate();

@@ -65,7 +65,7 @@ public class TimelineManager : MonoBehaviour
             if (advanceTheTime)
             {
                 //モンスターの素早さぶん、クールタイムを進める
-                monsterBaseList[i].coolTime -= monsterBaseList[i].GetSpeedValue();
+                monsterBaseList[i].coolTime -= monsterBaseList[i].GetSpeedValue() / 20;
             }
 
             //クールタイムが減った分だけ、タイムラインオブジェクトを移動する

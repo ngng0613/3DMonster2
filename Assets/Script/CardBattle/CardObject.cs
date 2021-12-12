@@ -8,25 +8,25 @@ using DG.Tweening;
 
 public class CardObject : MonoBehaviour
 {
-    [SerializeField] CardData cardData;
-    [SerializeField] Canvas canvas;
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] Image image;
+    [SerializeField] CardData _cardData;
+    [SerializeField] Canvas _canvas;
+    [SerializeField] TextMeshProUGUI _nameText;
+    [SerializeField] Image _image;
 
-    Vector3 relativePos;
-    Vector3 firstMousePos;
+    Vector3 _relativePos;
+    Vector3 _firstMousePos;
 
     public delegate void Func();
-    Func handUpdateDelegate;
+    Func _handUpdateDelegate;
 
-    Action playedAction;
+    Action _playedAction;
 
-    public CardData CardData { get => cardData;}
+    public CardData CardData { get => _cardData;}
     public bool InHand = false;
 
     public void Setup(Func func)
     {
-        handUpdateDelegate = func;
+        _handUpdateDelegate = func;
         UpdateText();
     }
 
@@ -36,13 +36,13 @@ public class CardObject : MonoBehaviour
     /// <param name="func">追加したい関数</param>
     public void SetAction(Func func)
     {
-        playedAction += () => func();
+        _playedAction += () => func();
     }
 
     private void UpdateText()
     {
-        nameText.text = CardData.cardName;
-        image.sprite = CardData.mainImage;
+        _nameText.text = CardData._cardName;
+        _image.sprite = CardData._mainImage;
     }
 
     IEnumerator PlayUpdate()
@@ -54,10 +54,10 @@ public class CardObject : MonoBehaviour
                 Debug.Log("解除");
                 if (Input.mousePosition.y >= 600)
                 {
-                    Debug.Log($"{this.CardData.cardName}をプレイした");
-                    if (playedAction != null)
+                    Debug.Log($"{this.CardData._cardName}をプレイした");
+                    if (_playedAction != null)
                     {
-                        playedAction.Invoke();
+                        _playedAction.Invoke();
                     }
                 }
                 break;
@@ -71,21 +71,21 @@ public class CardObject : MonoBehaviour
     {
         this.gameObject.transform.DOLocalMoveY(156, 0.2f);
         this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
-        canvas.sortingOrder = 1;
+        _canvas.sortingOrder = 1;
     }
     public void OnPointerExit()
     {
         this.gameObject.transform.DOLocalMoveY(0, 0.2f);
         this.gameObject.transform.DOScale(Vector3.one, 0.2f);
-        canvas.sortingOrder = 0;
+        _canvas.sortingOrder = 0;
     }
 
     public void OnMouseDown()
     {
         if (Input.GetMouseButton(0))
         {
-            relativePos = this.gameObject.transform.position;
-            firstMousePos = Input.mousePosition;
+            _relativePos = this.gameObject.transform.position;
+            _firstMousePos = Input.mousePosition;
             StartCoroutine(PlayUpdate());
         }
     }
@@ -94,7 +94,7 @@ public class CardObject : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            this.gameObject.transform.position = relativePos + Input.mousePosition - firstMousePos;
+            this.gameObject.transform.position = _relativePos + Input.mousePosition - _firstMousePos;
         }
     }
 
@@ -102,12 +102,12 @@ public class CardObject : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            handUpdateDelegate.Invoke();
+            _handUpdateDelegate.Invoke();
         }
     }
 
     public void ResetSortingOrder()
     {
-        canvas.sortingOrder = 0;
+        _canvas.sortingOrder = 0;
     }
 }

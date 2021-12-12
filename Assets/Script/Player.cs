@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] Rigidbody rigidBody;
-    [SerializeField] Animator animator;
-    [SerializeField] float moveSpeed = 3.0f;
-    [SerializeField] bool walkEffect = default;
-    [SerializeField] FloorEffectGenerator effectGenerator;
+    [SerializeField] Rigidbody _rigidBody;
+    [SerializeField] Animator _animator;
+    [SerializeField] float _moveSpeed = 3.0f;
+    [SerializeField] bool _walkEffect = default;
+    [SerializeField] FloorEffectGenerator _effectGenerator;
 
-    public static bool canMove = true;
+    public static bool CanMove = true;
 
     private void Start()
     {
-        this.rigidBody = this.GetComponent<Rigidbody>();
-        this.animator = GetComponent<Animator>();
-        canMove = true;
+        this._rigidBody = this.GetComponent<Rigidbody>();
+        this._animator = GetComponent<Animator>();
+        CanMove = true;
     }
 
     void Update()
     {
-        if (canMove == true)
+        if (CanMove == true)
         {
             Move();
         }
         else
         {
-            rigidBody.velocity = Vector3.zero;
-            animator.SetInteger("ActionState", 0);
+            _rigidBody.velocity = Vector3.zero;
+            _animator.SetInteger("ActionState", 0);
         }
     }
 
@@ -41,16 +41,16 @@ public class Player : MonoBehaviour
 
         if (tempVector.sqrMagnitude < 0.3f)
         {
-            animator.SetInteger("ActionState", 0);
+            _animator.SetInteger("ActionState", 0);
         }
         else
         {
             transform.rotation = Quaternion.LookRotation(tempVector, transform.up);
-            rigidBody.velocity = tempVector * moveSpeed;
-            animator.SetInteger("ActionState", 1);
-            if (walkEffect == true)
+            _rigidBody.velocity = tempVector * _moveSpeed;
+            _animator.SetInteger("ActionState", 1);
+            if (_walkEffect == true)
             {
-                effectGenerator.OnUpdate(this.transform);
+                _effectGenerator.OnUpdate(this.transform);
             }
 
         }

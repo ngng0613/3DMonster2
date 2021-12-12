@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    [SerializeField] List<CardObject> cardList = new List<CardObject>();
+    [SerializeField] List<CardObject> _cardList = new List<CardObject>();
 
     /// <summary>
     /// デッキの初期設定
@@ -14,14 +14,14 @@ public class Deck : MonoBehaviour
     /// <param name="cardList"></param>
     public void Setup(List<CardObject> cardList)
     {
-        this.cardList = cardList;
+        this._cardList = cardList;
         Shuffle();
     }
 
     public CardObject Draw()
     {
-        CardObject drawCard = cardList[0];
-        cardList.RemoveAt(0);
+        CardObject drawCard = _cardList[0];
+        _cardList.RemoveAt(0);
         drawCard.InHand = true;
         return drawCard;
     }
@@ -31,11 +31,11 @@ public class Deck : MonoBehaviour
     /// </summary>
     public void Shuffle()
     {
-        List<CardObject> temp = cardList.OrderBy(a => Guid.NewGuid()).ToList();
-        cardList = temp;
-        foreach (CardObject item in cardList)
+        List<CardObject> temp = _cardList.OrderBy(a => Guid.NewGuid()).ToList();
+        _cardList = temp;
+        foreach (CardObject item in _cardList)
         {
-            Debug.Log(item.CardData.cardName);
+            Debug.Log(item.CardData._cardName);
         }
     }
 

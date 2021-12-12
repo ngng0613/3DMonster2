@@ -41,9 +41,9 @@ public class StageSelectUI : MonoBehaviour
         this.AfterClosed = AfterClosingUi;
         for (int i = 0; i < viewObjectArray.Length; i++)
         {
-            viewObjectArray[i].stageName = stageDataList[i].stageName;
-            viewObjectArray[i].stageInfoText = stageDataList[i].stageInfoText;
-            viewObjectArray[i].enemyData = stageDataList[i].enemyData;
+            viewObjectArray[i].StageName = stageDataList[i].StageName;
+            viewObjectArray[i]._stageInfoText = stageDataList[i]._stageInfoText;
+            viewObjectArray[i].EnemyData = stageDataList[i].EnemyData;
             viewObjectArray[i].UpdateView();
         }
         select = 0;
@@ -66,8 +66,8 @@ public class StageSelectUI : MonoBehaviour
 
     public void Activate()
     {
-        Player.canMove = false;
-        GameManager2.canTalk = false;
+        Player.CanMove = false;
+        GameManager2.CanTalk = false;
         soundManager.PlaySe(SoundManager.SeList.OpenMenu);
         SetInput();
         uiObjects.SetActive(true);
@@ -117,9 +117,9 @@ public class StageSelectUI : MonoBehaviour
     {
         for (int i = 0; i < viewObjectArray.Length; i++)
         {
-            viewObjectArray[i].stageName = stageDataList[i + listTopIndex].stageName;
-            viewObjectArray[i].stageInfoText = stageDataList[i + listTopIndex].stageInfoText;
-            viewObjectArray[i].enemyData = stageDataList[i + listTopIndex].enemyData;
+            viewObjectArray[i].StageName = stageDataList[i + listTopIndex].StageName;
+            viewObjectArray[i]._stageInfoText = stageDataList[i + listTopIndex]._stageInfoText;
+            viewObjectArray[i].EnemyData = stageDataList[i + listTopIndex].EnemyData;
             viewObjectArray[i].UpdateView();
         }
         foreach (var item in viewObjectArray)
@@ -133,11 +133,11 @@ public class StageSelectUI : MonoBehaviour
 
     void UpdateInfo()
     {
-        infoText.text = stageDataList[listTopIndex + select].stageInfoText;
+        infoText.text = stageDataList[listTopIndex + select]._stageInfoText;
 
         for (int i = 0; i < 3; i++)
         {
-            enemyImageList[i].sprite = stageDataList[listTopIndex + select].enemyData[i].GetImage();
+            enemyImageList[i].sprite = stageDataList[listTopIndex + select].EnemyData[i].GetImage();
         }
 
 
@@ -159,8 +159,8 @@ public class StageSelectUI : MonoBehaviour
         InputManager.setupCompleted = false;
         uiObjects.SetActive(false);
         AfterClosed.Invoke();
-        Player.canMove = true;
-        GameManager2.canTalk = true;
+        Player.CanMove = true;
+        GameManager2.CanTalk = true;
         soundManager.PlaySe(SoundManager.SeList.CloseMenu);
     }
 }

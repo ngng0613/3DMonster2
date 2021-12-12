@@ -5,28 +5,28 @@ using Cinemachine;
 
 public class CameraWork : MonoBehaviour
 {
-    Vector3 cameraDefaultPos;
-    Vector3 cameraDefaultDir;
+    Vector3 _cameraDefaultPos;
+    Vector3 _cameraDefaultDir;
 
     //Player1ズーム
-    Vector3 player1FixPos;
-    Vector3 player1FixDir;
+    Vector3 _player1FixPos;
+    Vector3 _player1FixDir;
 
-    Vector3 enemy1FixPos;
-    Vector3 enemy1FixDir;
+    Vector3 _enemy1FixPos;
+    Vector3 _enemy1FixDir;
 
-    [SerializeField] Transform player1_Pos;
-    [SerializeField] Transform player2_Pos;
-    [SerializeField] Transform player3_Pos;
+    [SerializeField] Transform _player1Pos;
+    [SerializeField] Transform _player2Pos;
+    [SerializeField] Transform _player3Pos;
 
-    [SerializeField] Transform enemy1_Pos;
-    [SerializeField] Transform enemy2_Pos;
-    [SerializeField] Transform enemy3_Pos;
+    [SerializeField] Transform _enemy1Pos;
+    [SerializeField] Transform _enemy2Pos;
+    [SerializeField] Transform _enemy3Pos;
 
-    [SerializeField] Transform defaultPos;
+    [SerializeField] Transform _defaultPos;
 
 
-    [SerializeField] CinemachineVirtualCamera camera_V;
+    [SerializeField] CinemachineVirtualCamera _cameraV;
     
 
 
@@ -36,32 +36,32 @@ public class CameraWork : MonoBehaviour
 
         //初期設定
 
-        camera_V = GetComponent<CinemachineVirtualCamera>();
-        Debug.Log(camera_V);
+        _cameraV = GetComponent<CinemachineVirtualCamera>();
+        Debug.Log(_cameraV);
 
-        cameraDefaultPos.x = 50;
-        cameraDefaultPos.y = 12;
-        cameraDefaultPos.z = 25;
+        _cameraDefaultPos.x = 50;
+        _cameraDefaultPos.y = 12;
+        _cameraDefaultPos.z = 25;
 
-        cameraDefaultDir.x = 45;
-        cameraDefaultDir.y = 0;
-        cameraDefaultDir.z = 0;
+        _cameraDefaultDir.x = 45;
+        _cameraDefaultDir.y = 0;
+        _cameraDefaultDir.z = 0;
 
-        player1FixPos.x = 53;
-        player1FixPos.y = 3;
-        player1FixPos.z = 40;
+        _player1FixPos.x = 53;
+        _player1FixPos.y = 3;
+        _player1FixPos.z = 40;
 
-        player1FixDir.x = 30;
-        player1FixDir.y = 225;
-        player1FixDir.z = 0;
+        _player1FixDir.x = 30;
+        _player1FixDir.y = 225;
+        _player1FixDir.z = 0;
 
-        enemy1FixPos.x = 53;
-        enemy1FixPos.y = 3;
-        enemy1FixPos.z = 45;
+        _enemy1FixPos.x = 53;
+        _enemy1FixPos.y = 3;
+        _enemy1FixPos.z = 45;
 
-        enemy1FixDir.x = 30;
-        enemy1FixDir.y = 315;
-        enemy1FixDir.z = 0;
+        _enemy1FixDir.x = 30;
+        _enemy1FixDir.y = 315;
+        _enemy1FixDir.z = 0;
 
 
 
@@ -79,16 +79,16 @@ public class CameraWork : MonoBehaviour
 
     public void ResetPos()
     {
-        camera_V.Follow = defaultPos;
+        _cameraV.Follow = _defaultPos;
         FastMove();
      
-        gameObject.transform.localEulerAngles = cameraDefaultDir;
+        gameObject.transform.localEulerAngles = _cameraDefaultDir;
     }
 
     public void MoveCamera_EnemyMonster1()
     {
         DefaultSpeedMove();
-        camera_V.Follow = enemy1_Pos;
+        _cameraV.Follow = _enemy1Pos;
         Debug.Log("1へ移動");
 
     }
@@ -96,7 +96,7 @@ public class CameraWork : MonoBehaviour
     public void MoveCamera_EnemyMonster2()
     {
         DefaultSpeedMove();
-        camera_V.Follow = enemy2_Pos;
+        _cameraV.Follow = _enemy2Pos;
         Debug.Log("2へ移動");
 
     }
@@ -104,15 +104,15 @@ public class CameraWork : MonoBehaviour
     public void MoveCamera_EnemyMonster3()
     {
         DefaultSpeedMove();
-        camera_V.Follow = enemy3_Pos;
+        _cameraV.Follow = _enemy3Pos;
         Debug.Log("3へ移動");
     }
 
     public void zoomPlayerMonster1()
     {
         FastMove();
-        camera_V.Follow = player1_Pos;
-        gameObject.transform.localEulerAngles = player1FixDir;
+        _cameraV.Follow = _player1Pos;
+        gameObject.transform.localEulerAngles = _player1FixDir;
         /*
         gameObject.transform.localPosition = player1FixPos;
         gameObject.transform.localEulerAngles = player1FixDir;
@@ -122,8 +122,8 @@ public class CameraWork : MonoBehaviour
     public void zoomPlayerMonster2()
     {
         FastMove();
-        camera_V.Follow = player2_Pos;
-        gameObject.transform.localEulerAngles = player1FixDir;
+        _cameraV.Follow = _player2Pos;
+        gameObject.transform.localEulerAngles = _player1FixDir;
         /*
         Vector3 v_temp = player1FixPos;
         v_temp.x -= 6;
@@ -135,8 +135,8 @@ public class CameraWork : MonoBehaviour
     public void zoomPlayerMonster3()
     {
         FastMove();
-        camera_V.Follow = player3_Pos;
-        gameObject.transform.localEulerAngles = player1FixDir;
+        _cameraV.Follow = _player3Pos;
+        gameObject.transform.localEulerAngles = _player1FixDir;
         /*
         Vector3 v_temp = player1FixPos;
         v_temp.x += 6;
@@ -148,8 +148,8 @@ public class CameraWork : MonoBehaviour
     public void zoomEnemyMonster1()
     {
         FastMove();
-        camera_V.Follow = enemy1_Pos;
-        gameObject.transform.localEulerAngles = enemy1FixDir;
+        _cameraV.Follow = _enemy1Pos;
+        gameObject.transform.localEulerAngles = _enemy1FixDir;
         /*
         gameObject.transform.localPosition = enemy1FixPos;
         gameObject.transform.localEulerAngles = enemy1FixDir;
@@ -159,8 +159,8 @@ public class CameraWork : MonoBehaviour
     public void zoomEnemyMonster2()
     {
         FastMove();
-        camera_V.Follow = enemy2_Pos;
-        gameObject.transform.localEulerAngles = enemy1FixDir;
+        _cameraV.Follow = _enemy2Pos;
+        gameObject.transform.localEulerAngles = _enemy1FixDir;
 
         /*
         Vector3 v_temp = enemy1FixPos;
@@ -173,8 +173,8 @@ public class CameraWork : MonoBehaviour
     public void zoomEnemyMonster3()
     {
         FastMove();
-        camera_V.Follow = enemy3_Pos;
-        gameObject.transform.localEulerAngles = enemy1FixDir;
+        _cameraV.Follow = _enemy3Pos;
+        gameObject.transform.localEulerAngles = _enemy1FixDir;
 
         /*
         Vector3 v_temp = enemy1FixPos;
@@ -189,11 +189,11 @@ public class CameraWork : MonoBehaviour
     {
         if (enemyNumber == 1)
         {
-            return enemy1FixDir;
+            return _enemy1FixDir;
         }
         else
         {
-            return enemy1FixDir;
+            return _enemy1FixDir;
         }
 
     }
@@ -202,28 +202,28 @@ public class CameraWork : MonoBehaviour
     {
         if (playerNumber == 1)
         {
-            return player1FixPos;
+            return _player1FixPos;
         }
         else
         {
-            return player1FixDir;
+            return _player1FixDir;
         }
 
     }
 
     public void DefaultSpeedMove()
     {
-        camera_V.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = 0.5f;
-        camera_V.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = 0.5f;
-        camera_V.GetCinemachineComponent<CinemachineTransposer>().m_ZDamping = 0.5f;
+        _cameraV.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = 0.5f;
+        _cameraV.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = 0.5f;
+        _cameraV.GetCinemachineComponent<CinemachineTransposer>().m_ZDamping = 0.5f;
 
     }
 
     public void FastMove()
     {
-        camera_V.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = 0.1f;
-        camera_V.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = 0.1f;
-        camera_V.GetCinemachineComponent<CinemachineTransposer>().m_ZDamping = 0.1f;
+        _cameraV.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = 0.1f;
+        _cameraV.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = 0.1f;
+        _cameraV.GetCinemachineComponent<CinemachineTransposer>().m_ZDamping = 0.1f;
 
     }
 }

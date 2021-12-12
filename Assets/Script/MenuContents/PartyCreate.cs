@@ -53,7 +53,7 @@ public class PartyCreate : MenuContents
         PhaseChoicePosition();
         InputManager.setupCompleted = true;
         allMonsterList = monsterManager.GetAllMonsterList();
-        monsterPartyList = monsterManager.GetPossessionMonsterList().GetRange(0, GameManager2.progress + 3);
+        monsterPartyList = monsterManager.GetPossessionMonsterList().GetRange(0, GameManager2.Progress + 3);
         UpdateParty();
         monsterDataView.DisPlayStatusView(allMonsterList[chooseIndex]);
 
@@ -65,7 +65,7 @@ public class PartyCreate : MenuContents
     {
         partyCreateObjects.SetActive(true);
         soundManager.PlaySe(SoundManager.SeList.OpenMenu);
-        Player.canMove = false;
+        Player.CanMove = false;
     }
 
     public void Inactivate()

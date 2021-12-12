@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpinCircle : MonoBehaviour
 {
-    private Vector3 m_pos;
-    float startTime = 0.0f;
+    Vector3 _pos;
+    float _startTime = 0.0f;
 
     private void Start()
     {

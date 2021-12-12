@@ -6,98 +6,95 @@ using UnityEngine;
 public class MonsterBase : MonoBehaviour
 {
     //ID
-    [SerializeField] int id;
+    [SerializeField] int _id;
 
     //個別ID
-    [SerializeField] float individual_ID;
+    [SerializeField] float _individualID;
 
     //名前
-    [SerializeField] string monsterName;
+    [SerializeField] string _monsterName;
     //ニックネーム
-    [SerializeField] string nickName;
+    [SerializeField] string _nickName;
 
     //イメージ
-    [SerializeField] Sprite image;
+    [SerializeField] Sprite _image;
 
     //属性
-    [SerializeField] Element.BattleElement element;
+    [SerializeField] Element.BattleElement _element;
 
     //パッシブスキル
-    [SerializeField] PassiveSkillBase pSkill;
+    [SerializeField] PassiveSkillBase _pSkill;
 
     //最大HP
-    [SerializeField] int maxHp;
+    [SerializeField] int _maxHp;
     //現在のHP
-    [SerializeField] int currentHp;
+    [SerializeField] int _currentHp;
     //最大MP
-    [SerializeField] int maxMp;
+    [SerializeField] int _maxMp;
     //現在のMP
-    [SerializeField] int currentMp;
+    [SerializeField] int _currentMp;
 
     //攻撃力
-    [SerializeField] int attack;
+    [SerializeField] int _attack;
     //防御力
-    [SerializeField] int defence;
+    [SerializeField] int _defence;
     //特殊攻撃力
-    [SerializeField] int spAttack;
+    [SerializeField] int _spAttack;
     //特殊防御力
-    [SerializeField] int spDefence;
+    [SerializeField] int _spDefence;
     //素早さ
-    [SerializeField] int speed;
+    [SerializeField] int _speed;
     //運
-    [SerializeField] int luck;
+    [SerializeField] int _luck;
     //命中率
-    [SerializeField] int hit;
+    [SerializeField] int _hit;
     //回避率
-    [SerializeField] int avoidance;
+    [SerializeField] int _avoidance;
 
     //LVUP時上昇最大HP
-    [SerializeField] int maxHpLevelUp;
+    [SerializeField] int _maxHpLevelUp;
     //LVUP時上昇最大MP
-    [SerializeField] int maxMpLevelUp;
+    [SerializeField] int _maxMpLevelUp;
 
     //LVUP時上昇攻撃力
-    [SerializeField] int attackLevelUp;
+    [SerializeField] int _attackLevelUp;
     //LVUP時上昇防御力
-    [SerializeField] int defenceLevelUp;
+    [SerializeField] int _defenceLevelUp;
     //LVUP時上昇特殊攻撃力
-    [SerializeField] int spAttackLevelUp;
+    [SerializeField] int _spAttackLevelUp;
     //LVUP時上昇特殊防御力
-    [SerializeField] int spDefenceLevelUp;
+    [SerializeField] int _spDefenceLevelUp;
     //LVUP時上昇素早さ
-    [SerializeField] int speedLevelUp;
+    [SerializeField] int _speedLevelUp;
     //LVUP時上昇運
-    [SerializeField] int luckLevelUp;
+    [SerializeField] int _luckLevelUp;
     //攻撃時ディレイ
-    public float attackDelay = 1;
+    public float _attackDelay = 1;
 
     //ベースのPrefab
-    [SerializeField] GameObject myPrefab;
+    [SerializeField] GameObject _myPrefab;
 
     //実体化したオブジェクト
-    public GameObject realObject;
+    public GameObject RealObject;
 
     //レベル
-    [SerializeField] int level;
+    [SerializeField] int _level;
     //経験値
-    [SerializeField] int exp;
+    [SerializeField] int _exp;
 
     //次のレベルまでの経験値
-    [SerializeField] int expToNextLevel;
+    [SerializeField] int _expToNextLevel;
 
     //倒したときのもらえる経験値
-    [SerializeField] int getExp;
+    [SerializeField] int _getExp;
     //倒したときにもらえるお金
-    [SerializeField] int money;
+    [SerializeField] int _money;
 
     public enum MonsterState
     {
         Normal,
         Guard,
         Charge,
-
-
-
     }
 
     public MonsterState status = MonsterState.Normal;
@@ -150,23 +147,21 @@ public class MonsterBase : MonoBehaviour
     public MonsterBase(string monsterName, int level,
         int maxHp, int maxMp, int attack, int defence, int spAttack, int spDefence, int speed)
     {
-        this.monsterName = monsterName;
-        this.level = level;
-        this.maxHp = maxHp;
-        this.maxMp = maxMp;
-        this.attack = attack;
-        this.defence = defence;
-        this.spAttack = spAttack;
-        this.spDefence = spDefence;
-        this.speed = speed;
+        this._monsterName = monsterName;
+        this._level = level;
+        this._maxHp = maxHp;
+        this._maxMp = maxMp;
+        this._attack = attack;
+        this._defence = defence;
+        this._spAttack = spAttack;
+        this._spDefence = spDefence;
+        this._speed = speed;
     }
 
     public void Start()
     {
         commandAi = new CommandAI();
     }
-
-
 
     public void Update()
     {
@@ -224,17 +219,17 @@ public class MonsterBase : MonoBehaviour
     /// <returns>ID</returns>
     public int GetId()
     {
-        return id;
+        return _id;
     }
 
     public void SetId(int id)
     {
-        this.id = id;
+        this._id = id;
     }
 
     public float GetIndividualID()
     {
-        return individual_ID;
+        return _individualID;
 
     }
 
@@ -244,13 +239,13 @@ public class MonsterBase : MonoBehaviour
     /// <returns></returns>
     public string GetNickname()
     {
-        if (nickName != "")
+        if (_nickName != "")
         {
-            return nickName;
+            return _nickName;
         }
         else
         {
-            return monsterName;
+            return _monsterName;
         }
     }
 
@@ -260,12 +255,12 @@ public class MonsterBase : MonoBehaviour
     /// <param name="nickName">新たなニックネーム</param>
     public void SetNickName(string nickName)
     {
-        this.nickName = nickName;
+        this._nickName = nickName;
     }
 
     public void SetID(int id)
     {
-        this.id = id;
+        this._id = id;
     }
 
 
@@ -325,139 +320,139 @@ public class MonsterBase : MonoBehaviour
 
     public PassiveSkillBase GetPassiveSkill()
     {
-        return pSkill;
+        return _pSkill;
     }
 
     public int Getlevel()
     {
-        return level;
+        return _level;
     }
 
     public void Setlevel(int level)
     {
-        this.level = level;
+        this._level = level;
     }
 
     public Sprite GetImage()
     {
-        return image;
+        return _image;
     }
 
     public void SetImage(Sprite image)
     {
-        this.image = image;
+        this._image = image;
     }
 
     public int GetAttackValue()
     {
-        return attack;
+        return _attack;
     }
     public void SetAttackValue(int value)
     {
-        attack = value;
+        _attack = value;
     }
 
     public int GetDefenceValue()
     {
-        return defence;
+        return _defence;
     }
     public void SetDefenceValue(int value)
     {
-        defence = value;
+        _defence = value;
     }
 
     public int GetSpAttackValue()
     {
-        return spAttack;
+        return _spAttack;
     }
     public void SetSPAttackValue(int value)
     {
-        spAttack = value;
+        _spAttack = value;
     }
 
     public int GetSpDefenceValue()
     {
-        return spDefence;
+        return _spDefence;
     }
     public void SetSPDefenceValue(int value)
     {
-        spDefence = value;
+        _spDefence = value;
     }
 
     public int GetSpeedValue()
     {
-        return speed;
+        return _speed;
     }
     public void SetSpeedValue(int value)
     {
-        speed = value;
+        _speed = value;
     }
 
     public int GetMaxHPValue()
     {
-        return maxHp;
+        return _maxHp;
     }
     public void SetMaxHPValue(int value)
     {
 
-        maxHp = value;
+        _maxHp = value;
     }
     public int GetMaxMPValue()
     {
-        return maxMp;
+        return _maxMp;
     }
     public void SetMaxMPValue(int value)
     {
-        maxMp = value;
+        _maxMp = value;
     }
 
     public int GetCurrentHPValue()
     {
-        return currentHp;
+        return _currentHp;
     }
     public void SetCurrentHPValue(int value)
     {
 
-        currentHp = value;
+        _currentHp = value;
     }
 
     public int GetCurrentMPValue()
     {
-        return currentMp;
+        return _currentMp;
     }
     public void SetCurrentMPValue(int value)
     {
-        currentMp = value;
+        _currentMp = value;
     }
 
     public void SetLevelValue(int level)
     {
-        this.level = level;
+        this._level = level;
     }
 
     public int GetLevelValue()
     {
-        return level;
+        return _level;
     }
 
     public void SetEXPValue(int exp)
     {
-        this.exp = exp;
+        this._exp = exp;
     }
 
     public int GetEXPValue()
     {
-        return exp;
+        return _exp;
     }
 
     public void SetEXPToNextLevel(int exp_To_NextLevel)
     {
-        this.expToNextLevel = exp_To_NextLevel;
+        this._expToNextLevel = exp_To_NextLevel;
     }
 
     public int GetEXPToNextLevel()
     {
-        return expToNextLevel;
+        return _expToNextLevel;
     }
 
     public void SetSkillList(List<SkillBase> list)
@@ -467,10 +462,10 @@ public class MonsterBase : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        currentHp -= damage;
-        if (currentHp < 0)
+        _currentHp -= damage;
+        if (_currentHp < 0)
         {
-            currentHp = 0;
+            _currentHp = 0;
         }
     }
 
@@ -487,7 +482,7 @@ public class MonsterBase : MonoBehaviour
         {
             random = Random.Range(0, skillList.Count);
             usedSkill = this.skillList[random];
-            if (usedSkill.GetUsedMp() <= currentMp)
+            if (usedSkill.GetUsedMp() <= _currentMp)
             {
                 break;
             }
@@ -513,19 +508,19 @@ public class MonsterBase : MonoBehaviour
         bool result = false;
         while (true)
         {
-            if ((exp + plusExp) >= expToNextLevel)
+            if ((_exp + plusExp) >= _expToNextLevel)
             {
-                int nextExp = exp + plusExp - expToNextLevel;
+                int nextExp = _exp + plusExp - _expToNextLevel;
                 LevelUp(nextExp);
 
-                float expToNextLevelFloat = expToNextLevel * 1.2f;
-                expToNextLevel = (int)expToNextLevelFloat;
+                float expToNextLevelFloat = _expToNextLevel * 1.2f;
+                _expToNextLevel = (int)expToNextLevelFloat;
 
                 result = true;
             }
             else
             {
-                exp += plusExp;
+                _exp += plusExp;
                 break;
             }
         }
@@ -535,48 +530,48 @@ public class MonsterBase : MonoBehaviour
 
     public void LevelUp(int exp)
     {
-        this.exp = exp;
-        level++;
-        maxHp += maxHpLevelUp;
-        maxMp += maxMpLevelUp;
-        currentHp = maxHp;
-        currentMp = maxMp;
-        attack += attackLevelUp;
-        defence += defenceLevelUp;
-        spAttack += spAttackLevelUp;
-        spDefence += spDefenceLevelUp;
-        speed += speedLevelUp;
+        this._exp = exp;
+        _level++;
+        _maxHp += _maxHpLevelUp;
+        _maxMp += _maxMpLevelUp;
+        _currentHp = _maxHp;
+        _currentMp = _maxMp;
+        _attack += _attackLevelUp;
+        _defence += _defenceLevelUp;
+        _spAttack += _spAttackLevelUp;
+        _spDefence += _spDefenceLevelUp;
+        _speed += _speedLevelUp;
 
 
     }
 
     public int GetExp_WhenKilled()
     {
-        return getExp;
+        return _getExp;
     }
 
     public int GetMoney_WhenKilled()
     {
-        return money;
+        return _money;
     }
 
     public void UseMp(int point)
     {
-        currentMp -= point;
+        _currentMp -= point;
     }
 
     public void SetPrefab(GameObject prefab)
     {
-        myPrefab = prefab;
+        _myPrefab = prefab;
     }
     public GameObject GetPrefab()
     {
-        return myPrefab;
+        return _myPrefab;
     }
 
     public Element.BattleElement GetElement()
     {
-        return element;
+        return _element;
     }
 
 }

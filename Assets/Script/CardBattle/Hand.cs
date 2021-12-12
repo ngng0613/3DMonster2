@@ -7,33 +7,33 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// 手札
     /// </summary>
-    [SerializeField] List<CardObject> cardList = new List<CardObject>();
+    [SerializeField] List<CardObject> _cardList = new List<CardObject>();
 
-    [SerializeField] CardObject debugCard;
+    [SerializeField] CardObject _debugCard;
 
     /// <summary>
     /// 手札の追加
     /// </summary>
     public void AddHand(CardObject card)
     {
-        cardList.Add(card);
+        _cardList.Add(card);
 
     }
 
     public void AddHandDebug()
     {
-        CardObject newCard = Instantiate(debugCard, this.gameObject.transform);
+        CardObject newCard = Instantiate(_debugCard, this.gameObject.transform);
         newCard.Setup(HandUpdate);
-        cardList.Add(newCard);
+        _cardList.Add(newCard);
         
         HandUpdate();
     }
     void HandUpdate()
     {
-        for (int i = 0; i < cardList.Count; i++)
+        for (int i = 0; i < _cardList.Count; i++)
         {
-            cardList[i].ResetSortingOrder();
-            cardList[i].transform.localPosition = new Vector2(i * 256, 0);
+            _cardList[i].ResetSortingOrder();
+            _cardList[i].transform.localPosition = new Vector2(i * 256, 0);
         }
     }
 }

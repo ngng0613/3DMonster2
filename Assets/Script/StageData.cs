@@ -8,43 +8,43 @@ using DG.Tweening;
 
 public class StageData : MonoBehaviour
 {
-    public List<MonsterBase> enemyData = new List<MonsterBase>();
-    public string stageName;
-    [TextArea] public string stageInfoText;
-    [SerializeField] Image backgroundImage1;
-    [SerializeField] Image backgroundImage2;
-    [SerializeField] Color[] neutralColor;
-    [SerializeField] Color[] activeColor;
+    public List<MonsterBase> EnemyData = new List<MonsterBase>();
+    public string StageName;
+    [TextArea] public string _stageInfoText;
+    [SerializeField] Image _backgroundImage1;
+    [SerializeField] Image _backgroundImage2;
+    [SerializeField] Color[] _neutralColor;
+    [SerializeField] Color[] _activeColor;
 
-    Vector3 background1DefaultPos;
-    Vector3 bacground2DefaultPos;
+    Vector3 _background1DefaultPos;
+    Vector3 _bacground2DefaultPos;
 
-    public TextMeshProUGUI nameText;
-    public bool isChoose = false;
+    public TextMeshProUGUI NameText;
+    public bool IsChoose = false;
 
     private void OnValidate()
     {
-        nameText.text = stageName;
+        NameText.text = StageName;
     }
     public void UpdateView()
     {
-        nameText.text = stageName;
+        NameText.text = StageName;
     }
 
 
     public void ChangeState(bool isChoose)
     {
-        this.isChoose = isChoose;
+        this.IsChoose = isChoose;
 
         if (isChoose == true)
         {
-            backgroundImage1.color = activeColor[0];
-            backgroundImage2.color = activeColor[1];
+            _backgroundImage1.color = _activeColor[0];
+            _backgroundImage2.color = _activeColor[1];
         }
         else
         {
-            backgroundImage1.color = neutralColor[0];
-            backgroundImage2.color = neutralColor[1];
+            _backgroundImage1.color = _neutralColor[0];
+            _backgroundImage2.color = _neutralColor[1];
         }
     }
 

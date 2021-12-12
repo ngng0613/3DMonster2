@@ -95,7 +95,7 @@ public class MonsterSort : MonoBehaviour
     float SpeedAndDelayCalculation(MonsterBase monster)
     {
         float speed = monster.GetSpeedValue();
-        float delay = monster.attackDelay;
+        float delay = monster._attackDelay;
         return speed * delay;
     }
 }

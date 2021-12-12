@@ -9,55 +9,55 @@ using DG.Tweening;
 
 public class MessageBox : MonoBehaviour
 {
-    [SerializeField] GameObject messageBox;
-    public bool isActive = false;
+    [SerializeField] GameObject _messageBox;
+    public bool IsActive = false;
 
-    [TextArea] public string[] textArray;
-    [SerializeField] public int viewCharCount = 0;
-    [SerializeField] public TextMeshProUGUI textView;
-    [SerializeField] public float displaySpeed = 0.05f;
-    [SerializeField] public Vector3 displayPos;
-    [SerializeField] public Vector3 hidePos;
-    [SerializeField] public float tweenSpeed = 0.3f;
+    [TextArea] public string[] TextArray;
+    [SerializeField] public int ViewCharCount = 0;
+    [SerializeField] public TextMeshProUGUI TextView;
+    [SerializeField] public float DisplaySpeed = 0.05f;
+    [SerializeField] public Vector3 DisplayPos;
+    [SerializeField] public Vector3 HidePos;
+    [SerializeField] public float TweenSpeed = 0.3f;
 
     public delegate void Func();
-    Func AfterFunction;
+    Func _afterFunction;
 
     public void Setup(string[] textArray, Func AfterFunction)
     {
-        if (isActive == true)
+        if (IsActive == true)
         {
             return;
         }
-        this.textArray = textArray;
-        this.AfterFunction = AfterFunction;
-        messageBox.transform.localPosition = hidePos;
-        messageBox.SetActive(true);
+        this.TextArray = textArray;
+        this._afterFunction = AfterFunction;
+        _messageBox.transform.localPosition = HidePos;
+        _messageBox.SetActive(true);
     }
 
     public void Activate()
     {
-        if (isActive == true)
+        if (IsActive == true)
         {
             return;
         }
-        isActive = true;
-        Player.canMove = false;
+        IsActive = true;
+        Player.CanMove = false;
         InputManager.ResetInputSettings();
-        messageBox.transform.DOLocalMoveY(displayPos.y, tweenSpeed);
+        _messageBox.transform.DOLocalMoveY(DisplayPos.y, TweenSpeed);
         StartCoroutine(UpdateText());
     }
 
     IEnumerator UpdateText()
     {
-        for (int i = 0; i < textArray.Length; i++)
+        for (int i = 0; i < TextArray.Length; i++)
         {
             yield return null;
-            viewCharCount = 0;
-            for (int k = 0; k < textArray[i].Length; k++)
+            ViewCharCount = 0;
+            for (int k = 0; k < TextArray[i].Length; k++)
             {
-                textView.text = textArray[i].Substring(0, viewCharCount);
-                viewCharCount++;
+                TextView.text = TextArray[i].Substring(0, ViewCharCount);
+                ViewCharCount++;
 
                 //決定ボタンで一気に表示機能：保留
                 /*
@@ -69,22 +69,22 @@ public class MessageBox : MonoBehaviour
                 }
                 */
 
-                yield return new WaitForSeconds(displaySpeed);
+                yield return new WaitForSeconds(DisplaySpeed);
             }
-            textView.text = textArray[i].Substring(0, viewCharCount);
+            TextView.text = TextArray[i].Substring(0, ViewCharCount);
 
             yield return new WaitUntil(FuncFunc);   //以下の処理が終わったら次の文へ
         }
-        messageBox.transform.DOLocalMoveY(hidePos.y, tweenSpeed);
+        _messageBox.transform.DOLocalMoveY(HidePos.y, TweenSpeed);
         
-        Player.canMove = true;
+        Player.CanMove = true;
         
-        if (AfterFunction != null)
+        if (_afterFunction != null)
         {
-            AfterFunction.Invoke();
+            _afterFunction.Invoke();
         }
 
-        isActive = false;
+        IsActive = false;
         yield break;
     }
 
