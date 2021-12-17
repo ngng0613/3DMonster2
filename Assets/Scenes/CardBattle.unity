@@ -1869,7 +1869,7 @@ PrefabInstance:
     - target: {fileID: 5779784985857337836, guid: c13e14ad1fa76a54bbd36b8b2b199dee,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee,
         type: 3}
@@ -2853,7 +2853,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1500910598}
   elementImage: {fileID: 0}
-  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -2940,7 +2939,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1963500332}
   elementImage: {fileID: 0}
-  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -5500,7 +5498,7 @@ MonoBehaviour:
   _timelineManager: {fileID: 1861694743}
   _skillView: {fileID: 1872390989}
   _damageManager: {fileID: 1865492388}
-  _enemyStatusPrefab: {fileID: 1533402286778313435, guid: b6444a1c0d53c224b87be96191b00597,
+  _enemyStatusPrefab: {fileID: 6438496725294258822, guid: 638a2b25d3111d747b606d50656353e7,
     type: 3}
   _playerHpList: []
   _playerHpListInWorld: []
@@ -7619,7 +7617,6 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1996309351}
   elementImage: {fileID: 0}
-  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -10030,7 +10027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af63ec4382cd1c14195af04a399fbda6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioSource: {fileID: 0}
+  _audioSource: {fileID: 1565893860}
   _fadeTime: 0.3
   _gameStart: {fileID: 0}
   _battleStart: {fileID: 0}

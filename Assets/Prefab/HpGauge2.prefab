@@ -216,12 +216,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e47c51dbf317a479c140658bbd3368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameText: {fileID: 0}
-  hpGauge: {fileID: 7326807136744175630}
-  elementImage: {fileID: 2522906969651825857}
-  cameraComponent: {fileID: 0}
-  setupCompleted: 0
-  tweenTime: 1
+  _nameText: {fileID: 7949640713877401704}
+  _hpGauge: {fileID: 7326807136744175630}
+  _elementImage: {fileID: 2522906969651825857}
+  _cameraComponent: {fileID: 0}
+  _setupCompleted: 0
+  _tweenTime: 1
 --- !u!1 &7326807137264616418
 GameObject:
   m_ObjectHideFlags: 0
