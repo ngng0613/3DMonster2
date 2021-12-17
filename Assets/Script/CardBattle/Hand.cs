@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Hand : MonoBehaviour
 {
@@ -11,21 +13,28 @@ public class Hand : MonoBehaviour
 
     [SerializeField] CardObject _debugCard;
 
+    CardObject.PlayedAction _playedActionDelegate;
+
+
+    public void Setup(CardObject.PlayedAction playedAction)
+    {
+        _playedActionDelegate = playedAction;
+    }
+
     /// <summary>
     /// 手札の追加
     /// </summary>
     public void AddHand(CardObject card)
     {
         _cardList.Add(card);
-
     }
 
     public void AddHandDebug()
     {
         CardObject newCard = Instantiate(_debugCard, this.gameObject.transform);
-        newCard.Setup(HandUpdate);
+        newCard.Setup(_playedActionDelegate, HandUpdate);
         _cardList.Add(newCard);
-        
+
         HandUpdate();
     }
     void HandUpdate()

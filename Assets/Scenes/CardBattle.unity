@@ -2853,6 +2853,7 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1500910598}
   elementImage: {fileID: 0}
+  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -2939,6 +2940,7 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1963500332}
   elementImage: {fileID: 0}
+  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -5489,6 +5491,7 @@ MonoBehaviour:
   _soundManager: {fileID: 1564234113}
   monsterManager: {fileID: 2015057881}
   _skillManager: {fileID: 1296853415}
+  _hand: {fileID: 2116251398}
   _battleCamera: {fileID: 783636375}
   _seManager: {fileID: 0}
   _targetView: {fileID: 572671944}
@@ -5505,17 +5508,23 @@ MonoBehaviour:
   _turnDisplay: {fileID: 90068979}
   _iconManager: {fileID: 286915369}
   _playerMonsterObjectsList: []
-  _enemyMonsterObjectsList: []
+  _enemyMonsterObjectsList:
+  - {fileID: 256424442}
+  - {fileID: 0}
+  - {fileID: 0}
   _playerMonstersPositionList:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   _enemyMonsterPositionList:
-  - {fileID: 0}
+  - {fileID: 256424443}
   - {fileID: 0}
   - {fileID: 0}
   _playerMonsterBaseList: []
-  _enemyMonsterBaseList: []
+  _enemyMonsterBaseList:
+  - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
+  - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
+  - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   _playerMonsterLookPositionList: []
   _enemyMonsterLookPositionList: []
   _battleMessage: {fileID: 4404076650137510278, guid: cdb20ba9d5763e7468f1ee6a51e7d24b,
@@ -7610,6 +7619,7 @@ MonoBehaviour:
   nameText: {fileID: 0}
   hpGauge: {fileID: 1996309351}
   elementImage: {fileID: 0}
+  monster: {fileID: 0}
   cameraComponent: {fileID: 0}
   setupCompleted: 0
   tweenTime: 1
@@ -12591,7 +12601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24926ce450db0ed46bb7a2d10e88c608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allMonsterList: []
+  _allMonsterList:
+  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
+  - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   _possessionMonsterList: []
   NumberOfPossessionMonster: 1
   MonsterNullData: {fileID: 0}

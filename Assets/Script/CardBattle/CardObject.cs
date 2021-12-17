@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+
 
 public class CardObject : MonoBehaviour
 {
@@ -19,24 +21,23 @@ public class CardObject : MonoBehaviour
     public delegate void Func();
     Func _handUpdateDelegate;
 
-    Action _playedAction;
+    public delegate void PlayedAction(CardData card);
+    PlayedAction _playedActionDelegate;
 
-    public CardData CardData { get => _cardData;}
+    public CardData CardData { get => _cardData; }
+
     public bool InHand = false;
 
-    public void Setup(Func func)
+    /// <summary>
+    /// 初期設定
+    /// </summary>
+    /// <param name="playedAction">プレイ時（カード使用時）に呼ぶアクション</param>
+    /// <param name="func">手札に戻す処理時に呼ぶ関数</param>
+    public void Setup(PlayedAction playedAction, Func func)
     {
+        _playedActionDelegate = playedAction;
         _handUpdateDelegate = func;
         UpdateText();
-    }
-
-    /// <summary>
-    /// カードをプレイした際の処理を追加する
-    /// </summary>
-    /// <param name="func">追加したい関数</param>
-    public void SetAction(Func func)
-    {
-        _playedAction += () => func();
     }
 
     private void UpdateText()
@@ -55,9 +56,9 @@ public class CardObject : MonoBehaviour
                 if (Input.mousePosition.y >= 600)
                 {
                     Debug.Log($"{this.CardData._cardName}をプレイした");
-                    if (_playedAction != null)
+                    if (_playedActionDelegate != null)
                     {
-                        _playedAction.Invoke();
+                        _playedActionDelegate.Invoke(_cardData);
                     }
                 }
                 break;

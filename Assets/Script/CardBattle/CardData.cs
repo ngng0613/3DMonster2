@@ -9,5 +9,5 @@ public class CardData : ScriptableObject
     public string _cardName;
     public Sprite _mainImage;
     public int _cost;
-    public int _power;
+    public SkillBase _skill;
 }

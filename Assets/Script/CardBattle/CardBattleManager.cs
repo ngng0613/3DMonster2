@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
@@ -61,6 +62,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] SoundManager _soundManager;
     [SerializeField] MonsterManager monsterManager;
     [SerializeField] SkillManager _skillManager;
+    [SerializeField] Hand _hand;
     [SerializeField] BattleCamera _battleCamera;
     [SerializeField] SEManager _seManager;
     [SerializeField] TargetView _targetView;
@@ -105,6 +107,7 @@ public class CardBattleManager : MonoBehaviour
     UnityEngine.Random _random = new UnityEngine.Random();
     delegate void Func();
 
+
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -113,6 +116,9 @@ public class CardBattleManager : MonoBehaviour
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _monsterSort = new MonsterSort();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
+
+        //カード使用時の処理の追加
+        _hand.Setup(PlayCard);
 
         //ステージデータ読み込み
         if (StageData != null)
@@ -133,6 +139,7 @@ public class CardBattleManager : MonoBehaviour
             {
                 if (_enemyMonsterObjectsList[i])
                 {
+                    Debug.Log($"1:{_enemyMonsterObjectsList.Count}, 2:{_enemyMonsterPositionList.Count} 3:{_enemyMonsterBaseList.Count}  ");
                     SetEnemyMonsterBase(_enemyMonsterObjectsList[i], i, _enemyMonsterPositionList[i], _enemyMonsterBaseList[i]);
 
                     //turnOrderListMonsterBase.Add(enemyMonsterBaseList[i]);
@@ -916,19 +923,22 @@ public class CardBattleManager : MonoBehaviour
     /// <summary>
     /// スキルを使用する
     /// </summary>
-    public void PlaySkill(SkillBase skill)
+    public void PlayCard(CardData card)
     {
-        _useSkill = skill;
+        _useSkill = card._skill;
 
         //アニメーションの再生
 
         //ダメージ処理
-
+        Debug.Log(" かず" + _enemyMonsterPositionList[0]);
+        DamageView damageView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
+        damageView.Setup(10, "", Color.white, _cameraComponent);
+        damageView.transform.position += new Vector3(0, 1, -10);
     }
 
     public void TurnEnd()
     {
-    
+
     }
 
     /// <summary>
