@@ -629,14 +629,14 @@ public class CardBattleManager : MonoBehaviour
             case BattleMonsterTag.CharactorTag.Player1:
                 if (_playerHpList[0])
                 {
-                    if (_playerHpList[0].isActive)
+                    if (_playerHpList[0].IsActive)
                     {
                         _playerHpList[0].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
                     }
                 }
                 if (_playerHpListInWorld[0])
                 {
-                    if (_playerHpListInWorld[0].isActive)
+                    if (_playerHpListInWorld[0].IsActive)
                     {
                         _playerHpListInWorld[0].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
                     }
@@ -648,7 +648,7 @@ public class CardBattleManager : MonoBehaviour
                 {
                     if (_playerHpList[1])
                     {
-                        if (_playerHpList[1].isActive)
+                        if (_playerHpList[1].IsActive)
                         {
                             _playerHpList[1].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
                         }
@@ -656,7 +656,7 @@ public class CardBattleManager : MonoBehaviour
                 }
                 if (_playerHpListInWorld[1])
                 {
-                    if (_playerHpListInWorld[1].isActive)
+                    if (_playerHpListInWorld[1].IsActive)
                     {
                         _playerHpListInWorld[1].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
                     }
@@ -668,7 +668,7 @@ public class CardBattleManager : MonoBehaviour
                 {
                     if (_playerHpList[2])
                     {
-                        if (_playerHpList[2].isActive)
+                        if (_playerHpList[2].IsActive)
                         {
                             _playerHpList[2].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
                         }
@@ -676,7 +676,7 @@ public class CardBattleManager : MonoBehaviour
                 }
                 if (_playerHpListInWorld[2])
                 {
-                    if (_playerHpListInWorld[2].isActive)
+                    if (_playerHpListInWorld[2].IsActive)
                     {
                         _playerHpListInWorld[2].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
                     }
@@ -710,7 +710,7 @@ public class CardBattleManager : MonoBehaviour
             sequence.Append(_damageView.transform.DOJump((damageGeneratePos + new Vector3(0, 0.05f, 0)), 1, 1, 0.3f).SetEase(Ease.InBounce))
                     .Append(_damageView.transform.DOMove(_battleCamera.transform.position, 20f));
 
-            _damageView.isActive = true;
+            _damageView.IsActive = true;
 
         }
 
@@ -926,14 +926,18 @@ public class CardBattleManager : MonoBehaviour
     public void PlayCard(CardData card)
     {
         _useSkill = card._skill;
+        int damage = 10;
+        _enemyMonsterBaseList[0].TakeDamage(damage);
 
         //アニメーションの再生
 
         //ダメージ処理
-        Debug.Log(" かず" + _enemyMonsterPositionList[0]);
         DamageView damageView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
-        damageView.Setup(10, "", Color.white, _cameraComponent);
+        damageView.Setup(damage, "", Color.white, _cameraComponent);
         damageView.transform.position += new Vector3(0, 1, -10);
+        damageView.Activate();
+
+        _enemyHpListInWorld[0].UpdateStatus(_enemyMonsterBaseList[0].GetCurrentHPValue());
     }
 
     public void TurnEnd()

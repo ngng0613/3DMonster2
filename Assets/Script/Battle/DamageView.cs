@@ -23,18 +23,19 @@ public class DamageView : MonoBehaviour
     {
         if (IsActive == true)
         {
-            DOTween.To(() => _displayValue, (x) => _displayValue = x, _damageValue, _tweenTime).SetEase(Ease.InSine);
+            DOTween.To(() => _displayValue, (x) => { _displayValue = x; Debug.Log(x); }, _damageValue, _tweenTime).SetEase(Ease.InSine);
             if (_damageMessage != "")
             {
+                
                 _text.text = _damageMessage + "\n" + _displayValue;
+              
             }
             else
             {
                 _text.text = _displayValue + "";
             }
-
         }
-
+      
     }
 
     public void Setup(int damageValue, string damageMessage, Color textColor, Camera camera)
@@ -57,6 +58,33 @@ public class DamageView : MonoBehaviour
         }
         _text.transform.localScale = Vector3.one;
 
+    }
+
+    public void Activate()
+    {
+        DOTween.To(() => _displayValue, (x) => 
+        {
+            _displayValue = x;
+            if (_damageMessage != "")
+            {
+                _text.text = _damageMessage + "\n" + _displayValue;
+
+            }
+            else
+            {
+                _text.text = _displayValue + "";
+            }
+            
+
+        }, _damageValue, _tweenTime).SetEase(Ease.InSine);
+
+        StartCoroutine(WaitForSeconds(1));
+    }
+
+    IEnumerator WaitForSeconds(int x)
+    {
+        yield return new WaitForSeconds(x);
+        Destroy(this.gameObject);
     }
 
 }

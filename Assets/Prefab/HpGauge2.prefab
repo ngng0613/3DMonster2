@@ -220,7 +220,7 @@ MonoBehaviour:
   hpGauge: {fileID: 7326807136744175630}
   elementImage: {fileID: 2522906969651825857}
   cameraComponent: {fileID: 0}
-  setupCompleted: 1
+  setupCompleted: 0
   tweenTime: 1
 --- !u!1 &7326807137264616418
 GameObject:

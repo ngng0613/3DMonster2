@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class HpGauge : MonoBehaviour
 {
-    public bool isActive { get; set; } = true;
-    [SerializeField] Text nameText;
-    [SerializeField] Image hpGauge;
-    [SerializeField] Image elementImage;
+    public bool IsActive { get; set; } = true;
+    [SerializeField] TextMeshProUGUI _nameText;
+    [SerializeField] Image _hpGauge;
+    [SerializeField] Image _elementImage;
 
-    string monsterName = "";
-    int maxHp = 0;
-    int currentHp = 0;
-    float displayHp = 0;
-    [SerializeField] Camera cameraComponent;
+    string _monsterName = "";
+    int _maxHp = 0;
+    int _currentHp = 0;
+    float _displayHp = 0;
+    [SerializeField] Camera _cameraComponent;
 
-    [SerializeField] bool setupCompleted = false;
-    [SerializeField] float tweenTime = 1.0f;
+    [SerializeField] bool _setupCompleted = false;
+    [SerializeField] float _tweenTime = 1.0f;
 
     private void Update()
     {
-        if (!setupCompleted)
+        if (!_setupCompleted)
         {
             return;
         }
-        hpGauge.transform.localScale = new Vector3(displayHp / maxHp, 1, 1);
-        if (cameraComponent != null)
+        _hpGauge.transform.localScale = new Vector3(_displayHp / _maxHp, 1, 1);
+        if (_cameraComponent != null)
         {
-            this.transform.rotation = cameraComponent.transform.rotation;
+            this.transform.rotation = _cameraComponent.transform.rotation;
         }
 
     }
@@ -37,23 +38,23 @@ public class HpGauge : MonoBehaviour
 
     public void Setup(string monsterName, int maxHp, int currentHp, Camera cameraComponent, Sprite elementIcon)
     {
-        this.monsterName = monsterName;
-        this.maxHp = maxHp;
-        this.currentHp = currentHp;
-        displayHp = currentHp;
+        this._monsterName = monsterName;
+        this._maxHp = maxHp;
+        this._currentHp = currentHp;
+        _displayHp = currentHp;
 
-        this.cameraComponent = cameraComponent;
-        elementImage.sprite = elementIcon;
-        UpdateStatus(this.currentHp);
-        setupCompleted = true;
+        this._cameraComponent = cameraComponent;
+        _elementImage.sprite = elementIcon;
+        UpdateStatus(this._currentHp);
+        _setupCompleted = true;
     }
 
     public void UpdateStatus(int currentHp)
     {
-        this.currentHp = currentHp;
+        this._currentHp = currentHp;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => this.displayHp, (x) => this.displayHp = x, this.currentHp, tweenTime));
+        sequence.Append(DOTween.To(() => this._displayHp, (x) => this._displayHp = x, this._currentHp, _tweenTime));
 
     }
 
