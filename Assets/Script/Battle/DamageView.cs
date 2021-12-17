@@ -8,29 +8,29 @@ using TMPro;
 
 public class DamageView : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI text;
-    [SerializeField] Canvas canvas;
-    [SerializeField] Camera useCamera;
-    int damageValue = 100;
-    int displayValue;
-    [SerializeField] float tweenTime = 0.3f;
-    string damageMessage = "";
+    [SerializeField] TextMeshProUGUI _text;
+    [SerializeField] Canvas _canvas;
+    [SerializeField] Camera _useCamera;
+    int _damageValue = 100;
+    int _displayValue;
+    [SerializeField] float _tweenTime = 0.3f;
+    string _damageMessage = "";
 
-    public bool isActive { get; set; } = false;
+    public bool IsActive { get; set; } = false;
 
     // Update is called once per frame
     void Update()
     {
-        if (isActive == true)
+        if (IsActive == true)
         {
-            DOTween.To(() => displayValue, (x) => displayValue = x, damageValue, tweenTime).SetEase(Ease.InSine);
-            if (damageMessage != "")
+            DOTween.To(() => _displayValue, (x) => _displayValue = x, _damageValue, _tweenTime).SetEase(Ease.InSine);
+            if (_damageMessage != "")
             {
-                text.text = damageMessage + "\n" + displayValue;
+                _text.text = _damageMessage + "\n" + _displayValue;
             }
             else
             {
-                text.text = displayValue + "";
+                _text.text = _displayValue + "";
             }
 
         }
@@ -40,22 +40,22 @@ public class DamageView : MonoBehaviour
     public void Setup(int damageValue, string damageMessage, Color textColor, Camera camera)
     {
 
-        useCamera = camera;
-        canvas.worldCamera = useCamera;
-        this.damageValue = damageValue;
+        _useCamera = camera;
+        _canvas.worldCamera = _useCamera;
+        this._damageValue = damageValue;
         if (damageMessage != "")
         {
-            this.damageMessage = damageMessage;
-            text.text = damageMessage + "\n" + 0;
-            text.color = textColor;
+            this._damageMessage = damageMessage;
+            _text.text = damageMessage + "\n" + 0;
+            _text.color = textColor;
         }
         else
         {
             damageMessage = "";
-            text.text = 0 + "";
-            text.color = textColor;
+            _text.text = 0 + "";
+            _text.color = textColor;
         }
-        text.transform.localScale = Vector3.one;
+        _text.transform.localScale = Vector3.one;
 
     }
 
