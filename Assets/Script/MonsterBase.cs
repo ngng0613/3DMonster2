@@ -7,24 +7,18 @@ public class MonsterBase : MonoBehaviour
 {
     //ID
     [SerializeField] int _id;
-
     //個別ID
     [SerializeField] float _individualID;
-
     //名前
     [SerializeField] string _monsterName;
     //ニックネーム
     [SerializeField] string _nickName;
-
     //イメージ
     [SerializeField] Sprite _image;
-
     //属性
     [SerializeField] Element.BattleElement _element;
-
     //パッシブスキル
     [SerializeField] PassiveSkillBase _pSkill;
-
     //最大HP
     [SerializeField] int _maxHp;
     //現在のHP
@@ -33,43 +27,6 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] int _maxMp;
     //現在のMP
     [SerializeField] int _currentMp;
-
-    //攻撃力
-    [SerializeField] int _attack;
-    //防御力
-    [SerializeField] int _defence;
-    //特殊攻撃力
-    [SerializeField] int _spAttack;
-    //特殊防御力
-    [SerializeField] int _spDefence;
-    //素早さ
-    [SerializeField] int _speed;
-    //運
-    [SerializeField] int _luck;
-    //命中率
-    [SerializeField] int _hit;
-    //回避率
-    [SerializeField] int _avoidance;
-
-    //LVUP時上昇最大HP
-    [SerializeField] int _maxHpLevelUp;
-    //LVUP時上昇最大MP
-    [SerializeField] int _maxMpLevelUp;
-
-    //LVUP時上昇攻撃力
-    [SerializeField] int _attackLevelUp;
-    //LVUP時上昇防御力
-    [SerializeField] int _defenceLevelUp;
-    //LVUP時上昇特殊攻撃力
-    [SerializeField] int _spAttackLevelUp;
-    //LVUP時上昇特殊防御力
-    [SerializeField] int _spDefenceLevelUp;
-    //LVUP時上昇素早さ
-    [SerializeField] int _speedLevelUp;
-    //LVUP時上昇運
-    [SerializeField] int _luckLevelUp;
-    //攻撃時ディレイ
-    public float _attackDelay = 1;
 
     //ベースのPrefab
     [SerializeField] GameObject _myPrefab;
@@ -81,10 +38,8 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] int _level;
     //経験値
     [SerializeField] int _exp;
-
     //次のレベルまでの経験値
     [SerializeField] int _expToNextLevel;
-
     //倒したときのもらえる経験値
     [SerializeField] int _getExp;
     //倒したときにもらえるお金
@@ -99,37 +54,26 @@ public class MonsterBase : MonoBehaviour
 
     public MonsterState status = MonsterState.Normal;
 
-
-    //所持アイテム ※あとで
-    //Item item;
-
-    //イベント当たり判定
-    [SerializeField] bool isBattle = false;
-    [SerializeField] int eventCollision;
-
     //戦闘時のキャラ番号
     public BattleMonsterTag.CharactorTag charactorTag;
-    //タイムライン戦闘の際に使うクールタイム
-    public float coolTime = 0;
+
     //戦闘の時のAI
-    public CommandAI commandAi;
+    public CommandAI _commandAi;
 
     public delegate void D();
     public D AfterAction;
     public D AfterDead;
 
-    [SerializeField] bool checkTheEndOfAnimation = false;
+    [SerializeField] bool _checkTheEndOfAnimation = false;
 
-    [SerializeField] Animator animator;
+    [SerializeField] Animator _animator;
 
-    bool acted = false;
-    public string actionName;
+    bool _acted = false;
+    public string ActionName;
 
-    [SerializeField] bool checkTheEndOfDeadAnimation = false;
+    [SerializeField] bool _checkTheEndOfDeadAnimation = false;
 
-    [SerializeField] MonsterManager monsterManager;
-
-    [SerializeField] List<SkillBase> skillList;
+    [SerializeField] List<CardData> cardDatas;
 
 
     /// <summary>
@@ -160,23 +104,23 @@ public class MonsterBase : MonoBehaviour
 
     public void Start()
     {
-        commandAi = new CommandAI();
+        _commandAi = new CommandAI();
     }
 
     public void Update()
     {
         //アニメーションが終了しているか確認する
-        if (checkTheEndOfAnimation)
+        if (_checkTheEndOfAnimation)
         {
             //アクションをしていないか確認
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName(actionName))
+            if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(ActionName))
             {
                 //アクション済みなら
-                if (acted)
+                if (_acted)
                 {
                     //アクションを既に行っていたなら、アクション終了して通知
-                    checkTheEndOfAnimation = false;
-                    acted = false;
+                    _checkTheEndOfAnimation = false;
+                    _acted = false;
                     //アイドル状態に戻す
                     MotionIdle();
                 
@@ -187,18 +131,18 @@ public class MonsterBase : MonoBehaviour
             else
             {
                 //アクション中
-                acted = true;
+                _acted = true;
             }
 
         }
-        if (checkTheEndOfDeadAnimation)
+        if (_checkTheEndOfDeadAnimation)
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {
 
-                acted = false;
+                _acted = false;
                 AfterDead.Invoke();
-                checkTheEndOfDeadAnimation = false;
+                _checkTheEndOfDeadAnimation = false;
             }
         }
 
@@ -206,11 +150,11 @@ public class MonsterBase : MonoBehaviour
 
     public SkillBase ThinkOfASkill()
     {
-        if (commandAi)
+        if (_commandAi)
         {
             Debug.Log("hey");
         }
-        return commandAi.ChoiceSkill(skillList);
+        return _commandAi.ChoiceSkill(skillList);
     }
 
     /// <summary>
@@ -267,55 +211,55 @@ public class MonsterBase : MonoBehaviour
 
     public void MotionIdle()
     {
-        animator.SetInteger("BattleMode", 0);
-        this.actionName = "IdleNormal";
+        _animator.SetInteger("BattleMode", 0);
+        this.ActionName = "IdleNormal";
     }
 
     public void MotionMove()
     {
-        animator.SetInteger("BattleMode", 2);
-        this.actionName = "WalkFWD";
+        _animator.SetInteger("BattleMode", 2);
+        this.ActionName = "WalkFWD";
     }
 
     public void MotionAttack()
     {
-        animator.SetInteger("BattleMode", 10);
-        this.actionName = "Attack01";
+        _animator.SetInteger("BattleMode", 10);
+        this.ActionName = "Attack01";
     }
 
     public void MotionTakeDamege()
     {
-        animator.SetInteger("BattleMode", 50);
-        this.actionName = "TakeDamage";
+        _animator.SetInteger("BattleMode", 50);
+        this.ActionName = "TakeDamage";
     }
 
     public void MotionVictory()
     {
-        animator.SetInteger("BattleMode", 1000);
-        this.actionName = "Victory";
+        _animator.SetInteger("BattleMode", 1000);
+        this.ActionName = "Victory";
     }
 
     public void MotionDead()
     {
-        animator.SetInteger("BattleMode", 999);
-        this.actionName = "Die";
+        _animator.SetInteger("BattleMode", 999);
+        this.ActionName = "Die";
     }
 
     public void CheckEndOfAnimation()
     {
-        checkTheEndOfAnimation = true;
+        _checkTheEndOfAnimation = true;
     }
 
     public void CheckEndOfAnimation(string actionName)
     {
-        checkTheEndOfAnimation = true;
-        this.actionName = actionName;
+        _checkTheEndOfAnimation = true;
+        this.ActionName = actionName;
 
     }
 
     public void CheckEndOfDeadAnimation()
     {
-        checkTheEndOfDeadAnimation = true;
+        _checkTheEndOfDeadAnimation = true;
     }
 
     public PassiveSkillBase GetPassiveSkill()
