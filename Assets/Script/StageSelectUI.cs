@@ -145,7 +145,6 @@ public class StageSelectUI : MonoBehaviour
 
     void StartBattle()
     {
-        BattleManager2.stageData = stageDataList[listTopIndex + select];
         Debug.Log("StartBattle!!");
         if (BattleStartFunction != null)
         {

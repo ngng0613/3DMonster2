@@ -67,11 +67,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] SEManager _seManager;
     [SerializeField] TargetView _targetView;
     [SerializeField] EffectManager _effectManager;
-    [SerializeField] TurnManager _turnManager;
-    [SerializeField] TimelineManager _timelineManager;
-    MonsterSort _monsterSort;
     [SerializeField] SkillView _skillView;
-    [SerializeField] DamageManager _damageManager;
     [SerializeField] HpGauge _enemyStatusPrefab;
     [SerializeField] List<HpGauge> _playerHpList = new List<HpGauge>();
     [SerializeField] List<HpGauge> _playerHpListInWorld = new List<HpGauge>();
@@ -114,7 +110,6 @@ public class CardBattleManager : MonoBehaviour
 
         //初期化
         _turnOrderListMonsterBase = new List<MonsterBase>();
-        _monsterSort = new MonsterSort();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
 
         //カード使用時の処理の追加
@@ -178,47 +173,7 @@ public class CardBattleManager : MonoBehaviour
         PhaseStart();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (_phase == Phase.Wait)
-        {
-            if (_attackWaitingList == null)
-            {
-                _attackWaitingList = _timelineManager.UpdateTimeline(true);
-            }
-            if (_attackWaitingList != null)
-            {
-                if (_attackWaitingList.Count > 1) //2体より多い場合はソートする
-                {
-                    _monsterSort.turnListMonsterBase = _attackWaitingList;
-                    _monsterSort.QuickSort(0, _attackWaitingList.Count - 1);
-                    _attackWaitingList = _monsterSort.turnListMonsterBase;
-                }
-                if (_attackWaitingList.Count >= 1)
-                {
-                    _thisTurnActorMonsterBase = _attackWaitingList[0];
-                    _thisTurnActor = _attackWaitingList[0].charactorTag;
-                    _timelineManager.MoveImageToFront(_thisTurnActorMonsterBase);
-
-                    if ((int)_attackWaitingList[0].charactorTag >= 10) //敵ならば10番以降を使用しているためこれで判別する。
-                    {
-                        PhaseAI(_attackWaitingList[0]);
-                    }
-                    else //味方ならばコマンド選択の開始
-                    {
-                        _thisTurnActor = _attackWaitingList[0].charactorTag;
-
-                    }
-                }
-                else
-                {
-                    _attackWaitingList = null;
-                }
-            }
-        }
-    }
-
+ 
     public void WriteMessage(string message)
     {
         _battleMessage.UpdateMessage(message);
@@ -266,9 +221,6 @@ public class CardBattleManager : MonoBehaviour
         List<MonsterBase> allMonsterBaseList = new List<MonsterBase>();
         allMonsterBaseList.AddRange(_playerMonsterBaseList);
         allMonsterBaseList.AddRange(_enemyMonsterBaseList);
-
-        _timelineManager.Setup(allMonsterBaseList);
-
 
         //敵全体をカメラで映す演出
         //battleCamera.AllEnemyView(() => PhaseEnemyView());
@@ -345,7 +297,6 @@ public class CardBattleManager : MonoBehaviour
         }
 
         int actorNumber = (int)_thisTurnActor;
-        _skillView.Setup(_thisTurnActorMonsterBase.GetSkillList());
 
         _skillView.Display(true);
         _skillView.SetInput();
@@ -369,403 +320,10 @@ public class CardBattleManager : MonoBehaviour
 
     void PhaseAI(MonsterBase monster)
     {
-        _phase = Phase.Enemy;
-        //モンスターに使用スキルを考えさせる
-        _useSkill = monster.ThinkOfASkill();
-        _thisTurnActor = monster.charactorTag;
-
-        if ((int)monster.charactorTag >= 10) //敵側のモンスターなら
-        {
-            int count = _playerMonsterBaseList.Count * 100;
-            _turnDisplay.DisplayImage(TurnDisplay.DisplayPattern.EnemyTurn);
-            int targetNumber = UnityEngine.Random.Range(0, _playerMonsterBaseList.Count);
-            while (true)
-            {
-                if (CheckIfAlived(_playerMonsterBaseList[targetNumber]) == true)
-                {
-                    _thisTurnTarget = (BattleMonsterTag.CharactorTag)targetNumber;
-                    switch (_thisTurnTarget)
-                    {
-                        case BattleMonsterTag.CharactorTag.Player1:
-                            _thisTurnTargetMonsterBase = _playerMonsterBaseList[0];
-                            break;
-                        case BattleMonsterTag.CharactorTag.Player2:
-                            _thisTurnTargetMonsterBase = _playerMonsterBaseList[1];
-                            break;
-                        case BattleMonsterTag.CharactorTag.Player3:
-                            _thisTurnTargetMonsterBase = _playerMonsterBaseList[2];
-                            break;
-                        case BattleMonsterTag.CharactorTag.Enemy1:
-                            break;
-                        case BattleMonsterTag.CharactorTag.Enemy2:
-                            break;
-                        case BattleMonsterTag.CharactorTag.Enemy3:
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                }
-                count--;
-                targetNumber++;
-                if (targetNumber >= _playerMonsterBaseList.Count)
-                {
-                    targetNumber = 0;
-                }
-            }
-
-            PhaseAttack1();
-        }
-    }
-
-    void PhaseAttack1()
-    {
-        InputManager.ResetInputSettings();
-        int actorNumber = (int)_thisTurnActor;
-
-        WriteMessage(_useSkill.GetName());
-
-        if (_useSkill.GetSkillType() == SkillBase.SkillType.Physical || _useSkill.GetSkillType() == SkillBase.SkillType.Magic)
-        {
-            if (actorNumber < 10)
-            {
-                if (actorNumber == 0)
-                {
-                    _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
-                }
-                else if (actorNumber == 1)
-                {
-                    _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
-                }
-                else if (actorNumber == 2)
-                {
-                    _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
-                }
-                _playerMonsterBaseList[actorNumber].AfterAction = PhaseAttack2;
-                _playerMonsterBaseList[actorNumber].CheckEndOfAnimation();
-                _playerMonsterBaseList[actorNumber].MotionAttack();
-
-            }
-            else if (actorNumber >= 10)
-            {
-                if (actorNumber == 10)
-                {
-                    _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy1);
-                }
-                else if (actorNumber == 11)
-                {
-                    _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy2);
-                }
-                else if (actorNumber == 12)
-                {
-                    _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy3);
-                }
-
-                _enemyMonsterBaseList[actorNumber - 10].AfterAction = PhaseAttack2;
-                _enemyMonsterBaseList[actorNumber - 10].CheckEndOfAnimation();
-                _enemyMonsterBaseList[actorNumber - 10].MotionAttack();
-            }
-        }
-        else
-        {
-            PhaseAttack2();
-        }
 
     }
 
-    /// <summary>
-    /// 被ダメキャラの方向を向いて、エフェクトを再生する
-    /// </summary>
-    void PhaseAttack2()
-    {
-        InputManager.ResetInputSettings();
-        Vector3 damageGeneratePos = new Vector3();
-
-        //配列を参照する際のターゲットの番号
-        int targetNumber = (int)_thisTurnTarget;
-        //エフェクト再生位置を表す変数
-        Vector3 effectProducePos = new Vector3();
-        //味方か敵かどちらの側に再生するかを表す変数(暫定的に敵側で初期化)
-        EffectManager.DirectionToProduce direction = EffectManager.DirectionToProduce.EnemySide;
-        if (targetNumber < 10)
-        {
-            if (targetNumber == 0)
-            {
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
-            }
-            else if (targetNumber == 1)
-            {
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
-            }
-            else if (targetNumber == 2)
-            {
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
-            }
-
-            if (_useSkill.GetSkillType() == SkillBase.SkillType.Physical || _useSkill.GetSkillType() == SkillBase.SkillType.Magic)
-            {
-                _playerMonsterBaseList[targetNumber].MotionTakeDamege();
-            }
-            else
-            {
-                _playerMonsterBaseList[targetNumber].MotionAttack();
-                if (_useSkill.GetSkillType() == SkillBase.SkillType.Guard) //ガード・防御時処理
-                {
-                    _playerMonsterBaseList[targetNumber].status = MonsterBase.MonsterState.Guard;
-                }
-                if (_useSkill.GetSkillType() == SkillBase.SkillType.Charge) //チャージ時処理
-                {
-                    _playerMonsterBaseList[targetNumber].status = MonsterBase.MonsterState.Charge;
-                }
-            }
-
-            _playerMonsterBaseList[targetNumber].AfterAction = PhaseAfterAttack;
-            _playerMonsterBaseList[targetNumber].CheckEndOfAnimation();
-            effectProducePos = _playerMonsterBaseList[targetNumber].transform.position;
-            effectProducePos.z += 1.0f;
-            direction = EffectManager.DirectionToProduce.PlayerSide;
-
-            effectProducePos = _playerMonsterBaseList[targetNumber].transform.position;
-
-            damageGeneratePos = _playerMonsterBaseList[targetNumber].transform.position;
-            damageGeneratePos += new Vector3(1f, 0, 1.5f);
-
-        }
-        else if (targetNumber >= 10)
-        {
-            if (targetNumber == 10)
-            {
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy1);
-            }
-            else if (targetNumber == 11)
-            {
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy2);
-            }
-            else if (targetNumber == 12)
-            {
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy3);
-            }
-            if (_useSkill.GetSkillType() == SkillBase.SkillType.Physical || _useSkill.GetSkillType() == SkillBase.SkillType.Magic)
-            {
-                _enemyMonsterBaseList[targetNumber - 10].MotionTakeDamege();
-            }
-            else
-            {
-                _enemyMonsterBaseList[targetNumber - 10].MotionAttack();
-            }
-
-            _enemyMonsterBaseList[targetNumber - 10].AfterAction = PhaseAfterAttack;
-            _enemyMonsterBaseList[targetNumber - 10].CheckEndOfAnimation();
-            effectProducePos = _enemyMonsterBaseList[targetNumber - 10].transform.position;
-            effectProducePos.z -= 1.0f;
-            direction = EffectManager.DirectionToProduce.EnemySide;
-
-            damageGeneratePos = _enemyMonsterBaseList[targetNumber - 10].transform.position;
-            damageGeneratePos += new Vector3(1f, 0, -1.5f);
-        }
-        _effectManager.ProduceEffect(_useSkill.GetEffect(), effectProducePos, direction);
-
-
-        if (_useSkill.GetDamage() > 0)
-        {
-            //パッシブスキルの整理
-            List<PassiveSkillBase> pSkillListPlayerSide = new List<PassiveSkillBase>();
-            List<PassiveSkillBase> pSkillListEnemySide = new List<PassiveSkillBase>();
-            for (int i = 0; i < _playerMonsterBaseList.Count; i++)
-            {
-                if (CheckIfAlived(_playerMonsterBaseList[0]) == true)
-                {
-                    pSkillListPlayerSide.Add(_playerMonsterBaseList[i].GetPassiveSkill());
-                }
-                else
-                {
-                    pSkillListPlayerSide.Add(null);
-                }
-            }
-            for (int i = 0; i < _enemyMonsterBaseList.Count; i++)
-            {
-                if (CheckIfAlived(_enemyMonsterBaseList[0]) == true)
-                {
-                    pSkillListEnemySide.Add(_enemyMonsterBaseList[i].GetPassiveSkill());
-                }
-                else
-                {
-                    pSkillListEnemySide.Add(null);
-                }
-            }
-
-
-            //ダメージ計算とHP更新
-            int damage = _damageManager.DamageCalculator(_thisTurnActorMonsterBase, _thisTurnTargetMonsterBase, _useSkill, pSkillListPlayerSide, pSkillListEnemySide);
-
-            _thisTurnTargetMonsterBase.TakeDamage(damage);
-
-            //ダメージ表示(ガードの場合は表示しない)
-            if (_useSkill.GetSkillType() != SkillBase.SkillType.Guard)
-            {
-                string damageMessage = "";
-                Color damageViewColor = Color.white;
-                _damageView = Instantiate(_damageViewPrefab);
-                if (Element.CheckAdvantage(_useSkill.GetElement(), _thisTurnTargetMonsterBase.GetElement()) > 1)
-                {
-                    damageViewColor = _damageWeakColor;
-                }
-                else if (Element.CheckAdvantage(_useSkill.GetElement(), _thisTurnTargetMonsterBase.GetElement()) < 1)
-                {
-                    damageViewColor = _damageResistColor;
-                }
-                _damageView.Setup(damage, damageMessage, damageViewColor, _cameraComponent);
-            }
-        }
-
-        //味方ステータス表示の更新
-        switch (_thisTurnTarget)
-        {
-            case BattleMonsterTag.CharactorTag.Player1:
-                if (_playerHpList[0])
-                {
-                    if (_playerHpList[0].IsActive)
-                    {
-                        _playerHpList[0].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                    }
-                }
-                if (_playerHpListInWorld[0])
-                {
-                    if (_playerHpListInWorld[0].IsActive)
-                    {
-                        _playerHpListInWorld[0].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                    }
-                }
-
-                break;
-            case BattleMonsterTag.CharactorTag.Player2:
-                if (_playerHpList.Count >= 2)
-                {
-                    if (_playerHpList[1])
-                    {
-                        if (_playerHpList[1].IsActive)
-                        {
-                            _playerHpList[1].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                        }
-                    }
-                }
-                if (_playerHpListInWorld[1])
-                {
-                    if (_playerHpListInWorld[1].IsActive)
-                    {
-                        _playerHpListInWorld[1].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                    }
-                }
-
-                break;
-            case BattleMonsterTag.CharactorTag.Player3:
-                if (_playerHpList.Count >= 3)
-                {
-                    if (_playerHpList[2])
-                    {
-                        if (_playerHpList[2].IsActive)
-                        {
-                            _playerHpList[2].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                        }
-                    }
-                }
-                if (_playerHpListInWorld[2])
-                {
-                    if (_playerHpListInWorld[2].IsActive)
-                    {
-                        _playerHpListInWorld[2].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                    }
-                }
-
-                break;
-
-
-            case BattleMonsterTag.CharactorTag.Enemy1:
-                _enemyHpListInWorld[0].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy2:
-                _enemyHpListInWorld[1].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy3:
-                _enemyHpListInWorld[2].UpdateStatus(_thisTurnTargetMonsterBase.GetCurrentHPValue());
-                break;
-            default:
-                break;
-        }
-
-        if (_useSkill.GetDamage() > 0)
-        {
-            //高さ調整
-            damageGeneratePos += new Vector3(0, 1f, 0);
-            _damageView.transform.position = damageGeneratePos;
-            //カメラの方向を向く    
-            //damageView.transform.LookAt(battleCamera.transform);
-            _damageView.transform.rotation = _battleCamera.transform.rotation;
-            sequence = DOTween.Sequence();
-            sequence.Append(_damageView.transform.DOJump((damageGeneratePos + new Vector3(0, 0.05f, 0)), 1, 1, 0.3f).SetEase(Ease.InBounce))
-                    .Append(_damageView.transform.DOMove(_battleCamera.transform.position, 20f));
-
-            _damageView.IsActive = true;
-
-        }
-
-    }
-
-
-
-    public void PhaseAfterAttack()
-    {
-        _phase = Phase.AfterAttack;
-
-        _battleMessage.CloseMessage();
-        _effectManager.DestroyObject();
-        _turnDisplay.DisplayImage(TurnDisplay.DisplayPattern.None);
-        sequence.Kill();
-        if (_damageView)
-        {
-            Destroy(_damageView.gameObject);
-        }
-        Debug.Log("使用スキル：" + _useSkill);
-        if (_thisTurnActorMonsterBase.status == MonsterBase.MonsterState.Charge && _useSkill.GetSkillType() != SkillBase.SkillType.Charge)
-        {
-            Debug.Log("チャージ解除");
-            _thisTurnActorMonsterBase.status = MonsterBase.MonsterState.Normal;
-        }
-
-
-
-        if ((int)_thisTurnActor < 10)
-        {
-            _playerMonsterBaseList[(int)_thisTurnActor].coolTime = _useSkill.GetCoolTime();
-        }
-        else
-        {
-            _enemyMonsterBaseList[((int)_thisTurnActor) - 10].coolTime = _useSkill.GetCoolTime();
-        }
-        _attackWaitingList.RemoveAt(0);
-        _timelineManager.UpdateTimeline(false);
-        if (!CheckIfAlived(_thisTurnTargetMonsterBase))
-        {
-            PhaseDead();
-            return;
-        }
-
-        for (int i = 0; i < _statusListPlayerSide.Length; i++)
-        {
-            _statusListPlayerSide[i].ChangeState(false);
-        }
-
-        if (_attackWaitingList.Count == 0)
-        {
-            _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-            _attackWaitingList = null;
-            _phase = Phase.Wait;
-        }
-        else
-        {
-            _phase = Phase.Wait;
-        }
-    }
+   
 
     public void PhaseDead()
     {
@@ -799,7 +357,6 @@ public class CardBattleManager : MonoBehaviour
 
     public void PhaseDead2()
     {
-        _timelineManager.DeleteMonster(_thisTurnTargetMonsterBase);
         for (int i = 0; i < _attackWaitingList.Count; i++)
         {
             if (_attackWaitingList[i] == _thisTurnTargetMonsterBase)
@@ -814,7 +371,7 @@ public class CardBattleManager : MonoBehaviour
         }
 
         //全滅チェック
-        BattleMonsterTag.CharactorTag targetTag = _thisTurnTargetMonsterBase.charactorTag;
+        BattleMonsterTag.CharactorTag targetTag = _thisTurnTargetMonsterBase.CharactorTag;
         if (targetTag == BattleMonsterTag.CharactorTag.Enemy1 || targetTag == BattleMonsterTag.CharactorTag.Enemy2 || targetTag == BattleMonsterTag.CharactorTag.Enemy3)
         {
             bool allDeadFlag = true;
@@ -953,13 +510,11 @@ public class CardBattleManager : MonoBehaviour
         playerObject.transform.SetParent(playerPos);
         playerObject.transform.localPosition = new Vector3(0, 0, 0);
         playerMonsterBase = playerObject.GetComponent<MonsterBase>();
-        playerMonsterBase.charactorTag = (BattleMonsterTag.CharactorTag)playerNumber;
+        playerMonsterBase.CharactorTag = (BattleMonsterTag.CharactorTag)playerNumber;
         _playerMonsterBaseList[playerNumber] = playerMonsterBase;
 
         //味方ステータスの表示
         HpGauge newHpView = Instantiate(_enemyStatusPrefab);
-        Sprite icon = _iconManager.GetIconImage(playerMonsterBase.GetElement());
-        newHpView.Setup(playerMonsterBase.GetNickname(), playerMonsterBase.GetMaxHPValue(), playerMonsterBase.GetCurrentHPValue(), _cameraComponent, icon);
         newHpView.transform.SetParent(playerPos);
         newHpView.transform.position = playerPos.position + new Vector3(0, 2.5f, 0);
         _playerHpListInWorld.Add(newHpView);
@@ -983,78 +538,13 @@ public class CardBattleManager : MonoBehaviour
         enemyObject.transform.SetParent(enemyPos);
         enemyObject.transform.localPosition = new Vector3(0, 0, 0);
         enemyMonsterBase = enemyObject.GetComponent<MonsterBase>();
-        enemyMonsterBase.charactorTag = (BattleMonsterTag.CharactorTag)enemyNumber + 10;
+        enemyMonsterBase.CharactorTag = (BattleMonsterTag.CharactorTag)enemyNumber + 10;
         _enemyMonsterBaseList[enemyNumber] = enemyMonsterBase;
         //敵ステータスの表示
         HpGauge newHpView = Instantiate(_enemyStatusPrefab);
-        Sprite icon = _iconManager.GetIconImage(enemyMonsterBase.GetElement());
-        newHpView.Setup(enemyMonsterBase.GetNickname(), enemyMonsterBase.GetMaxHPValue(), enemyMonsterBase.GetCurrentHPValue(), _cameraComponent, icon);
         newHpView.transform.SetParent(enemyPos);
         newHpView.transform.position = enemyPos.position + new Vector3(0, 2.5f, 0);
         _enemyHpListInWorld.Add(newHpView);
-    }
-    /// <summary>
-    /// キャラクターが存在しているか、生きているかを確認し、
-    /// 生きているキャラの中で素早さ計算を行う。
-    /// </summary>
-    /// 
-    void CreateTurnOrder()
-    {
-        for (int i = 0; i < _playerMonsterBaseList.Count; i++)
-        {
-            if (_playerMonsterBaseList[i])
-            {
-                if (CheckIfAlived(_playerMonsterBaseList[i]))
-                {
-                    switch (i)
-                    {
-                        case 1:
-                            _playerMonsterBaseList[i].charactorTag = BattleMonsterTag.CharactorTag.Player1;
-                            break;
-
-                        case 2:
-                            _playerMonsterBaseList[i].charactorTag = BattleMonsterTag.CharactorTag.Player2;
-                            break;
-
-                        case 3:
-                            _playerMonsterBaseList[i].charactorTag = BattleMonsterTag.CharactorTag.Player3;
-                            break;
-
-                        default:
-                            break;
-                    }
-                    _turnOrderListMonsterBase.Add(_playerMonsterBaseList[i]);
-                };
-            }
-        }
-        for (int i = 0; i < _enemyMonsterBaseList.Count; i++)
-        {
-            if (_enemyMonsterBaseList[i])
-            {
-                if (CheckIfAlived(_enemyMonsterBaseList[i]))
-                {
-                    switch (i)
-                    {
-                        case 1:
-                            _enemyMonsterBaseList[i].charactorTag = BattleMonsterTag.CharactorTag.Enemy1;
-                            break;
-
-                        case 2:
-                            _enemyMonsterBaseList[i].charactorTag = BattleMonsterTag.CharactorTag.Enemy2;
-                            break;
-
-                        case 3:
-                            _enemyMonsterBaseList[i].charactorTag = BattleMonsterTag.CharactorTag.Enemy3;
-                            break;
-
-                        default:
-                            break;
-                    }
-                    _turnOrderListMonsterBase.Add(_enemyMonsterBaseList[i]);
-                };
-            }
-        }
-        _turnManager.CreateTurn(_turnOrderListMonsterBase);
     }
 
     /// <summary>
@@ -1085,7 +575,6 @@ public class CardBattleManager : MonoBehaviour
         {
             _thisTurnTarget = _thisTurnActor;
             _thisTurnTargetMonsterBase = _thisTurnActorMonsterBase;
-            PhaseAttack1();
             return;
         }
 
@@ -1123,7 +612,6 @@ public class CardBattleManager : MonoBehaviour
                 break;
         }
         _phase = Phase.Attack;
-        PhaseAttack1();
     }
 
     /// <summary>

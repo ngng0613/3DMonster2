@@ -9,8 +9,11 @@ public class Player : MonoBehaviour
     [SerializeField] float _moveSpeed = 3.0f;
     [SerializeField] bool _walkEffect = default;
     [SerializeField] FloorEffectGenerator _effectGenerator;
+    [SerializeField] List<PassiveSkillBase> _passiveSkillList;
 
     public static bool CanMove = true;
+
+    public List<PassiveSkillBase> PassiveSkillList { get => _passiveSkillList; set => _passiveSkillList = value; }
 
     private void Start()
     {

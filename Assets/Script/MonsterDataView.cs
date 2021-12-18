@@ -36,34 +36,11 @@ public class MonsterDataView : MonoBehaviour
 
     public IconManager IconManager;
 
-    public void DisPlayStatusView(MonsterBase monster)
-    {
-        _statusView.SetActive(true);
-        _passiveSkillView.SetActive(false);
-
-
-        _viewNameText.text = monster.GetNickname();
-        _viewImage.sprite = monster.GetImage();
-        _viewIcon.sprite = IconManager.GetIconImage(monster.GetElement());
-        _hpValue.text = monster.GetMaxHPValue().ToString();
-        _hpGraph.transform.localScale = new Vector3((float)monster.GetMaxHPValue() / (_statusMaxValue * 2), 1, 1);
-        _attackValue.text = monster.GetAttackValue().ToString();
-        _attackGraph.transform.localScale = new Vector3((float)monster.GetAttackValue() / _statusMaxValue, 1, 1);
-        _defenceValue.text = monster.GetDefenceValue().ToString();
-        _defenceGraph.transform.localScale = new Vector3((float)monster.GetDefenceValue() / _statusMaxValue, 1, 1);
-        _speedValue.text = monster.GetSpeedValue().ToString();
-        _speedGraph.transform.localScale = new Vector3((float)monster.GetSpeedValue() / _statusMaxValue, 1, 1);
-        _spAttackValue.text = monster.GetSpAttackValue().ToString();
-        _spAttackGraph.transform.localScale = new Vector3((float)monster.GetSpAttackValue() / _statusMaxValue, 1, 1);
-        _spDefenceValue.text = monster.GetSpDefenceValue().ToString();
-        _spDefenceGraph.transform.localScale = new Vector3((float)monster.GetSpDefenceValue() / _statusMaxValue, 1, 1);
-    }
 
     public void DisplayPasiveSkill(MonsterBase monster)
     {
         _viewNameText.text = monster.GetNickname();
         _viewImage.sprite = monster.GetImage();
-        _viewIcon.sprite = IconManager.GetIconImage(monster.GetElement());
         _statusView.SetActive(false);
         _passiveSkillView.SetActive(true);
         PassiveSkillBase pSkill = monster.GetPassiveSkill();
