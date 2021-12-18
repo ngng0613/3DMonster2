@@ -40,7 +40,7 @@ public class MonsterDataView : MonoBehaviour
     public void DisplayPasiveSkill(MonsterBase monster)
     {
         _viewNameText.text = monster.GetNickname();
-        _viewImage.sprite = monster.GetImage();
+        _viewImage.sprite = monster.Image;
         _statusView.SetActive(false);
         _passiveSkillView.SetActive(true);
         PassiveSkillBase pSkill = monster.GetPassiveSkill();

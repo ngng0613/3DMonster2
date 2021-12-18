@@ -197,8 +197,6 @@ public class MonsterBase : MonoBehaviour
         this.Id = id;
     }
 
-
-
     public void MotionIdle()
     {
         _animator.SetInteger("BattleMode", 0);
@@ -256,56 +254,6 @@ public class MonsterBase : MonoBehaviour
     {
         return PSkill;
     }
-
-
-
-    public Sprite GetImage()
-    {
-        return Image;
-    }
-
-    public void SetImage(Sprite image)
-    {
-        this.Image = image;
-    }
-
-    public int GetMaxHPValue()
-    {
-        return MaxHp;
-    }
-    public void SetMaxHPValue(int value)
-    {
-
-        MaxHp = value;
-    }
-    public int GetMaxMPValue()
-    {
-        return MaxMp;
-    }
-    public void SetMaxMPValue(int value)
-    {
-        MaxMp = value;
-    }
-
-    public int GetCurrentHPValue()
-    {
-        return CurrentHp;
-    }
-    public void SetCurrentHPValue(int value)
-    {
-
-        CurrentHp = value;
-    }
-
-    public int GetCurrentMPValue()
-    {
-        return CurrentMp;
-    }
-    public void SetCurrentMPValue(int value)
-    {
-        CurrentMp = value;
-    }
-
     public void TakeDamage(int damage)
     {
         CurrentHp -= damage;

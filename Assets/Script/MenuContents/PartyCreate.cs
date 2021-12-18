@@ -178,8 +178,8 @@ public class PartyCreate : MenuContents
 
         for (int i = 0; i < monsterPartyList.Count; i++)
         {
-            partyMonsterImageList[i].sprite = monsterPartyList[i].GetImage();
-            partyMonsterNameList[i].text = monsterPartyList[i].GetNickname();
+            partyMonsterImageList[i].sprite = monsterPartyList[i].Image;
+            partyMonsterNameList[i].text = monsterPartyList[i].MonsterName;
         }
         monsterManager.SetPossessionMonsterList(monsterPartyList);
     }

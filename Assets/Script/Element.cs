@@ -16,7 +16,6 @@ public static class Element
         Green,
     }
 
-
     public static float CheckAdvantage(BattleElement attackElement, BattleElement defenceElement)
     {
         switch (attackElement)

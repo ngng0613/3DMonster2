@@ -137,7 +137,7 @@ public class StageSelectUI : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            enemyImageList[i].sprite = stageDataList[listTopIndex + select].EnemyData[i].GetImage();
+            enemyImageList[i].sprite = stageDataList[listTopIndex + select].EnemyData[i].Image;
         }
 
 

@@ -19,8 +19,8 @@ public class StatusView2 : MonoBehaviour
 
     public void Setup(MonsterBase monster)
     {
-        monsterImage.sprite = monster.GetImage();
-        monsterName.text = monster.GetNickname();
+        monsterImage.sprite = monster.Image;
+        monsterName.text = monster.MonsterName;
     }
 
     /// <summary>

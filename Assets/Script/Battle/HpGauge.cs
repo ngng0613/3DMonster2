@@ -31,39 +31,35 @@ public class HpGauge : MonoBehaviour
         _hpGauge.transform.localScale = new Vector3(_displayHp / _maxHp, 1, 1);
         if (_cameraComponent != null)
         {
-            this.transform.rotation = _cameraComponent.transform.rotation;
+            transform.rotation = _cameraComponent.transform.rotation;
         }
 
     }
 
     public void Setup(string monsterName, int maxHp, int currentHp, Camera cameraComponent, Sprite elementIcon)
     {
-        this._monsterName = monsterName;
+        _monsterName = monsterName;
         _nameText.text = monsterName;
-        this._maxHp = maxHp;
-        this._currentHp = currentHp;
+        _maxHp = maxHp;
+        _currentHp = currentHp;
         _displayHp = currentHp;
 
-        this._cameraComponent = cameraComponent;
+        _cameraComponent = cameraComponent;
         if (elementIcon != null)
         {
             _elementImage.sprite = elementIcon;
         }
-        UpdateStatus(this._currentHp);
+        UpdateStatus(_currentHp);
         _setupCompleted = true;
     }
 
     public void UpdateStatus(int currentHp)
     {
-        this._currentHp = currentHp;
+        _currentHp = currentHp;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => this._displayHp, (x) => { this._displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, this._currentHp, _tweenTime));
+        sequence.Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime));
 
     }
 
-    public void Display(bool onOff)
-    {
-
-    }
 }

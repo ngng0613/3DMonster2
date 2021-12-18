@@ -126,9 +126,7 @@ public class CardBattleManager : MonoBehaviour
         else
         {
             Debug.LogWarning("ステージデータがありませんでした.デバッグ用のステージデータを読み込みます");
-
             StageData = _stageDataForDebug;
-
             //敵情報のセット
             for (int i = 0; i < _enemyMonsterObjectsList.Count; i++)
             {
@@ -136,15 +134,12 @@ public class CardBattleManager : MonoBehaviour
                 {
                     Debug.Log($"1:{_enemyMonsterObjectsList.Count}, 2:{_enemyMonsterPositionList.Count} 3:{_enemyMonsterBaseList.Count}  ");
                     SetEnemyMonsterBase(_enemyMonsterObjectsList[i], i, _enemyMonsterPositionList[i], _enemyMonsterBaseList[i]);
-
-                    //turnOrderListMonsterBase.Add(enemyMonsterBaseList[i]);
                 }
             }
         }
         if (MonsterManager.PartyMonsterList == null)
         {
             monsterManager.SetDebugParty();
-
         }
         _playerMonsterBaseList = MonsterManager.PartyMonsterList;
         //味方情報のセット
@@ -160,11 +155,6 @@ public class CardBattleManager : MonoBehaviour
 
         //デフォルトスキルの設定(通常攻撃に当たるスキル)
         _defaultSkill = _skillManager.GetDefaultSkill();
-
-        //for (int i = 0; i < _statusListPlayerSide.Length; i++)
-        //{
-        //    _statusListPlayerSide[i].Setup(_playerMonsterBaseList[i]);
-        //}
 
         //前の処理に戻るときの、戻り先設定
         _skillView.BackToPhaseForBattleManager = BackToBeforePhase;
@@ -487,7 +477,7 @@ public class CardBattleManager : MonoBehaviour
         damageView.transform.position += new Vector3(0, 1, -10);
         damageView.Activate();
 
-        _enemyHpListInWorld[0].UpdateStatus(_enemyMonsterBaseList[0].GetCurrentHPValue());
+        _enemyHpListInWorld[0].UpdateStatus(_enemyMonsterBaseList[0].CurrentHp);
     }
 
     public void TurnEnd()
@@ -542,8 +532,10 @@ public class CardBattleManager : MonoBehaviour
         _enemyMonsterBaseList[enemyNumber] = enemyMonsterBase;
         //敵ステータスの表示
         HpGauge newHpView = Instantiate(_enemyStatusPrefab);
+        newHpView.Setup(enemyMonsterBase.MonsterName,enemyMonsterBase.MaxHp,enemyMonsterBase.CurrentHp,_cameraComponent,null);
         newHpView.transform.SetParent(enemyPos);
         newHpView.transform.position = enemyPos.position + new Vector3(0, 2.5f, 0);
+        newHpView.transform.localEulerAngles = new Vector3(0,180,0);
         _enemyHpListInWorld.Add(newHpView);
     }
 
@@ -558,7 +550,7 @@ public class CardBattleManager : MonoBehaviour
         {
             return false;
         }
-        if (monster.GetCurrentHPValue() > 0)
+        if (monster.CurrentHp > 0)
         {
             return true;
         }
