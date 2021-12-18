@@ -30,13 +30,7 @@ public class MonsterBase : MonoBehaviour
     //ベースのPrefab
     [SerializeField] GameObject _myPrefab;
     //実体化したオブジェクト
-    public GameObject RealObject;
-    //レベル
-    [SerializeField] int _level;
-    //経験値
-    [SerializeField] int _exp;
-    //次のレベルまでの経験値
-    [SerializeField] int _expToNextLevel;
+    private GameObject realObject;
     //倒したときのもらえる経験値
     [SerializeField] int _getExp;
     //倒したときにもらえるお金
@@ -72,6 +66,20 @@ public class MonsterBase : MonoBehaviour
 
     [SerializeField] List<CardData> _cardDatas;
 
+    public int Id { get => _id; set => _id = value; }
+    public float IndividualID { get => _individualID; set => _individualID = value; }
+    public string MonsterName { get => _monsterName; set => _monsterName = value; }
+    public string NickName { get => _nickName; set => _nickName = value; }
+    public Sprite Image { get => _image; set => _image = value; }
+    public Element.BattleElement Element { get => _element; set => _element = value; }
+    public PassiveSkillBase PSkill { get => _pSkill; set => _pSkill = value; }
+    public int MaxHp { get => _maxHp; set => _maxHp = value; }
+    public int CurrentHp { get => _currentHp; set => _currentHp = value; }
+    public int MaxMp { get => _maxMp; set => _maxMp = value; }
+    public int CurrentMp { get => _currentMp; set => _currentMp = value; }
+    public GameObject MyPrefab { get => _myPrefab; set => _myPrefab = value; }
+    public GameObject RealObject { get => realObject; set => realObject = value; }
+
 
     /// <summary>
     /// モンスター情報の初期設定
@@ -88,10 +96,9 @@ public class MonsterBase : MonoBehaviour
     public MonsterBase(string monsterName, int level,
         int maxHp, int maxMp, int attack, int defence, int spAttack, int spDefence, int speed)
     {
-        this._monsterName = monsterName;
-        this._level = level;
-        this._maxHp = maxHp;
-        this._maxMp = maxMp;
+        this.MonsterName = monsterName;
+        this.MaxHp = maxHp;
+        this.MaxMp = maxMp;
     }
 
     public void Start()
@@ -146,17 +153,17 @@ public class MonsterBase : MonoBehaviour
     /// <returns>ID</returns>
     public int GetId()
     {
-        return _id;
+        return Id;
     }
 
     public void SetId(int id)
     {
-        this._id = id;
+        this.Id = id;
     }
 
     public float GetIndividualID()
     {
-        return _individualID;
+        return IndividualID;
 
     }
 
@@ -166,13 +173,13 @@ public class MonsterBase : MonoBehaviour
     /// <returns></returns>
     public string GetNickname()
     {
-        if (_nickName != "")
+        if (NickName != "")
         {
-            return _nickName;
+            return NickName;
         }
         else
         {
-            return _monsterName;
+            return MonsterName;
         }
     }
 
@@ -182,12 +189,12 @@ public class MonsterBase : MonoBehaviour
     /// <param name="nickName">新たなニックネーム</param>
     public void SetNickName(string nickName)
     {
-        this._nickName = nickName;
+        this.NickName = nickName;
     }
 
     public void SetID(int id)
     {
-        this._id = id;
+        this.Id = id;
     }
 
 
@@ -247,103 +254,64 @@ public class MonsterBase : MonoBehaviour
 
     public PassiveSkillBase GetPassiveSkill()
     {
-        return _pSkill;
+        return PSkill;
     }
 
-    public int Getlevel()
-    {
-        return _level;
-    }
 
-    public void Setlevel(int level)
-    {
-        this._level = level;
-    }
 
     public Sprite GetImage()
     {
-        return _image;
+        return Image;
     }
 
     public void SetImage(Sprite image)
     {
-        this._image = image;
+        this.Image = image;
     }
 
     public int GetMaxHPValue()
     {
-        return _maxHp;
+        return MaxHp;
     }
     public void SetMaxHPValue(int value)
     {
 
-        _maxHp = value;
+        MaxHp = value;
     }
     public int GetMaxMPValue()
     {
-        return _maxMp;
+        return MaxMp;
     }
     public void SetMaxMPValue(int value)
     {
-        _maxMp = value;
+        MaxMp = value;
     }
 
     public int GetCurrentHPValue()
     {
-        return _currentHp;
+        return CurrentHp;
     }
     public void SetCurrentHPValue(int value)
     {
 
-        _currentHp = value;
+        CurrentHp = value;
     }
 
     public int GetCurrentMPValue()
     {
-        return _currentMp;
+        return CurrentMp;
     }
     public void SetCurrentMPValue(int value)
     {
-        _currentMp = value;
+        CurrentMp = value;
     }
-
-    public void SetLevelValue(int level)
-    {
-        this._level = level;
-    }
-
-    public int GetLevelValue()
-    {
-        return _level;
-    }
-
-    public void SetEXPValue(int exp)
-    {
-        this._exp = exp;
-    }
-
-    public int GetEXPValue()
-    {
-        return _exp;
-    }
-
-    public void SetEXPToNextLevel(int exp_To_NextLevel)
-    {
-        this._expToNextLevel = exp_To_NextLevel;
-    }
-
-    public int GetEXPToNextLevel()
-    {
-        return _expToNextLevel;
-    }
-
 
     public void TakeDamage(int damage)
     {
-        _currentHp -= damage;
-        if (_currentHp < 0)
+        CurrentHp -= damage;
+        if (CurrentHp < 0)
         {
-            _currentHp = 0;
+            CurrentHp = 0;
         }
     }
 
