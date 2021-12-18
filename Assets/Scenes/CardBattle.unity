@@ -274,48 +274,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: skillList.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: spAttack
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: skillList.Array.data[2]
-      value: 
-      objectReference: {fileID: 1964004670058782572, guid: d6fd220783e9b184781a5265b59fdc63,
-        type: 3}
-    - target: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: skillList.Array.data[3]
-      value: 
-      objectReference: {fileID: 3825142777845236245, guid: da0aca253b6042f4eaf931cec1987b63,
-        type: 3}
-    - target: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: skillList.Array.data[4]
-      value: 
-      objectReference: {fileID: 1964004670058782572, guid: d6fd220783e9b184781a5265b59fdc63,
-        type: 3}
-    - target: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: attack
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 7682027077128245755, guid: 45c91303b4dfb70408a172f9bdf984b9,
         type: 3}
       propertyPath: m_Name
       value: test
-      objectReference: {fileID: 0}
-    - target: {fileID: 7682027077128245755, guid: 45c91303b4dfb70408a172f9bdf984b9,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45c91303b4dfb70408a172f9bdf984b9, type: 3}
@@ -429,7 +391,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 638, y: -33.66}
+  m_AnchoredPosition: {x: 638, y: -401.69}
   m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &80262580
@@ -475,8 +437,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2116251398}
-        m_MethodName: AddHandDebug
+      - m_Target: {fileID: 1012331104}
+        m_MethodName: PhaseEnemyStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2344,6 +2306,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8305437211986fa47bd127a4ada779b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &557159683 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 58316262}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec274c185eec534584f65d3c0577628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &561992770
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,6 +2825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 0}
+  _hpText: {fileID: 0}
   _hpGauge: {fileID: 0}
   _elementImage: {fileID: 0}
   _cameraComponent: {fileID: 0}
@@ -2937,6 +2912,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 0}
+  _hpText: {fileID: 0}
   _hpGauge: {fileID: 0}
   _elementImage: {fileID: 0}
   _cameraComponent: {fileID: 0}
@@ -5396,7 +5372,21 @@ MonoBehaviour:
   stageDataForDebug: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae,
     type: 3}
   phase: 0
+  defaultSkill: {fileID: 0}
+  <keyReception>k__BackingField: 0
+  maximumNumberOfMonster: 3
+  numberOfPossessionMonster: 0
+  cameraMovementTime: 1
   tweenSpeed: 1
+  thisTurnActor: 0
+  thisTurnTarget: 0
+  thisTurnActorMonsterBase: {fileID: 0}
+  thisTurnTargetMonsterBase: {fileID: 0}
+  turnListTurnCharactor: 
+  turnOrderListMonsterBase: []
+  attackWaitingList: []
+  turnOrder: 0
+  useSkill: {fileID: 0}
   guardSkill: {fileID: 9148528428298755344, guid: 72fab6aadffa6db4aa30cd284b9201cb,
     type: 3}
   soundManager: {fileID: 1564234113}
@@ -5410,6 +5400,7 @@ MonoBehaviour:
   effectManager: {fileID: 975222644}
   turnManager: {fileID: 0}
   timelineManager: {fileID: 1861694743}
+  monsterSort: {fileID: 0}
   skillView: {fileID: 1872390989}
   damageManager: {fileID: 1865492388}
   enemyStatusPrefab: {fileID: 1533402286778313435, guid: b6444a1c0d53c224b87be96191b00597,
@@ -5455,14 +5446,24 @@ MonoBehaviour:
   - {fileID: 1593790813}
   - {fileID: 606685194}
   battleMessage: {fileID: 554019474}
+  damageView: {fileID: 0}
   damageViewPrefab: {fileID: 4876555772437428324, guid: 1ea9304caa6d67a42aea2b11fe19cad3,
     type: 3}
   statusListPlayerSide:
   - {fileID: 1344852030}
   - {fileID: 299166616}
   - {fileID: 1641275102}
-  damageWeakColor: {r: 1, g: 0.73361737, b: 0.5235849, a: 1}
-  damageResistColor: {r: 0.48584908, g: 0.7365771, b: 1, a: 1}
+  cameraComponent: {fileID: 0}
+  damageWeakColor:
+    r: 1
+    g: 0.73361737
+    b: 0.5235849
+    a: 1
+  damageResistColor:
+    r: 0.48584908
+    g: 0.7365771
+    b: 1
+    a: 1
   fade: {fileID: 1908121368}
   gameVictoryObjects: {fileID: 240668735}
   gameLoseObjects: {fileID: 2127187978}
@@ -5494,10 +5495,7 @@ MonoBehaviour:
   _seManager: {fileID: 0}
   _targetView: {fileID: 572671944}
   _effectManager: {fileID: 975222644}
-  _turnManager: {fileID: 0}
-  _timelineManager: {fileID: 1861694743}
   _skillView: {fileID: 1872390989}
-  _damageManager: {fileID: 1865492388}
   _enemyStatusPrefab: {fileID: 6438496725294258822, guid: 638a2b25d3111d747b606d50656353e7,
     type: 3}
   _playerHpList: []
@@ -5518,7 +5516,8 @@ MonoBehaviour:
   - {fileID: 256424443}
   - {fileID: 0}
   - {fileID: 0}
-  _playerMonsterBaseList: []
+  _playerMonsterBaseList:
+  - {fileID: 557159683}
   _enemyMonsterBaseList:
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
@@ -5540,6 +5539,7 @@ MonoBehaviour:
   _gameLoseObjects: {fileID: 2127187978}
   _nextButton: {fileID: 13786606}
   _startAnimationCanvasGroup: {fileID: 2061020704}
+  _playerHpGauge: {fileID: 6438496725015072512}
 --- !u!1 &1016307794
 GameObject:
   m_ObjectHideFlags: 0
@@ -7615,6 +7615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nameText: {fileID: 0}
+  _hpText: {fileID: 0}
   _hpGauge: {fileID: 0}
   _elementImage: {fileID: 0}
   _cameraComponent: {fileID: 0}
@@ -11458,10 +11459,11 @@ MonoBehaviour:
   maxTime: 1000
   positionTop: {x: -840, y: 400, z: 0}
   positionBottom: {x: -840, y: -400, z: 0}
+  timelineLength: 0
   monsterBaseList: []
   timelineObjects: []
   actMonsterList: []
-  deadList: 
+  deadList: []
 --- !u!1 &1865492386
 GameObject:
   m_ObjectHideFlags: 0
@@ -11505,6 +11507,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f55867360acd764f808fd734d1f79cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalDamage: 0
+  attackValue: 0
+  defenceValue: 0
 --- !u!1 &1868595837
 GameObject:
   m_ObjectHideFlags: 0
@@ -13293,6 +13298,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2022747156895330062, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022747156895330062, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022747156895330062, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2022747156895330062, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6076822272063034369, guid: 7b6668267a62a5048bd86b6ccd05bbab,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13353,5 +13378,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: HpGauge2 OnScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 6893311121609861679, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6893311121609861679, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6893311121609861679, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6893311121609861679, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b6668267a62a5048bd86b6ccd05bbab, type: 3}
+--- !u!114 &6438496725015072512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7539337237948072129, guid: 7b6668267a62a5048bd86b6ccd05bbab,
+    type: 3}
+  m_PrefabInstance: {fileID: 3601536019025825729}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e47c51dbf317a479c140658bbd3368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

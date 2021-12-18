@@ -45,7 +45,6 @@ public class Hand : MonoBehaviour
     }
     void HandUpdate()
     {
-        Debug.Log("Updated");
         ListUpdate();
         for (int i = 0; i < _cardList.Count; i++)
         {

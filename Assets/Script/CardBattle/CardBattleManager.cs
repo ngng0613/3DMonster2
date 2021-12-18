@@ -99,6 +99,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] GameObject _gameLoseObjects;
     [SerializeField] GameObject _nextButton;
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
+    [SerializeField] HpGauge _playerHpGauge;
 
     UnityEngine.Random _random = new UnityEngine.Random();
     delegate void Func();
@@ -111,6 +112,8 @@ public class CardBattleManager : MonoBehaviour
         //初期化
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
+        MonsterBase _playerMonster = _playerMonsterBaseList[0];
+        _playerHpGauge.Setup(_playerMonster.MonsterName, _playerMonster.MaxHp, _playerMonster.CurrentHp, _cameraComponent, null);
 
         //カード使用時の処理の追加
         _hand.Setup(PlayCard);
@@ -141,13 +144,13 @@ public class CardBattleManager : MonoBehaviour
         {
             monsterManager.SetDebugParty();
         }
-        _playerMonsterBaseList = MonsterManager.PartyMonsterList;
-        //味方情報のセット
-        for (int i = 0; i < _playerMonsterObjectsList.Count; i++)
-        {
-            Debug.Log(_playerMonsterObjectsList[i] + "   " + _playerMonstersPositionList[i]);
-            SetPlayerMonsterBase(_playerMonsterObjectsList[i], i, _playerMonstersPositionList[i], _playerMonsterBaseList[i]);
-        }
+        //_playerMonsterBaseList = MonsterManager.PartyMonsterList;
+        ////味方情報のセット
+        //for (int i = 0; i < _playerMonsterObjectsList.Count; i++)
+        //{
+        //    Debug.Log(_playerMonsterObjectsList[i] + "   " + _playerMonstersPositionList[i]);
+        //    SetPlayerMonsterBase(_playerMonsterObjectsList[i], i, _playerMonstersPositionList[i], _playerMonsterBaseList[i]);
+        //}
         //マネージャーのセット
         _numberOfPossessionMonster = monsterManager.NumberOfPossessionMonster;
         _targetView.Setup(_playerMonsterBaseList, _enemyMonsterBaseList);
@@ -163,7 +166,7 @@ public class CardBattleManager : MonoBehaviour
         PhaseStart();
     }
 
- 
+
     public void WriteMessage(string message)
     {
         _battleMessage.UpdateMessage(message);
@@ -249,13 +252,19 @@ public class CardBattleManager : MonoBehaviour
                 });
     }
 
+    public void PhaseEnemyStart()
+    {
+        StartCoroutine(PhaseEnemyTurn());
+    }
+
     IEnumerator PhaseEnemyTurn()
     {
         _playerMonsterBaseList[0].TakeDamage(30);
-        yield return null;
+        _playerHpGauge.UpdateStatus(_playerMonsterBaseList[0].CurrentHp);
+        yield return new WaitForSeconds(1);
         yield return PhaseDraw();
     }
-    
+
 
     public void PhaseChooseSkill()
     {
@@ -313,7 +322,7 @@ public class CardBattleManager : MonoBehaviour
 
     }
 
-   
+
 
     public void PhaseDead()
     {
@@ -532,10 +541,10 @@ public class CardBattleManager : MonoBehaviour
         _enemyMonsterBaseList[enemyNumber] = enemyMonsterBase;
         //敵ステータスの表示
         HpGauge newHpView = Instantiate(_enemyStatusPrefab);
-        newHpView.Setup(enemyMonsterBase.MonsterName,enemyMonsterBase.MaxHp,enemyMonsterBase.CurrentHp,_cameraComponent,null);
+        newHpView.Setup(enemyMonsterBase.MonsterName, enemyMonsterBase.MaxHp, enemyMonsterBase.CurrentHp, _cameraComponent, null);
         newHpView.transform.SetParent(enemyPos);
         newHpView.transform.position = enemyPos.position + new Vector3(0, 2.5f, 0);
-        newHpView.transform.localEulerAngles = new Vector3(0,180,0);
+        newHpView.transform.localEulerAngles = new Vector3(0, 180, 0);
         _enemyHpListInWorld.Add(newHpView);
     }
 
