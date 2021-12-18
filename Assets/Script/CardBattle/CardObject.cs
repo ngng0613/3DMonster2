@@ -24,6 +24,9 @@ public class CardObject : MonoBehaviour
     public delegate void PlayedAction(CardData card);
     PlayedAction _playedActionDelegate;
 
+    public delegate void Remove(CardObject card);
+    Remove _remove;
+
     public CardData CardData { get => _cardData; }
 
     public bool InHand = false;
@@ -33,10 +36,11 @@ public class CardObject : MonoBehaviour
     /// </summary>
     /// <param name="playedAction">プレイ時（カード使用時）に呼ぶアクション</param>
     /// <param name="func">手札に戻す処理時に呼ぶ関数</param>
-    public void Setup(PlayedAction playedAction, Func func)
+    public void Setup(PlayedAction playedAction, Func func, Remove remove)
     {
         _playedActionDelegate = playedAction;
         _handUpdateDelegate = func;
+        _remove = remove;
         UpdateText();
     }
 
@@ -60,7 +64,10 @@ public class CardObject : MonoBehaviour
                     {
                         _playedActionDelegate.Invoke(_cardData);
                     }
+                    _remove.Invoke(this);
+                    Destroy(this.gameObject);
                 }
+                _handUpdateDelegate.Invoke();
                 break;
             }
             yield return null;
