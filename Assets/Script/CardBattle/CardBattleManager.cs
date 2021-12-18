@@ -209,7 +209,6 @@ public class CardBattleManager : MonoBehaviour
                     {
                         _thisTurnActor = _attackWaitingList[0].charactorTag;
 
-                        PhaseCommand();
                     }
                 }
                 else
@@ -248,6 +247,15 @@ public class CardBattleManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// カードをドローする
+    /// </summary>
+    IEnumerator DrawCard()
+    {
+        _hand.AddHandDebug();
+        yield return null;
+    }
+
     void PhasePreparation()
     {
         _phase = Phase.Preparation;
@@ -266,6 +274,26 @@ public class CardBattleManager : MonoBehaviour
         //battleCamera.AllEnemyView(() => PhaseEnemyView());
         _turnOrder = 0;
         _phase = Phase.Wait;
+        StartCoroutine(PhaseDraw());
+    }
+
+    /// <summary>
+    /// ドローするフェイズ
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator PhaseDraw()
+    {
+        int numberOfDraw = 3;
+        for (int i = 0; i < numberOfDraw; i++)
+        {
+            yield return DrawCard();
+            yield return Wait(0.3f);
+        }
+    }
+
+    IEnumerator Wait(float waitForSeconds)
+    {
+        yield return new WaitForSeconds(waitForSeconds);
     }
 
     public void PhaseEnemyView()
@@ -279,46 +307,13 @@ public class CardBattleManager : MonoBehaviour
                 });
     }
 
-    void PhaseCommand()
+    IEnumerator PhaseEnemyTurn()
     {
-        _phase = Phase.Command;
-        _turnDisplay.DisplayImage(TurnDisplay.DisplayPattern.PlayerTurn);
-        switch (_thisTurnActor)
-        {
-            case BattleMonsterTag.CharactorTag.Player1:
-                //battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
-                _statusListPlayerSide[0].ChangeState(true);
-                break;
-            case BattleMonsterTag.CharactorTag.Player2:
-                //battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
-                _statusListPlayerSide[1].ChangeState(true);
-                break;
-            case BattleMonsterTag.CharactorTag.Player3:
-                //battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
-                _statusListPlayerSide[2].ChangeState(true);
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy1:
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy2:
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy3:
-                break;
-            default:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-                break;
-        }
-
-        if (_thisTurnActorMonsterBase.status == MonsterBase.MonsterState.Guard)
-        {
-            _thisTurnActorMonsterBase.status = MonsterBase.MonsterState.Normal;
-        }
-
-        _phase = Phase.Command;
-        //commandBoxManager.Setup(SetUseSkill);
-        //commandBoxManager.PhaseSkill = PhaseChooseSkill;
-
-        KeyReception = true;
+        _playerMonsterBaseList[0].TakeDamage(30);
+        yield return null;
+        yield return PhaseDraw();
     }
+    
 
     public void PhaseChooseSkill()
     {
@@ -896,14 +891,12 @@ public class CardBattleManager : MonoBehaviour
                 break;
             case Phase.ChooseSkill:
 
-                PhaseCommand();
 
                 break;
             case Phase.Target:
 
                 if (_useSkill == _defaultSkill)
                 {
-                    PhaseCommand();
                 }
                 else
                 {
