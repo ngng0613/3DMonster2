@@ -27,13 +27,10 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] int _maxMp;
     //現在のMP
     [SerializeField] int _currentMp;
-
     //ベースのPrefab
     [SerializeField] GameObject _myPrefab;
-
     //実体化したオブジェクト
     public GameObject RealObject;
-
     //レベル
     [SerializeField] int _level;
     //経験値
@@ -52,17 +49,17 @@ public class MonsterBase : MonoBehaviour
         Charge,
     }
 
-    public MonsterState status = MonsterState.Normal;
+    public MonsterState Status = MonsterState.Normal;
 
     //戦闘時のキャラ番号
-    public BattleMonsterTag.CharactorTag charactorTag;
+    public BattleMonsterTag.CharactorTag CharactorTag;
 
     //戦闘の時のAI
-    public CommandAI _commandAi;
+    public CommandAI CommandAi;
 
-    public delegate void D();
-    public D AfterAction;
-    public D AfterDead;
+    public delegate void Delegate();
+    public Delegate AfterAction;
+    public Delegate AfterDead;
 
     [SerializeField] bool _checkTheEndOfAnimation = false;
 
@@ -73,7 +70,7 @@ public class MonsterBase : MonoBehaviour
 
     [SerializeField] bool _checkTheEndOfDeadAnimation = false;
 
-    [SerializeField] List<CardData> cardDatas;
+    [SerializeField] List<CardData> _cardDatas;
 
 
     /// <summary>
@@ -95,16 +92,11 @@ public class MonsterBase : MonoBehaviour
         this._level = level;
         this._maxHp = maxHp;
         this._maxMp = maxMp;
-        this._attack = attack;
-        this._defence = defence;
-        this._spAttack = spAttack;
-        this._spDefence = spDefence;
-        this._speed = speed;
     }
 
     public void Start()
     {
-        _commandAi = new CommandAI();
+        CommandAi = new CommandAI();
     }
 
     public void Update()
@@ -146,15 +138,6 @@ public class MonsterBase : MonoBehaviour
             }
         }
 
-    }
-
-    public SkillBase ThinkOfASkill()
-    {
-        if (_commandAi)
-        {
-            Debug.Log("hey");
-        }
-        return _commandAi.ChoiceSkill(skillList);
     }
 
     /// <summary>
@@ -287,51 +270,6 @@ public class MonsterBase : MonoBehaviour
         this._image = image;
     }
 
-    public int GetAttackValue()
-    {
-        return _attack;
-    }
-    public void SetAttackValue(int value)
-    {
-        _attack = value;
-    }
-
-    public int GetDefenceValue()
-    {
-        return _defence;
-    }
-    public void SetDefenceValue(int value)
-    {
-        _defence = value;
-    }
-
-    public int GetSpAttackValue()
-    {
-        return _spAttack;
-    }
-    public void SetSPAttackValue(int value)
-    {
-        _spAttack = value;
-    }
-
-    public int GetSpDefenceValue()
-    {
-        return _spDefence;
-    }
-    public void SetSPDefenceValue(int value)
-    {
-        _spDefence = value;
-    }
-
-    public int GetSpeedValue()
-    {
-        return _speed;
-    }
-    public void SetSpeedValue(int value)
-    {
-        _speed = value;
-    }
-
     public int GetMaxHPValue()
     {
         return _maxHp;
@@ -399,10 +337,6 @@ public class MonsterBase : MonoBehaviour
         return _expToNextLevel;
     }
 
-    public void SetSkillList(List<SkillBase> list)
-    {
-        skillList = list;
-    }
 
     public void TakeDamage(int damage)
     {
@@ -413,109 +347,5 @@ public class MonsterBase : MonoBehaviour
         }
     }
 
-    public List<SkillBase> GetSkillList()
-    {
-        return skillList;
-    }
-
-    public SkillBase GetRandomSkill()
-    {
-        int random;
-        SkillBase usedSkill;
-        while (true)
-        {
-            random = Random.Range(0, skillList.Count);
-            usedSkill = this.skillList[random];
-            if (usedSkill.GetUsedMp() <= _currentMp)
-            {
-                break;
-            }
-        }
-
-
-        //Debug.Log(usedSkill.GetName() + "をランダムに選択しました");
-
-        return usedSkill;
-    }
-
-    public void SkillAcquisition(SkillBase skill)
-    {
-        skillList.Add(skill);
-    }
-    /// <summary>
-    /// 経験値アップ
-    /// </summary>
-    /// <param name="plusExp">追加経験値</param>
-    /// <returns>レベルアップしたかどうかを返す</returns>
-    public bool EXPUp(int plusExp)
-    {
-        bool result = false;
-        while (true)
-        {
-            if ((_exp + plusExp) >= _expToNextLevel)
-            {
-                int nextExp = _exp + plusExp - _expToNextLevel;
-                LevelUp(nextExp);
-
-                float expToNextLevelFloat = _expToNextLevel * 1.2f;
-                _expToNextLevel = (int)expToNextLevelFloat;
-
-                result = true;
-            }
-            else
-            {
-                _exp += plusExp;
-                break;
-            }
-        }
-        return result;
-
-    }
-
-    public void LevelUp(int exp)
-    {
-        this._exp = exp;
-        _level++;
-        _maxHp += _maxHpLevelUp;
-        _maxMp += _maxMpLevelUp;
-        _currentHp = _maxHp;
-        _currentMp = _maxMp;
-        _attack += _attackLevelUp;
-        _defence += _defenceLevelUp;
-        _spAttack += _spAttackLevelUp;
-        _spDefence += _spDefenceLevelUp;
-        _speed += _speedLevelUp;
-
-
-    }
-
-    public int GetExp_WhenKilled()
-    {
-        return _getExp;
-    }
-
-    public int GetMoney_WhenKilled()
-    {
-        return _money;
-    }
-
-    public void UseMp(int point)
-    {
-        _currentMp -= point;
-    }
-
-    public void SetPrefab(GameObject prefab)
-    {
-        _myPrefab = prefab;
-    }
-    public GameObject GetPrefab()
-    {
-        return _myPrefab;
-    }
-
-    public Element.BattleElement GetElement()
-    {
-        return _element;
-    }
 
 }
