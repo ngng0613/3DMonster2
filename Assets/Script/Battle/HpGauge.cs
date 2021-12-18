@@ -9,6 +9,7 @@ public class HpGauge : MonoBehaviour
 {
     public bool IsActive { get; set; } = true;
     [SerializeField] TextMeshProUGUI _nameText;
+    [SerializeField] TextMeshProUGUI _hpText;
     [SerializeField] Image _hpGauge;
     [SerializeField] Image _elementImage;
 
@@ -39,6 +40,7 @@ public class HpGauge : MonoBehaviour
     public void Setup(string monsterName, int maxHp, int currentHp, Camera cameraComponent, Sprite elementIcon)
     {
         this._monsterName = monsterName;
+        _nameText.text = monsterName;
         this._maxHp = maxHp;
         this._currentHp = currentHp;
         _displayHp = currentHp;
@@ -54,7 +56,7 @@ public class HpGauge : MonoBehaviour
         this._currentHp = currentHp;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => this._displayHp, (x) => this._displayHp = x, this._currentHp, _tweenTime));
+        sequence.Append(DOTween.To(() => this._displayHp, (x) => { this._displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, this._currentHp, _tweenTime));
 
     }
 
