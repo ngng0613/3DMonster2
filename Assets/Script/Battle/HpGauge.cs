@@ -36,7 +36,6 @@ public class HpGauge : MonoBehaviour
 
     }
 
-
     public void Setup(string monsterName, int maxHp, int currentHp, Camera cameraComponent, Sprite elementIcon)
     {
         this._monsterName = monsterName;
@@ -46,7 +45,10 @@ public class HpGauge : MonoBehaviour
         _displayHp = currentHp;
 
         this._cameraComponent = cameraComponent;
-        _elementImage.sprite = elementIcon;
+        if (elementIcon != null)
+        {
+            _elementImage.sprite = elementIcon;
+        }
         UpdateStatus(this._currentHp);
         _setupCompleted = true;
     }
