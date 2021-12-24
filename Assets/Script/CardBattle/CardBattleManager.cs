@@ -215,8 +215,6 @@ public class CardBattleManager : MonoBehaviour
         allMonsterBaseList.AddRange(_playerMonsterBaseList);
         allMonsterBaseList.AddRange(_enemyMonsterBaseList);
 
-        //敵全体をカメラで映す演出
-        //battleCamera.AllEnemyView(() => PhaseEnemyView());
         _turnOrder = 0;
         _phase = Phase.Wait;
         StartCoroutine(PhaseDraw());
@@ -408,7 +406,6 @@ public class CardBattleManager : MonoBehaviour
 
         }
 
-
         if (_attackWaitingList.Count == 0)
         {
             _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
@@ -472,9 +469,37 @@ public class CardBattleManager : MonoBehaviour
     /// <summary>
     /// スキルを使用する
     /// </summary>
-    public void PlayCard(CardData card)
+    public IEnumerator PlayCard(CardData card)
     {
-        _useSkill = card._skill;
+        for (int i = 0; i < card.CardSpellBases.Count; i++)
+        {
+            switch (card.CardSpellBases[i].Type)
+            {
+                case SpellType.Attack:
+                    AttackCoroutine();
+                    break;
+                case SpellType.Guard:
+                    break;
+                case SpellType.Buff:
+                    break;
+                case SpellType.Debuff:
+                    break;
+                case SpellType.Draw:
+                    break;
+                case SpellType.DisCard:
+                    break;
+                default:
+                    break;
+            }
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+
+    }
+
+    void AttackCoroutine()
+    {
         int damage = 10;
         _enemyMonsterBaseList[0].TakeDamage(damage);
 
@@ -504,7 +529,7 @@ public class CardBattleManager : MonoBehaviour
     void SetPlayerMonsterBase(GameObject playerObject, int playerNumber, Transform playerPos, MonsterBase playerMonsterBase)
     {
         //味方情報の更新
-        playerObject = Instantiate(monsterManager.GetMonsterPrefab(_playerMonsterBaseList[playerNumber].GetId()));
+        playerObject = Instantiate(monsterManager.GetMonsterPrefab(_playerMonsterBaseList[playerNumber].Id));
         //複製したモンスターオブジェクトの親に、既に存在しているポジションオブジェクトを設定
         playerObject.transform.SetParent(playerPos);
         playerObject.transform.localPosition = new Vector3(0, 0, 0);
@@ -529,7 +554,7 @@ public class CardBattleManager : MonoBehaviour
     /// <param name="enemyMonsterBase">敵の情報</param>
     void SetEnemyMonsterBase(GameObject enemyObject, int enemyNumber, Transform enemyPos, MonsterBase enemyMonsterBase)
     {
-        enemyObject = Instantiate(monsterManager.GetMonsterPrefab(StageData.EnemyData[enemyNumber].GetId()), enemyPos.transform.position, Quaternion.identity);
+        enemyObject = Instantiate(monsterManager.GetMonsterPrefab(StageData.EnemyData[enemyNumber].Id), enemyPos.transform.position, Quaternion.identity);
 
         Vector3 tempDir = enemyObject.transform.localEulerAngles;
         tempDir.y += 180;

@@ -46,8 +46,8 @@ public class CardObject : MonoBehaviour
 
     private void UpdateText()
     {
-        _nameText.text = CardData._cardName;
-        _image.sprite = CardData._mainImage;
+        _nameText.text = CardData.CardName;
+        _image.sprite = CardData.MainImage;
     }
 
     IEnumerator PlayUpdate()
@@ -59,12 +59,14 @@ public class CardObject : MonoBehaviour
                 Debug.Log("解除");
                 if (Input.mousePosition.y >= 600)
                 {
-                    Debug.Log($"{this.CardData._cardName}をプレイした");
+                    Debug.Log($"{this.CardData.CardName}をプレイした");
                     if (_playedActionDelegate != null)
                     {
                         _playedActionDelegate.Invoke(_cardData);
                     }
                     _remove.Invoke(this);
+
+                    this.transform.DOKill();
                     Destroy(this.gameObject);
                 }
                 _handUpdateDelegate.Invoke();

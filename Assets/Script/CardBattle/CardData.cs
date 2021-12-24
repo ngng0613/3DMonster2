@@ -1,13 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+
 
 [CreateAssetMenu(fileName = "Card", menuName = "ScriptableObjects/Card", order = 1)]
 public class CardData : ScriptableObject
 {
-    public string _cardName;
-    public Sprite _mainImage;
-    public int _cost;
-    public SkillBase _skill;
+    [SerializeField] string _cardName;
+    [SerializeField] Sprite _mainImage;
+    [SerializeField] int _cost;
+    [SerializeField] CardSpellBase _spellBase;
+    [SerializeField] List<CardSpellBase> _cardSpellBases;
+
+    public string CardName { get => _cardName; set => _cardName = value; }
+    public Sprite MainImage { get => _mainImage; set => _mainImage = value; }
+    public int Cost { get => _cost; set => _cost = value; }
+    public List<CardSpellBase> CardSpellBases { get => _cardSpellBases; set => _cardSpellBases = value; }
 }
+

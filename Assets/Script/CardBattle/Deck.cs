@@ -6,6 +6,14 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
+    public static Deck operator +(Deck a, Deck b)
+    {
+        Deck newDeck = new Deck();
+        newDeck._cardList.AddRange(a._cardList);
+        newDeck._cardList.AddRange(b._cardList);
+        return newDeck; 
+    }
+
     [SerializeField] List<CardObject> _cardList = new List<CardObject>();
 
     /// <summary>
@@ -35,7 +43,7 @@ public class Deck : MonoBehaviour
         _cardList = temp;
         foreach (CardObject item in _cardList)
         {
-            Debug.Log(item.CardData._cardName);
+            Debug.Log(item.CardData.CardName);
         }
     }
 

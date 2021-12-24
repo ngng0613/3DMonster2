@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class MonsterBase : MonoBehaviour
 {
     //ID
@@ -36,14 +34,7 @@ public class MonsterBase : MonoBehaviour
     //倒したときにもらえるお金
     [SerializeField] int _money;
 
-    public enum MonsterState
-    {
-        Normal,
-        Guard,
-        Charge,
-    }
-
-    public MonsterState Status = MonsterState.Normal;
+    [SerializeField] List<StatusEffectBase> _statusEffectList;
 
     //戦闘時のキャラ番号
     public BattleMonsterTag.CharactorTag CharactorTag;
@@ -79,6 +70,7 @@ public class MonsterBase : MonoBehaviour
     public int CurrentMp { get => _currentMp; set => _currentMp = value; }
     public GameObject MyPrefab { get => _myPrefab; set => _myPrefab = value; }
     public GameObject RealObject { get => realObject; set => realObject = value; }
+    public List<StatusEffectBase> StatusEffectList { get => _statusEffectList; set => _statusEffectList = value; }
 
 
     /// <summary>
@@ -147,25 +139,6 @@ public class MonsterBase : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// IDを取得する
-    /// </summary>
-    /// <returns>ID</returns>
-    public int GetId()
-    {
-        return Id;
-    }
-
-    public void SetId(int id)
-    {
-        this.Id = id;
-    }
-
-    public float GetIndividualID()
-    {
-        return IndividualID;
-
-    }
 
     /// <summary>
     /// ニックネームを取得する
@@ -183,19 +156,7 @@ public class MonsterBase : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ニックネームを付ける
-    /// </summary>
-    /// <param name="nickName">新たなニックネーム</param>
-    public void SetNickName(string nickName)
-    {
-        this.NickName = nickName;
-    }
 
-    public void SetID(int id)
-    {
-        this.Id = id;
-    }
 
     public void MotionIdle()
     {
