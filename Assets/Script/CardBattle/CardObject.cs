@@ -27,7 +27,7 @@ public class CardObject : MonoBehaviour
     public delegate void Remove(CardObject card);
     Remove _remove;
 
-    public CardData CardData { get => _cardData; }
+    public CardData CardData { get => _cardData; set => _cardData = value; }
 
     public bool InHand = false;
 

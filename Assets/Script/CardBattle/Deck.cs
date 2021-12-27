@@ -14,7 +14,10 @@ public class Deck : MonoBehaviour
         return newDeck; 
     }
 
+    //デッキの中身
     [SerializeField] List<CardObject> _cardList = new List<CardObject>();
+    //捨て札
+    [SerializeField] List<CardObject> _trashList = new List<CardObject>();
 
     /// <summary>
     /// デッキの初期設定
@@ -32,6 +35,11 @@ public class Deck : MonoBehaviour
         _cardList.RemoveAt(0);
         drawCard.InHand = true;
         return drawCard;
+    }
+
+    public void Trash(CardObject card)
+    {
+        _trashList.Add(card);
     }
 
     /// <summary>

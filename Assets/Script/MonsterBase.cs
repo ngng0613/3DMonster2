@@ -27,20 +27,16 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] int _currentMp;
     //ベースのPrefab
     [SerializeField] GameObject _myPrefab;
-    //実体化したオブジェクト
-    private GameObject realObject;
     //倒したときのもらえる経験値
     [SerializeField] int _getExp;
     //倒したときにもらえるお金
     [SerializeField] int _money;
 
+
     [SerializeField] List<StatusEffectBase> _statusEffectList;
 
     //戦闘時のキャラ番号
     public BattleMonsterTag.CharactorTag CharactorTag;
-
-    //戦闘の時のAI
-    public CommandAI CommandAi;
 
     public delegate void Delegate();
     public Delegate AfterAction;
@@ -67,10 +63,11 @@ public class MonsterBase : MonoBehaviour
     public int MaxHp { get => _maxHp; set => _maxHp = value; }
     public int CurrentHp { get => _currentHp; set => _currentHp = value; }
     public int MaxMp { get => _maxMp; set => _maxMp = value; }
-    public int CurrentMp { get => _currentMp; set => _currentMp = value; }
+    public int CurrentMp { get => CurrentMp1; set => CurrentMp1 = value; }
     public GameObject MyPrefab { get => _myPrefab; set => _myPrefab = value; }
-    public GameObject RealObject { get => realObject; set => realObject = value; }
     public List<StatusEffectBase> StatusEffectList { get => _statusEffectList; set => _statusEffectList = value; }
+    public List<CardData> CardDatas { get => _cardDatas; set => _cardDatas = value; }
+    public int CurrentMp1 { get => _currentMp; set => _currentMp = value; }
 
 
     /// <summary>
@@ -93,11 +90,6 @@ public class MonsterBase : MonoBehaviour
         this.MaxMp = maxMp;
     }
 
-    public void Start()
-    {
-        CommandAi = new CommandAI();
-    }
-
     public void Update()
     {
         //アニメーションが終了しているか確認する
@@ -114,7 +106,7 @@ public class MonsterBase : MonoBehaviour
                     _acted = false;
                     //アイドル状態に戻す
                     MotionIdle();
-                
+
                     Debug.Log("アニメーション済み");
                     AfterAction.Invoke();
                 }
@@ -130,7 +122,6 @@ public class MonsterBase : MonoBehaviour
         {
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {
-
                 _acted = false;
                 AfterDead.Invoke();
                 _checkTheEndOfDeadAnimation = false;
@@ -138,7 +129,6 @@ public class MonsterBase : MonoBehaviour
         }
 
     }
-
 
     /// <summary>
     /// ニックネームを取得する
@@ -155,7 +145,6 @@ public class MonsterBase : MonoBehaviour
             return MonsterName;
         }
     }
-
 
 
     public void MotionIdle()

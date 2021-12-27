@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public delegate void TrashDelegate(CardObject card);
+
 public class Hand : MonoBehaviour
 {
     /// <summary>
@@ -14,11 +16,14 @@ public class Hand : MonoBehaviour
     [SerializeField] CardObject _debugCard;
 
     CardObject.PlayedAction _playedActionDelegate;
+    TrashDelegate _trash;
 
+    public List<CardObject> CardList { get => _cardList;}
 
-    public void Setup(CardObject.PlayedAction playedAction)
+    public void Setup(CardObject.PlayedAction playedAction, TrashDelegate trash)
     {
         _playedActionDelegate = playedAction;
+        _trash = trash;
     }
 
     /// <summary>
@@ -26,30 +31,41 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void AddHand(CardObject card)
     {
-        _cardList.Add(card);
+        CardList.Add(card);
     }
 
     public void RemoveCard(CardObject card)
     {
         CardObject removeCard = card;
-        _cardList.Remove(card);
+        CardList.Remove(card);
+    }
+    public void RemoveCard(CardData card)
+    {
+        for (int i = 0; i < _cardList.Count; i++)
+        {
+            if (_cardList[i].CardData == card)
+            {
+                _cardList.RemoveAt(i);
+                break;
+            }
+        }
     }
 
     public void AddHandDebug()
     {
         CardObject newCard = Instantiate(_debugCard, this.gameObject.transform);
         newCard.Setup(_playedActionDelegate, HandUpdate, RemoveCard);
-        _cardList.Add(newCard);
+        CardList.Add(newCard);
 
         HandUpdate();
     }
     void HandUpdate()
     {
         ListUpdate();
-        for (int i = 0; i < _cardList.Count; i++)
+        for (int i = 0; i < CardList.Count; i++)
         {
-            _cardList[i].ResetSortingOrder();
-            _cardList[i].transform.localPosition = new Vector2(i * 256, 0);
+            CardList[i].ResetSortingOrder();
+            CardList[i].transform.localPosition = new Vector2(i * 256, 0);
         }
     }
 
@@ -58,11 +74,11 @@ public class Hand : MonoBehaviour
         while (true)
         {
             bool flag = true;
-            for (int i = 0; i < _cardList.Count; i++)
+            for (int i = 0; i < CardList.Count; i++)
             {
-                if (_cardList[i] == null)
+                if (CardList[i] == null)
                 {
-                    _cardList.RemoveAt(i);
+                    CardList.RemoveAt(i);
                     flag = false;
                     break;
                 }

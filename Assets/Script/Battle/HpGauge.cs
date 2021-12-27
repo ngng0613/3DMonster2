@@ -21,6 +21,9 @@ public class HpGauge : MonoBehaviour
 
     [SerializeField] bool _setupCompleted = false;
     [SerializeField] float _tweenTime = 1.0f;
+    [SerializeField] bool _lookCamera = false;
+
+
 
     private void Update()
     {
@@ -29,10 +32,7 @@ public class HpGauge : MonoBehaviour
             return;
         }
         _hpGauge.transform.localScale = new Vector3(_displayHp / _maxHp, 1, 1);
-        if (_cameraComponent != null)
-        {
-            transform.rotation = _cameraComponent.transform.rotation;
-        }
+
 
     }
 
@@ -50,6 +50,10 @@ public class HpGauge : MonoBehaviour
             _elementImage.sprite = elementIcon;
         }
         UpdateStatus(_currentHp);
+        if (_cameraComponent != null && _lookCamera == true)
+        {
+            transform.rotation = _cameraComponent.transform.rotation;
+        }
         _setupCompleted = true;
     }
 

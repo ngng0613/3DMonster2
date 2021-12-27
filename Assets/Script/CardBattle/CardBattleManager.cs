@@ -13,6 +13,8 @@ public class CardBattleManager : MonoBehaviour
     Sequence sequence;
     public static StageData StageData;
     [SerializeField] StageData _stageDataForDebug;
+    [SerializeField] Deck _playerDeck;
+    [SerializeField] Deck _enemyDeck;
     public enum Phase
     {
         start = 0,
@@ -79,6 +81,7 @@ public class CardBattleManager : MonoBehaviour
     /*
      * オブジェクト宣言
      */
+    [SerializeField] CardObject _cardObjectPrefab;
     [SerializeField] List<GameObject> _playerMonsterObjectsList = new List<GameObject>();
     [SerializeField] List<GameObject> _enemyMonsterObjectsList = new List<GameObject>();
     [SerializeField] List<Transform> _playerMonstersPositionList = new List<Transform>();
@@ -100,9 +103,12 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] GameObject _nextButton;
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
     [SerializeField] HpGauge _playerHpGauge;
+    [SerializeField] EnemyAi _enemyAi;
 
     UnityEngine.Random _random = new UnityEngine.Random();
     delegate void Func();
+
+    public TrashDelegate Trash;
 
 
     void Start()
@@ -110,14 +116,11 @@ public class CardBattleManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         //初期化
+
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
         MonsterBase _playerMonster = _playerMonsterBaseList[0];
         _playerHpGauge.Setup(_playerMonster.MonsterName, _playerMonster.MaxHp, _playerMonster.CurrentHp, _cameraComponent, null);
-
-        //カード使用時の処理の追加
-        _hand.Setup(PlayCard);
-
         //ステージデータ読み込み
         if (StageData != null)
         {
@@ -144,28 +147,44 @@ public class CardBattleManager : MonoBehaviour
         {
             monsterManager.SetDebugParty();
         }
-        //_playerMonsterBaseList = MonsterManager.PartyMonsterList;
-        ////味方情報のセット
-        //for (int i = 0; i < _playerMonsterObjectsList.Count; i++)
-        //{
-        //    Debug.Log(_playerMonsterObjectsList[i] + "   " + _playerMonstersPositionList[i]);
-        //    SetPlayerMonsterBase(_playerMonsterObjectsList[i], i, _playerMonstersPositionList[i], _playerMonsterBaseList[i]);
-        //}
-        //マネージャーのセット
-        _numberOfPossessionMonster = monsterManager.NumberOfPossessionMonster;
-        _targetView.Setup(_playerMonsterBaseList, _enemyMonsterBaseList);
-        _targetView.maximumNumberOfMonster = this._maximumNumberOfMonster;
 
-        //デフォルトスキルの設定(通常攻撃に当たるスキル)
-        _defaultSkill = _skillManager.GetDefaultSkill();
 
-        //前の処理に戻るときの、戻り先設定
-        _skillView.BackToPhaseForBattleManager = BackToBeforePhase;
-        _targetView.BackToBeforePhaseForBattleManager = BackToBeforePhase;
+        //一度ゲームオブジェクトのデッキをつくる
+        List<CardObject> playerObjectDeck = new List<CardObject>();
+        for (int i = 0; i < _playerMonster.CardDatas.Count; i++)
+        {
+            CardObject tempCard = Instantiate(_cardObjectPrefab);
+            tempCard.CardData = _playerMonster.CardDatas[i];
+            //画面外で保存
+            tempCard.transform.position = new Vector3(-200, -500, -1000);
+            tempCard.gameObject.transform.SetParent(_playerDeck.transform);
+            playerObjectDeck.Add(tempCard);
+        }
+        _playerDeck.Setup(playerObjectDeck);
+        //カード使用時の処理の追加
+        _hand.Setup(PlayCard, _playerDeck.Trash);
+
+        //敵もゲームオブジェクトのデッキをつくる
+        _enemyAi.Setup(_enemyMonsterBaseList[0]);
+        List<CardObject> enemyObjectDeck = new List<CardObject>();
+        Debug.Log($"敵のデッキ枚数：{_enemyMonsterBaseList[0].CardDatas.Count}");
+        for (int i = 0; i < _enemyMonsterBaseList[0].CardDatas.Count; i++)
+        {
+            CardObject tempCard = Instantiate(_cardObjectPrefab);
+            tempCard.CardData = _enemyMonsterBaseList[0].CardDatas[i];
+            //画面外で保存
+            tempCard.transform.position = new Vector3(200, -500, -1000);
+            tempCard.gameObject.transform.SetParent(_enemyDeck.transform);
+            enemyObjectDeck.Add(tempCard);
+        }
+        _enemyDeck.Setup(enemyObjectDeck);
+        _enemyAi.Deck = _enemyDeck;
+        //カード使用時の処理の追加
+        _enemyAi.Hand.Setup(PlayCard, _enemyDeck.Trash);
+
 
         PhaseStart();
     }
-
 
     public void WriteMessage(string message)
     {
@@ -257,49 +276,23 @@ public class CardBattleManager : MonoBehaviour
 
     IEnumerator PhaseEnemyTurn()
     {
-        _playerMonsterBaseList[0].TakeDamage(30);
-        _playerHpGauge.UpdateStatus(_playerMonsterBaseList[0].CurrentHp);
+        List<CardData> combo = _enemyAi.Think();
+        for (int i = 0; i < combo.Count; i++)
+        {
+            Debug.Log(combo[i].CardName);
+        }
+
+        //ダメージ処理
+        DamageView damageView = Instantiate(_damageViewPrefab, _playerMonstersPositionList[0].transform.position, Quaternion.identity);
+        damageView.Setup(0, "", Color.white, _cameraComponent);
+        damageView.transform.position += new Vector3(0, 2, -3);
+        damageView.Activate();
+
         yield return new WaitForSeconds(1);
         yield return PhaseDraw();
     }
 
 
-    public void PhaseChooseSkill()
-    {
-        _phase = Phase.ChooseSkill;
-        _skillView.SetUseSkill = this.SetUseSkill;
-        switch (_thisTurnActor)
-        {
-            case BattleMonsterTag.CharactorTag.Player1:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
-                _statusListPlayerSide[0].ChangeState(true);
-                break;
-            case BattleMonsterTag.CharactorTag.Player2:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
-                _statusListPlayerSide[1].ChangeState(true);
-                break;
-            case BattleMonsterTag.CharactorTag.Player3:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
-                _statusListPlayerSide[2].ChangeState(true);
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy1:
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy2:
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy3:
-                break;
-            default:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-                break;
-        }
-
-        int actorNumber = (int)_thisTurnActor;
-
-        _skillView.Display(true);
-        _skillView.SetInput();
-
-        KeyReception = true;
-    }
 
     void PhaseTarget()
     {
@@ -314,13 +307,6 @@ public class CardBattleManager : MonoBehaviour
         }
         _targetView.TargetPreparation(TargetView.TargetType.EnemySide, targetList.ToArray(), SetTarget);
     }
-
-    void PhaseAI(MonsterBase monster)
-    {
-
-    }
-
-
 
     public void PhaseDead()
     {
@@ -432,51 +418,22 @@ public class CardBattleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 前のフェイズに戻る処理
+    /// カードを使用する
     /// </summary>
-    public void BackToBeforePhase()
+    public void PlayCard(CardData card)
     {
-        switch (_phase)
-        {
-            case Phase.Preparation:
-                break;
-            case Phase.Command:
-                break;
-            case Phase.ChooseSkill:
-
-
-                break;
-            case Phase.Target:
-
-                if (_useSkill == _defaultSkill)
-                {
-                }
-                else
-                {
-                    PhaseChooseSkill();
-                }
-
-                break;
-            case Phase.Attack:
-                break;
-            case Phase.Wait:
-                break;
-            default:
-                break;
-        }
+        StartCoroutine(PlayCardCorotine(card));
     }
 
-    /// <summary>
-    /// スキルを使用する
-    /// </summary>
-    public IEnumerator PlayCard(CardData card)
+    public IEnumerator PlayCardCorotine(CardData card)
     {
         for (int i = 0; i < card.CardSpellBases.Count; i++)
         {
-            switch (card.CardSpellBases[i].Type)
+            CardSpellBase spell = card.CardSpellBases[i];
+            switch (spell.Type)
             {
                 case SpellType.Attack:
-                    AttackCoroutine();
+                    AttackCoroutine(spell);
                     break;
                 case SpellType.Guard:
                     break;
@@ -498,9 +455,10 @@ public class CardBattleManager : MonoBehaviour
 
     }
 
-    void AttackCoroutine()
+    void AttackCoroutine(CardSpellBase spell)
     {
-        int damage = 10;
+
+        int damage = spell.EffectValue;
         _enemyMonsterBaseList[0].TakeDamage(damage);
 
         //アニメーションの再生
