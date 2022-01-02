@@ -11,8 +11,8 @@ public class DamageView : MonoBehaviour
     [SerializeField] TextMeshProUGUI _text;
     [SerializeField] Canvas _canvas;
     [SerializeField] Camera _useCamera;
-    int _damageValue = 100;
-    int _displayValue;
+    int _damageValue = 0;
+    int _displayValue = 0;
     [SerializeField] float _tweenTime = 0.3f;
     string _damageMessage = "";
 
@@ -23,19 +23,24 @@ public class DamageView : MonoBehaviour
     {
         if (IsActive == true)
         {
+            string damageString = "";
+            if (_damageValue > 0)
+            {
+                damageString = _damageValue.ToString();
+            }
             DOTween.To(() => _displayValue, (x) => { _displayValue = x; Debug.Log(x); }, _damageValue, _tweenTime).SetEase(Ease.InSine);
             if (_damageMessage != "")
             {
                 
-                _text.text = _damageMessage + "\n" + _displayValue;
-              
+                _text.text = _damageMessage + "\n" + damageString;
+
             }
             else
             {
-                _text.text = _displayValue + "";
+                _text.text = damageString + "";
             }
         }
-      
+
     }
 
     public void Setup(int damageValue, string damageMessage, Color textColor, Camera camera)
@@ -44,16 +49,17 @@ public class DamageView : MonoBehaviour
         _useCamera = camera;
         _canvas.worldCamera = _useCamera;
         this._damageValue = damageValue;
+        
         if (damageMessage != "")
         {
             this._damageMessage = damageMessage;
-            _text.text = damageMessage + "\n" + 0;
+
             _text.color = textColor;
         }
         else
         {
             damageMessage = "";
-            _text.text = 0 + "";
+ 
             _text.color = textColor;
         }
         _text.transform.localScale = Vector3.one;
@@ -62,19 +68,24 @@ public class DamageView : MonoBehaviour
 
     public void Activate()
     {
-        DOTween.To(() => _displayValue, (x) => 
+        DOTween.To(() => _displayValue, (x) =>
         {
             _displayValue = x;
+            string damageString = "";
+            if (_displayValue > 0)
+            {
+                damageString = _displayValue.ToString();
+            }
             if (_damageMessage != "")
             {
-                _text.text = _damageMessage + "\n" + _displayValue;
+                _text.text = _damageMessage + "\n" + damageString;
 
             }
             else
             {
-                _text.text = _displayValue + "";
+                _text.text = damageString;
             }
-            
+
 
         }, _damageValue, _tweenTime).SetEase(Ease.InSine);
 

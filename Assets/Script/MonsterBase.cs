@@ -33,7 +33,7 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] int _money;
 
 
-    [SerializeField] List<StatusEffectBase> _statusEffectList;
+    [SerializeField] List<StatusEffectBase> _statusEffectList = new List<StatusEffectBase>();
 
     //戦闘時のキャラ番号
     public BattleMonsterTag.CharactorTag CharactorTag;

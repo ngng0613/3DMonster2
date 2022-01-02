@@ -138,7 +138,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30B9\u30E9\u30A4\u30E0"
+  m_text: "\u30A2\u30BF\u30C3\u30AF"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b90b2562c0b9cd2428e50309af221826, type: 2}
   m_sharedMaterial: {fileID: -6295462911554822156, guid: b90b2562c0b9cd2428e50309af221826,
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   _canvas: {fileID: 7701538834048687216}
   _nameText: {fileID: 8235532437944582908}
   _image: {fileID: 5110926521528774760}
-  InHand: 0
+  InHand: 1
 --- !u!114 &4137941573912464888
 MonoBehaviour:
   m_ObjectHideFlags: 0

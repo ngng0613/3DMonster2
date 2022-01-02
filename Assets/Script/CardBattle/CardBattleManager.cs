@@ -59,7 +59,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] SkillBase _guardSkill;
 
     /*
-     * マネージャー宣言
+     * マネージャー
      */
     [SerializeField] SoundManager _soundManager;
     [SerializeField] MonsterManager monsterManager;
@@ -76,10 +76,10 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] List<HpGauge> _enemyHpListInWorld = new List<HpGauge>();
     [SerializeField] TurnDisplay _turnDisplay;
     [SerializeField] IconManager _iconManager;
-
+    [SerializeField] DamageCalculator _damageCalculator;
 
     /*
-     * オブジェクト宣言
+     * オブジェクト
      */
     [SerializeField] CardObject _cardObjectPrefab;
     [SerializeField] List<GameObject> _playerMonsterObjectsList = new List<GameObject>();
@@ -104,6 +104,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
     [SerializeField] HpGauge _playerHpGauge;
     [SerializeField] EnemyAi _enemyAi;
+    [SerializeField] 
 
     UnityEngine.Random _random = new UnityEngine.Random();
     delegate void Func();
@@ -219,7 +220,12 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator DrawCard()
     {
-        _hand.AddHandDebug();
+        CardObject card = _playerDeck.Draw();
+        if (card != null)
+        {
+            _hand.AddHand(card);
+        }
+        
         yield return null;
     }
 
@@ -245,6 +251,25 @@ public class CardBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PhaseDraw()
     {
+        List<StatusEffectBase> statusList = _playerMonsterBaseList[0].StatusEffectList;
+        for (int i = 0; i < statusList.Count; i++)
+        {
+            if (statusList[i].Count > 0)
+            {
+                statusList[i].Count--;
+                if (statusList[i].Count == 0)
+                {
+                    statusList.RemoveAt(i);
+                    //参照するインデックスにズレが出るため、一度戻す
+                    if (statusList.Count <= 0)
+                    {
+                        break;
+                    }
+                    i--;
+                }
+            }
+        }
+
         int numberOfDraw = 3;
         for (int i = 0; i < numberOfDraw; i++)
         {
@@ -279,16 +304,49 @@ public class CardBattleManager : MonoBehaviour
         List<CardData> combo = _enemyAi.Think();
         for (int i = 0; i < combo.Count; i++)
         {
-            Debug.Log(combo[i].CardName);
+            Debug.Log("hey");
+            DamageView spellNameView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
+            spellNameView.Setup(0, combo[i].CardName, Color.white, _cameraComponent);
+            spellNameView.transform.position += new Vector3(0, 2, -3);
+            spellNameView.Activate();
+
+            Debug.Log($"敵は{combo[i].CardName}をプレイした");
+            for (int k = 0; k < combo[i].CardSpellBases.Count; k++)
+            {
+                CardSpellBase partOfSpell = combo[i].CardSpellBases[k];
+                switch (partOfSpell.Type)
+                {
+                    case SpellType.Attack:
+
+                        int damage = _damageCalculator.Calculate(_enemyMonsterBaseList[0],_playerMonsterBaseList[0],partOfSpell);
+
+                        _playerMonsterBaseList[0].TakeDamage(damage);
+                        //ダメージ処理
+                        DamageView damageView = Instantiate(_damageViewPrefab, _playerMonstersPositionList[0].transform.position, Quaternion.identity);
+                        damageView.Setup(damage, "", Color.white, _cameraComponent);
+                        damageView.transform.position += new Vector3(0, 2, -3);
+                        damageView.Activate();
+                        _playerHpGauge.UpdateStatus(_playerMonsterBaseList[0].CurrentHp);
+
+                        break;
+                    case SpellType.Guard:
+                        break;
+                    case SpellType.Buff:
+                        break;
+                    case SpellType.Debuff:
+                        break;
+                    case SpellType.Draw:
+                        break;
+                    case SpellType.DisCard:
+                        break;
+                    default:
+                        break;
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return new WaitForSeconds(1);
         }
 
-        //ダメージ処理
-        DamageView damageView = Instantiate(_damageViewPrefab, _playerMonstersPositionList[0].transform.position, Quaternion.identity);
-        damageView.Setup(0, "", Color.white, _cameraComponent);
-        damageView.transform.position += new Vector3(0, 2, -3);
-        damageView.Activate();
-
-        yield return new WaitForSeconds(1);
         yield return PhaseDraw();
     }
 
@@ -436,8 +494,13 @@ public class CardBattleManager : MonoBehaviour
                     AttackCoroutine(spell);
                     break;
                 case SpellType.Guard:
+
                     break;
                 case SpellType.Buff:
+                    StatusEffectBase status = spell.Status;
+                    status.Count = spell.EffectValue;
+                    _playerMonsterBaseList[0].StatusEffectList.Add(status);
+
                     break;
                 case SpellType.Debuff:
                     break;
@@ -458,7 +521,8 @@ public class CardBattleManager : MonoBehaviour
     void AttackCoroutine(CardSpellBase spell)
     {
 
-        int damage = spell.EffectValue;
+        int damage =_damageCalculator.Calculate(_playerMonsterBaseList[0],_enemyMonsterBaseList[0],spell);
+
         _enemyMonsterBaseList[0].TakeDamage(damage);
 
         //アニメーションの再生
@@ -526,7 +590,7 @@ public class CardBattleManager : MonoBehaviour
         HpGauge newHpView = Instantiate(_enemyStatusPrefab);
         newHpView.Setup(enemyMonsterBase.MonsterName, enemyMonsterBase.MaxHp, enemyMonsterBase.CurrentHp, _cameraComponent, null);
         newHpView.transform.SetParent(enemyPos);
-        newHpView.transform.position = enemyPos.position + new Vector3(0, 2.5f, 0);
+        newHpView.transform.position = enemyPos.position + new Vector3(10, 2.5f, 0);
         newHpView.transform.localEulerAngles = new Vector3(0, 180, 0);
         _enemyHpListInWorld.Add(newHpView);
     }

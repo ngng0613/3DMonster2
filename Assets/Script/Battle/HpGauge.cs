@@ -32,8 +32,6 @@ public class HpGauge : MonoBehaviour
             return;
         }
         _hpGauge.transform.localScale = new Vector3(_displayHp / _maxHp, 1, 1);
-
-
     }
 
     public void Setup(string monsterName, int maxHp, int currentHp, Camera cameraComponent, Sprite elementIcon)
@@ -63,6 +61,8 @@ public class HpGauge : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
         sequence.Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime));
+
+
 
     }
 

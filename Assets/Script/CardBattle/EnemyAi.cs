@@ -23,12 +23,21 @@ public class EnemyAi : MonoBehaviour
     {
         this._monster = monster;
         _hand.Setup(null, _deck.Trash);
+        _hand.IsEnemy = true;
     }
 
     public void Draw()
     {
-        _hand.AddHand(_deck.Draw());
-        _hand.AddHand(_deck.Draw());
+        for (int i = 0; i < 2; i++)
+        {
+            CardObject card = _deck.Draw();
+            if (card != null)
+            {
+                _hand.AddHand(card);
+            }
+        }
+        
+        
     }
 
     /// <summary>
@@ -148,6 +157,7 @@ public class EnemyAi : MonoBehaviour
             }
 
         }
+        Debug.Log("使用カード枚数" + useCardList.Count);
         return useCardList;
     }
 }

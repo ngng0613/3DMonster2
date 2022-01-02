@@ -31,6 +31,17 @@ public class Deck : MonoBehaviour
 
     public CardObject Draw()
     {
+        if (_cardList.Count <= 0)
+        {
+            if (_trashList.Count <= 0)
+            {
+                return null;
+            }
+            _cardList = _trashList;
+            _trashList = new List<CardObject>();
+            Shuffle();
+        }
+        
         CardObject drawCard = _cardList[0];
         _cardList.RemoveAt(0);
         drawCard.InHand = true;

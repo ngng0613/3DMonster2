@@ -8,6 +8,7 @@ public delegate void TrashDelegate(CardObject card);
 
 public class Hand : MonoBehaviour
 {
+    public bool IsEnemy = false; 
     /// <summary>
     /// 手札
     /// </summary>
@@ -18,7 +19,7 @@ public class Hand : MonoBehaviour
     CardObject.PlayedAction _playedActionDelegate;
     TrashDelegate _trash;
 
-    public List<CardObject> CardList { get => _cardList;}
+    public List<CardObject> CardList { get => _cardList; }
 
     public void Setup(CardObject.PlayedAction playedAction, TrashDelegate trash)
     {
@@ -31,12 +32,20 @@ public class Hand : MonoBehaviour
     /// </summary>
     public void AddHand(CardObject card)
     {
+        
         CardList.Add(card);
+        if (IsEnemy == false)
+        {
+            card.transform.SetParent(this.transform);
+            card.Setup(_playedActionDelegate, HandUpdate, RemoveCard);
+            HandUpdate();
+        }
     }
 
     public void RemoveCard(CardObject card)
     {
         CardObject removeCard = card;
+        _trash(removeCard);
         CardList.Remove(card);
     }
     public void RemoveCard(CardData card)
@@ -45,6 +54,7 @@ public class Hand : MonoBehaviour
         {
             if (_cardList[i].CardData == card)
             {
+                _trash(_cardList[i]);
                 _cardList.RemoveAt(i);
                 break;
             }
@@ -88,6 +98,6 @@ public class Hand : MonoBehaviour
                 break;
             }
         }
-        
+
     }
 }

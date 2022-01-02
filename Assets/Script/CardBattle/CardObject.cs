@@ -35,11 +35,11 @@ public class CardObject : MonoBehaviour
     /// 初期設定
     /// </summary>
     /// <param name="playedAction">プレイ時（カード使用時）に呼ぶアクション</param>
-    /// <param name="func">手札に戻す処理時に呼ぶ関数</param>
-    public void Setup(PlayedAction playedAction, Func func, Remove remove)
+    /// <param name="handUpdate">手札に戻す処理時に呼ぶ関数</param>
+    public void Setup(PlayedAction playedAction, Func handUpdate, Remove remove)
     {
         _playedActionDelegate = playedAction;
-        _handUpdateDelegate = func;
+        _handUpdateDelegate = handUpdate;
         _remove = remove;
         UpdateText();
     }
@@ -67,7 +67,7 @@ public class CardObject : MonoBehaviour
                     _remove.Invoke(this);
 
                     this.transform.DOKill();
-                    Destroy(this.gameObject);
+                    this.transform.position = new Vector3(-200, -500, -1000);
                 }
                 _handUpdateDelegate.Invoke();
                 break;
