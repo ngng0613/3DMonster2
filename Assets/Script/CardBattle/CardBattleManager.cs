@@ -104,7 +104,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
     [SerializeField] HpGauge _playerHpGauge;
     [SerializeField] EnemyAi _enemyAi;
-    [SerializeField] 
+    [SerializeField]
 
     UnityEngine.Random _random = new UnityEngine.Random();
     delegate void Func();
@@ -225,7 +225,7 @@ public class CardBattleManager : MonoBehaviour
         {
             _hand.AddHand(card);
         }
-        
+
         yield return null;
     }
 
@@ -256,6 +256,7 @@ public class CardBattleManager : MonoBehaviour
         {
             if (statusList[i].Count > 0)
             {
+                Debug.Log(statusList[i].Name + "のステータスカウントは" + statusList[i].Count);
                 statusList[i].Count--;
                 if (statusList[i].Count == 0)
                 {
@@ -267,9 +268,17 @@ public class CardBattleManager : MonoBehaviour
                     }
                     i--;
                 }
+               
             }
         }
-
+        if (_playerMonsterBaseList[0].StatusEffectList.Count > 0 && _enemyMonsterBaseList[0].StatusEffectList.Count > 0)
+        {
+            if (_playerMonsterBaseList[0].StatusEffectList[0] == _enemyMonsterBaseList[0].StatusEffectList[0])
+            {
+                Debug.Log("一緒です");
+            }
+        }
+   
         int numberOfDraw = 3;
         for (int i = 0; i < numberOfDraw; i++)
         {
@@ -309,7 +318,7 @@ public class CardBattleManager : MonoBehaviour
             spellNameView.Setup(0, combo[i].CardName, Color.white, _cameraComponent);
             spellNameView.transform.position += new Vector3(0, 2, -3);
             spellNameView.Activate();
-
+            Debug.Log("敵コンボ数：" + combo.Count);
             Debug.Log($"敵は{combo[i].CardName}をプレイした");
             for (int k = 0; k < combo[i].CardSpellBases.Count; k++)
             {
@@ -318,7 +327,7 @@ public class CardBattleManager : MonoBehaviour
                 {
                     case SpellType.Attack:
 
-                        int damage = _damageCalculator.Calculate(_enemyMonsterBaseList[0],_playerMonsterBaseList[0],partOfSpell);
+                        int damage = _damageCalculator.Calculate(_enemyMonsterBaseList[0], _playerMonsterBaseList[0], partOfSpell);
 
                         _playerMonsterBaseList[0].TakeDamage(damage);
                         //ダメージ処理
@@ -330,8 +339,30 @@ public class CardBattleManager : MonoBehaviour
 
                         break;
                     case SpellType.Guard:
+
+
                         break;
                     case SpellType.Buff:
+
+                        StatusEffectBase status = new StatusEffectBase();
+                        status.Name = partOfSpell.Status.Name;
+                        status.Id = partOfSpell.Status.Id;
+                        status.Icon = partOfSpell.Status.Icon;
+                        bool alreadyHave = false;
+                        foreach (var tempStatus in _enemyMonsterBaseList[0].StatusEffectList)
+                        {
+                            if (status == tempStatus)
+                            {
+                                tempStatus.Count += partOfSpell.EffectValue;
+                                alreadyHave = true;
+                                break;
+                            }
+                        }
+                        if (alreadyHave == false)
+                        {
+                            status.Count = partOfSpell.EffectValue;
+                            _enemyMonsterBaseList[0].StatusEffectList.Add(status);
+                        }
                         break;
                     case SpellType.Debuff:
                         break;
@@ -497,9 +528,26 @@ public class CardBattleManager : MonoBehaviour
 
                     break;
                 case SpellType.Buff:
-                    StatusEffectBase status = spell.Status;
-                    status.Count = spell.EffectValue;
-                    _playerMonsterBaseList[0].StatusEffectList.Add(status);
+
+                    StatusEffectBase status = new StatusEffectBase();
+                    status.Name = spell.Status.Name;
+                    status.Id = spell.Status.Id;
+                    status.Icon = spell.Status.Icon;
+                    bool alreadyHave = false;
+                    foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
+                    {
+                        if (status == tempStatus)
+                        {
+                            tempStatus.Count += spell.EffectValue;
+                            alreadyHave = true;
+                            break;
+                        }
+                    }
+                    if (alreadyHave == false)
+                    {
+                        status.Count = spell.EffectValue;
+                        _playerMonsterBaseList[0].StatusEffectList.Add(status);
+                    }
 
                     break;
                 case SpellType.Debuff:
@@ -521,7 +569,7 @@ public class CardBattleManager : MonoBehaviour
     void AttackCoroutine(CardSpellBase spell)
     {
 
-        int damage =_damageCalculator.Calculate(_playerMonsterBaseList[0],_enemyMonsterBaseList[0],spell);
+        int damage = _damageCalculator.Calculate(_playerMonsterBaseList[0], _enemyMonsterBaseList[0], spell);
 
         _enemyMonsterBaseList[0].TakeDamage(damage);
 

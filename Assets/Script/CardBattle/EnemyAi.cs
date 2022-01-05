@@ -36,8 +36,8 @@ public class EnemyAi : MonoBehaviour
                 _hand.AddHand(card);
             }
         }
-        
-        
+
+
     }
 
     /// <summary>
@@ -58,8 +58,10 @@ public class EnemyAi : MonoBehaviour
 
         //使用可能なコンボのデータを入れるList
         List<ComboData> compareComboList = new List<ComboData>();
+
         for (int i = 0; i < handList.Count; i++)
         {
+            Debug.Log(handList[i]);
             CardData firstCard = handList[i];
             ///コンボを思考するうえでコンボで既に使用したカードをチェックするため、boolで管理する
             bool[] useCard = new bool[handList.Count];
@@ -145,11 +147,11 @@ public class EnemyAi : MonoBehaviour
                     useCardList.Add(handList[i]);
                     tempMp -= handList[i].Cost;
                     _hand.RemoveCard(handList[i]);
+
                 }
-                else
-                {
-                    i++;
-                }
+
+                i++;
+
                 if (i >= handList.Count || tempMp <= 0)
                 {
                     break;

@@ -7,6 +7,10 @@ public class StatusEffectBase : MonoBehaviour
 {
     public int Id;
     public string Name = default;
-    public int Count = 0;
+    int count = 0;
+
     public Sprite Icon;
+
+    public int Count { get => count; set { count = value; Debug.Log("変更されました=>" + value); } }
+
 }

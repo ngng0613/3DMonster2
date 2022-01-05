@@ -12,12 +12,10 @@ public class DamageCalculator : MonoBehaviour
         int guardCount = 0;
         foreach (var state in b.StatusEffectList)
         {
-            Debug.Log("stateName : " + state.name + state.Count);
-            Debug.Log(Guard);
             if (state.Name == Guard.Name)
             {
-                Debug.Log("ガードされている");
                 guardCount = state.Count;
+                Debug.Log("ガードされている　ガード値：" + guardCount);
             }
             else
             {
