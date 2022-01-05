@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2549234180297981898}
   - component: {fileID: 2549234180297981900}
   - component: {fileID: 2549234180297981901}
+  - component: {fileID: 8649040872233690660}
   m_Layer: 0
   m_Name: StatusIcon
   m_TagString: Untagged
@@ -75,6 +76,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8649040872233690660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549234180297981899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7374df0ac3264e74287a87b7cd1744df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Status: {fileID: 0}
+  IconImage: {fileID: 2549234180297981901}
+  Text: {fileID: 2549234181389437931}
+  _tweenSpeed: 0.2
 --- !u!1 &2549234181389437929
 GameObject:
   m_ObjectHideFlags: 0

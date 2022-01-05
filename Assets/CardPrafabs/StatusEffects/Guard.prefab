@@ -45,5 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 1
   Name: "\u30AC\u30FC\u30C9"
-  Count: 1
-  Icon: {fileID: 21300000, guid: d7c51ad34cc3bc1409cf188d2678cc9b, type: 3}
+  IconSprite: {fileID: 21300000, guid: d7c51ad34cc3bc1409cf188d2678cc9b, type: 3}

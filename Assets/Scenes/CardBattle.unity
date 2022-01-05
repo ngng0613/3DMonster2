@@ -5509,7 +5509,7 @@ MonoBehaviour:
   _enemyDeck: {fileID: 1609058966}
   _phase: 0
   _tweenSpeed: 1
-  _guardSkill: {fileID: 9148528428298755344, guid: 72fab6aadffa6db4aa30cd284b9201cb,
+  _guardStatusEffect: {fileID: 5518358524292302049, guid: 321dba7970bede94d8ffd4b638d6c0be,
     type: 3}
   _soundManager: {fileID: 1564234113}
   monsterManager: {fileID: 2015057881}
@@ -5528,6 +5528,8 @@ MonoBehaviour:
   _turnDisplay: {fileID: 90068979}
   _iconManager: {fileID: 286915369}
   _damageCalculator: {fileID: 596242768}
+  _playerStatusIconView: {fileID: 1960563446}
+  _enemyStatusIconView: {fileID: 0}
   _cardObjectPrefab: {fileID: 7982862276775126173, guid: 318fed3647a9bbc439af41824303560b,
     type: 3}
   _playerMonsterObjectsList: []
@@ -10619,8 +10621,8 @@ MonoBehaviour:
   _ratingScore: 0
   comboDictionary:
   - OrderOfCards:
-    - {fileID: 11400000, guid: 0a1f671a69cd10a4eafd731e89b7be2e, type: 2}
-    - {fileID: 11400000, guid: b411a0a2df7395d4c846efd21ee1eed0, type: 2}
+    - {fileID: 11400000, guid: 50fde3a7d96029842b14a522e4e7ed54, type: 2}
+    - {fileID: 11400000, guid: 7a45dd1af5b572f4a95ab9a2a2010db2, type: 2}
     score: 10
   - OrderOfCards: []
     score: 0
@@ -11307,9 +11309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7374df0ac3264e74287a87b7cd1744df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Status: {fileID: 0}
   IconImage: {fileID: 627606964}
   Text: {fileID: 1738092946}
-  Count: 0
 --- !u!114 &1738092946 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2549234181389437931, guid: 3fcedb55dd7011c4991224f7c55d6535,
@@ -12172,8 +12174,9 @@ GameObject:
   - component: {fileID: 1960563444}
   - component: {fileID: 1960563443}
   - component: {fileID: 1960563445}
+  - component: {fileID: 1960563446}
   m_Layer: 0
-  m_Name: IconParent
+  m_Name: StatusView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12261,6 +12264,23 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &1960563446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960563441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2387df6e14cfbad4bb225253e32b9fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Monster: {fileID: 0}
+  StatusEffectBaseList: []
+  _stateIconList: []
+  _stateIconPrefab: {fileID: 8649040872233690660, guid: 3fcedb55dd7011c4991224f7c55d6535,
+    type: 3}
 --- !u!1 &1963500329
 GameObject:
   m_ObjectHideFlags: 0
@@ -14026,12 +14046,12 @@ PrefabInstance:
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
@@ -14051,7 +14071,7 @@ PrefabInstance:
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
@@ -14061,7 +14081,7 @@ PrefabInstance:
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2549234180297981898, guid: 3fcedb55dd7011c4991224f7c55d6535,
         type: 3}
@@ -14077,6 +14097,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StatusIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2549234180297981899, guid: 3fcedb55dd7011c4991224f7c55d6535,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fcedb55dd7011c4991224f7c55d6535, type: 3}

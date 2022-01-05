@@ -16,6 +16,7 @@ public class DamageCalculator : MonoBehaviour
             {
                 guardCount = state.Count;
                 Debug.Log("ガードされている　ガード値：" + guardCount);
+                state.Count -= spell.EffectValue;
             }
             else
             {
@@ -25,6 +26,10 @@ public class DamageCalculator : MonoBehaviour
         int damage = spell.EffectValue;
 
         damage -= guardCount;
+        if (damage <= 0)
+        {
+            damage = 0;
+        }
 
         return damage;
     }
