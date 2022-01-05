@@ -8,4 +8,5 @@ public class StateIcon : MonoBehaviour
 {
     public Image IconImage;
     public TextMeshProUGUI Text;
+    public int Count;
 }

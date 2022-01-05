@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class StatusIconView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<StatusEffectBase> StatusEffectBaseList;
+    public List<StateIcon> stateIconList;
+    StateIcon stateIconPrefab;
+    public void UpdateView()
     {
-        
-    }
+        stateIconList.Clear();
+        for (int i = 0; i < StatusEffectBaseList.Count; i++)
+        {
+            StatusEffectBase effect = StatusEffectBaseList[i];
+            StateIcon icon = Instantiate(stateIconPrefab);
+            icon.Count = effect.Count;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        }
     }
 }
+
