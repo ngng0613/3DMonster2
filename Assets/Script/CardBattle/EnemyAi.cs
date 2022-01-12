@@ -53,7 +53,7 @@ public class EnemyAi : MonoBehaviour
         _decidedCombo = null;
         for (int i = 0; i < cardObjectList.Count; i++)
         {
-            handList.Add(cardObjectList[i].CardData);
+            handList.Add(cardObjectList[i].Data);
         }
 
         //使用可能なコンボのデータを入れるList

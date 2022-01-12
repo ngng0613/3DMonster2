@@ -1073,9 +1073,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b1aa5a2960ddb41b00be3ffa3b1f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardData: {fileID: 11400000, guid: 937e0e6a0712fe243a84d0ce5d17ac7e, type: 2}
+  _cardData: {fileID: 0}
   _canvas: {fileID: 7701538834048687216}
   _nameText: {fileID: 8235532437944582908}
+  _costText: {fileID: 1899734177298100841}
   _image: {fileID: 5110926521528774760}
   InHand: 1
 --- !u!114 &4137941573912464888

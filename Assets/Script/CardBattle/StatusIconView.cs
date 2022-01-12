@@ -26,7 +26,7 @@ public class StatusIconView : MonoBehaviour
                 StatusEffectBaseList.Remove(statusEffect);
                 if (StatusEffectBaseList.Count > 0)
                 {
-                    i--;
+                    //i--;
                 }
                 continue;
             }

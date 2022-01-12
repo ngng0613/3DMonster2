@@ -62,7 +62,7 @@ public class Deck : MonoBehaviour
         _cardList = temp;
         foreach (CardObject item in _cardList)
         {
-            Debug.Log(item.CardData.CardName);
+            Debug.Log(item.Data.CardName);
         }
     }
 

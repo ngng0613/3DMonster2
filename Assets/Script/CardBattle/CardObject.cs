@@ -13,8 +13,10 @@ public class CardObject : MonoBehaviour
     [SerializeField] CardData _cardData;
     [SerializeField] Canvas _canvas;
     [SerializeField] TextMeshProUGUI _nameText;
+    [SerializeField] TextMeshProUGUI _costText;
     [SerializeField] Image _image;
 
+    int _sortingOrder = 0;
     Vector3 _relativePos;
     Vector3 _firstMousePos;
 
@@ -27,7 +29,10 @@ public class CardObject : MonoBehaviour
     public delegate void Remove(CardObject card);
     Remove _remove;
 
-    public CardData CardData { get => _cardData; set => _cardData = value; }
+    public delegate bool CheckDelegate(CardData card);
+    public CheckDelegate Check;
+
+    public CardData Data { get => _cardData; set => _cardData = value; }
 
     public bool InHand = false;
 
@@ -46,8 +51,9 @@ public class CardObject : MonoBehaviour
 
     private void UpdateText()
     {
-        _nameText.text = CardData.CardName;
-        _image.sprite = CardData.MainImage;
+        _nameText.text = Data.CardName;
+        _image.sprite = Data.MainImage;
+        _costText.text = Data.Cost.ToString(); ;
     }
 
     IEnumerator PlayUpdate()
@@ -56,10 +62,15 @@ public class CardObject : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
+                if (Check.Invoke(Data) == false)
+                {
+                    Debug.LogWarning("マナが不足しています");
+                    break;
+                }
                 Debug.Log("解除");
                 if (Input.mousePosition.y >= 600)
                 {
-                    Debug.Log($"{this.CardData.CardName}をプレイした");
+                    Debug.Log($"{this.Data.CardName}をプレイした");
                     if (_playedActionDelegate != null)
                     {
                         _playedActionDelegate.Invoke(_cardData);
@@ -81,13 +92,13 @@ public class CardObject : MonoBehaviour
     {
         this.gameObject.transform.DOLocalMoveY(156, 0.2f);
         this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
-        _canvas.sortingOrder = 1;
+        _canvas.sortingOrder = 100;
     }
     public void OnPointerExit()
     {
         this.gameObject.transform.DOLocalMoveY(0, 0.2f);
         this.gameObject.transform.DOScale(Vector3.one, 0.2f);
-        _canvas.sortingOrder = 0;
+        _canvas.sortingOrder = _sortingOrder;
     }
 
     public void OnMouseDown()
@@ -119,5 +130,10 @@ public class CardObject : MonoBehaviour
     public void ResetSortingOrder()
     {
         _canvas.sortingOrder = 0;
+    }
+    public void SetSortingOrder(int order)
+    {
+        _sortingOrder = order;
+        _canvas.sortingOrder = order;
     }
 }

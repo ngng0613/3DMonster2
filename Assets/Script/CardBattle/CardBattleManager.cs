@@ -8,6 +8,12 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+public enum Side
+{
+    Player,
+    Enemy,
+}
+
 public class CardBattleManager : MonoBehaviour
 {
     Sequence sequence;
@@ -29,6 +35,8 @@ public class CardBattleManager : MonoBehaviour
         Win,
         Lose,
     }
+
+
     [SerializeField] Phase _phase = Phase.start;
     SkillBase _defaultSkill;
     public bool KeyReception { get; set; } = false;
@@ -96,6 +104,7 @@ public class CardBattleManager : MonoBehaviour
     DamageView _damageView;
     [SerializeField] DamageView _damageViewPrefab;
     [SerializeField] StatusView2[] _statusListPlayerSide = new StatusView2[3];
+    [SerializeField] StatusView2[] _statusListEnemySide = new StatusView2[3];
     Camera _cameraComponent;
     [SerializeField] Color _damageWeakColor;
     [SerializeField] Color _damageResistColor;
@@ -105,6 +114,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] GameObject _nextButton;
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
     [SerializeField] HpGauge _playerHpGauge;
+    [SerializeField] HpGauge _enemyHpGauge;
     [SerializeField] EnemyAi _enemyAi;
     [SerializeField]
 
@@ -123,8 +133,9 @@ public class CardBattleManager : MonoBehaviour
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
         MonsterBase _playerMonster = _playerMonsterBaseList[0];
-        _playerHpGauge.Setup(_playerMonster.MonsterName, _playerMonster.MaxHp, _playerMonster.CurrentHp, _cameraComponent, null);
+        _playerHpGauge.Setup(_playerMonster, _cameraComponent, null);
         _playerStatusIconView.Monster = _playerMonsterBaseList[0];
+        _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
         //ステージデータ読み込み
         if (StageData != null)
         {
@@ -158,7 +169,8 @@ public class CardBattleManager : MonoBehaviour
         for (int i = 0; i < _playerMonster.CardDatas.Count; i++)
         {
             CardObject tempCard = Instantiate(_cardObjectPrefab);
-            tempCard.CardData = _playerMonster.CardDatas[i];
+            tempCard.Data = _playerMonster.CardDatas[i];
+            tempCard.Check = CheckIfCanUseCardPlayerSide;
             //画面外で保存
             tempCard.transform.position = new Vector3(-200, -500, -1000);
             tempCard.gameObject.transform.SetParent(_playerDeck.transform);
@@ -175,7 +187,8 @@ public class CardBattleManager : MonoBehaviour
         for (int i = 0; i < _enemyMonsterBaseList[0].CardDatas.Count; i++)
         {
             CardObject tempCard = Instantiate(_cardObjectPrefab);
-            tempCard.CardData = _enemyMonsterBaseList[0].CardDatas[i];
+            tempCard.Data = _enemyMonsterBaseList[0].CardDatas[i];
+            tempCard.Check = CheckIfCanUseCardEnemySide;
             //画面外で保存
             tempCard.transform.position = new Vector3(200, -500, -1000);
             tempCard.gameObject.transform.SetParent(_enemyDeck.transform);
@@ -223,6 +236,7 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator DrawCard()
     {
+        
         CardObject card = _playerDeck.Draw();
         if (card != null)
         {
@@ -254,13 +268,15 @@ public class CardBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PhaseDraw()
     {
+        _playerMonsterBaseList[0].CurrentMp = _playerMonsterBaseList[0].MaxMp;
+        UpdateMp();
         List<StatusEffectBase> statusList = _playerMonsterBaseList[0].StatusEffectList;
         for (int i = 0; i < statusList.Count; i++)
         {
             if (statusList[i].Count > 0)
             {
                 Debug.Log(statusList[i].Name + "のステータスカウントは" + statusList[i].Count);
-                statusList[i].Count--;
+                //statusList[i].Count--;
                 if (statusList[i].Count == 0)
                 {
                     statusList.RemoveAt(i);
@@ -282,6 +298,14 @@ public class CardBattleManager : MonoBehaviour
             yield return DrawCard();
             yield return Wait(0.3f);
         }
+    }
+
+    void UpdateMp()
+    {
+      
+        _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
+   
+        _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0].CurrentMp);
     }
 
     IEnumerator Wait(float waitForSeconds)
@@ -307,6 +331,7 @@ public class CardBattleManager : MonoBehaviour
 
     IEnumerator PhaseEnemyTurn()
     {
+        _enemyMonsterBaseList[0].CurrentMp = _enemyMonsterBaseList[0].MaxMp;
         List<CardData> combo = _enemyAi.Think();
         for (int i = 0; i < combo.Count; i++)
         {
@@ -333,7 +358,7 @@ public class CardBattleManager : MonoBehaviour
                         damageView.Setup(damage, "", Color.white, _cameraComponent);
                         damageView.transform.position += new Vector3(0, 2, -3);
                         damageView.Activate();
-                        _playerHpGauge.UpdateStatus(_playerMonsterBaseList[0].CurrentHp);
+                        _playerHpGauge.UpdateHp(_playerMonsterBaseList[0].CurrentHp);
                         //_playerStatusIconView.UpdateView();
                         break;
                     case SpellType.Guard:
@@ -342,14 +367,14 @@ public class CardBattleManager : MonoBehaviour
                         break;
                     case SpellType.Buff:
 
-                        StatusEffectBase status = new StatusEffectBase();
+                        StatusEffectBase status = Instantiate(partOfSpell.Status);
                         status.Name = partOfSpell.Status.Name;
                         status.Id = partOfSpell.Status.Id;
                         status.IconSprite = partOfSpell.Status.IconSprite;
                         bool alreadyHave = false;
                         foreach (var tempStatus in _enemyMonsterBaseList[0].StatusEffectList)
                         {
-                            if (status == tempStatus)
+                            if (status.Name == tempStatus.Name)
                             {
                                 tempStatus.Count += partOfSpell.EffectValue;
                                 alreadyHave = true;
@@ -371,6 +396,8 @@ public class CardBattleManager : MonoBehaviour
                     default:
                         break;
                 }
+                _enemyStatusIconView.UpdateView();
+                UpdateMp();
                 yield return new WaitForSeconds(0.1f);
             }
             yield return new WaitForSeconds(1);
@@ -380,115 +407,27 @@ public class CardBattleManager : MonoBehaviour
     }
 
 
-
-    void PhaseTarget()
+    public void CheckIfDead()
     {
-        _phase = Phase.Target;
-        List<bool> targetList = new List<bool>();
-        for (int i = 0; i < _maximumNumberOfMonster; i++)
+
+        if (_playerMonsterBaseList[0].CurrentHp <= 0)
         {
-            if (_enemyMonsterBaseList[i])
-            {
-                targetList.Add(CheckIfAlived(_enemyMonsterBaseList[i]));
-            }
+            PhaseLose();
         }
-        _targetView.TargetPreparation(TargetView.TargetType.EnemySide, targetList.ToArray(), SetTarget);
+        if (_enemyMonsterBaseList[0].CurrentHp <= 0)
+        {
+            PhaseWin();
+        }
     }
 
-    public void PhaseDead()
+    public void PhaseWin()
     {
-        switch (_thisTurnTarget)
-        {
-            case BattleMonsterTag.CharactorTag.Player1:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
-                break;
-            case BattleMonsterTag.CharactorTag.Player2:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player2);
-                break;
-            case BattleMonsterTag.CharactorTag.Player3:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player3);
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy1:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy1);
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy2:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy2);
-                break;
-            case BattleMonsterTag.CharactorTag.Enemy3:
-                _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Enemy3);
-                break;
-            default:
-                break;
-        }
-        _thisTurnTargetMonsterBase.AfterDead = PhaseDead2;
-        _thisTurnTargetMonsterBase.CheckEndOfDeadAnimation();
-        _thisTurnTargetMonsterBase.MotionDead();
+
     }
 
-    public void PhaseDead2()
+    public void PhaseLose()
     {
-        for (int i = 0; i < _attackWaitingList.Count; i++)
-        {
-            if (_attackWaitingList[i] == _thisTurnTargetMonsterBase)
-            {
-                _attackWaitingList.Remove(_thisTurnTargetMonsterBase);
-            }
-        }
 
-        for (int i = 0; i < _statusListPlayerSide.Length; i++)
-        {
-            _statusListPlayerSide[i].ChangeState(false);
-        }
-
-        //全滅チェック
-        BattleMonsterTag.CharactorTag targetTag = _thisTurnTargetMonsterBase.CharactorTag;
-        if (targetTag == BattleMonsterTag.CharactorTag.Enemy1 || targetTag == BattleMonsterTag.CharactorTag.Enemy2 || targetTag == BattleMonsterTag.CharactorTag.Enemy3)
-        {
-            bool allDeadFlag = true;
-            for (int i = 0; i < _enemyMonsterBaseList.Count; i++)
-            {
-                if (CheckIfAlived(_enemyMonsterBaseList[i]))
-                {
-                    allDeadFlag = false;
-                    break;
-                }
-            }
-            if (allDeadFlag == true)
-            {
-                VictoryProduction();
-                return;
-            }
-        }
-
-        if (targetTag == BattleMonsterTag.CharactorTag.Player1 || targetTag == BattleMonsterTag.CharactorTag.Player2 || targetTag == BattleMonsterTag.CharactorTag.Player3)
-        {
-            bool allDeadFlag = true;
-            for (int i = 0; i < _playerMonsterBaseList.Count; i++)
-            {
-                if (CheckIfAlived(_playerMonsterBaseList[i]))
-                {
-                    allDeadFlag = false;
-                    break;
-                }
-            }
-            if (allDeadFlag == true)
-            {
-                LoseProduction();
-                return;
-            }
-
-        }
-
-        if (_attackWaitingList.Count == 0)
-        {
-            _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-            _attackWaitingList = null;
-            _phase = Phase.Wait;
-        }
-        else
-        {
-            _phase = Phase.Wait;
-        }
     }
 
     /// <summary>
@@ -503,6 +442,45 @@ public class CardBattleManager : MonoBehaviour
             _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
         }
     }
+
+    /// <summary>
+    /// カードを使用可能か確認し、使用可能ならマナを消費する
+    /// </summary>
+    /// <param name="card">確認するカード</param>
+    /// <returns></returns>
+    public bool CheckIfCanUseCardPlayerSide(CardData card)
+    {
+        if (_playerMonsterBaseList[0].CurrentMp >= card.Cost)
+        {
+            _playerMonsterBaseList[0].CurrentMp -= card.Cost;
+            UpdateMp();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    /// <summary>
+    /// カードを使用可能か確認し、使用可能ならマナを消費する
+    /// </summary>
+    /// <param name="card">確認するカード</param>
+    /// <returns></returns>
+    public bool CheckIfCanUseCardEnemySide(CardData card)
+    {
+        if (_enemyMonsterBaseList[0].CurrentMp >= card.Cost)
+        {
+            _enemyMonsterBaseList[0].CurrentMp -= card.Cost;
+            UpdateMp();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
 
     /// <summary>
     /// カードを使用する
@@ -528,14 +506,14 @@ public class CardBattleManager : MonoBehaviour
                     break;
                 case SpellType.Buff:
 
-                    StatusEffectBase status = new StatusEffectBase();
+                    StatusEffectBase status = Instantiate(spell.Status);
                     status.Name = spell.Status.Name;
                     status.Id = spell.Status.Id;
                     status.IconSprite = spell.Status.IconSprite;
                     bool alreadyHave = false;
                     foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
                     {
-                        if (status == tempStatus)
+                        if (status.Name == tempStatus.Name)
                         {
                             tempStatus.Count += spell.EffectValue;
                             alreadyHave = true;
@@ -558,8 +536,9 @@ public class CardBattleManager : MonoBehaviour
                 default:
                     break;
             }
-
-            yield return new WaitForSeconds(0.3f);
+            _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
+            yield return new WaitForSeconds(1f);
+            _enemyStatusIconView.UpdateView();
         }
 
 
@@ -571,6 +550,7 @@ public class CardBattleManager : MonoBehaviour
         int damage = _damageCalculator.Calculate(_playerMonsterBaseList[0], _enemyMonsterBaseList[0], spell);
 
         _enemyMonsterBaseList[0].TakeDamage(damage);
+        _enemyStatusIconView.IconPopup(_guardStatusEffect);
 
         //アニメーションの再生
 
@@ -580,7 +560,6 @@ public class CardBattleManager : MonoBehaviour
         damageView.transform.position += new Vector3(0, 1, -10);
         damageView.Activate();
 
-        _enemyHpListInWorld[0].UpdateStatus(_enemyMonsterBaseList[0].CurrentHp);
     }
 
     public void TurnEnd()
@@ -606,11 +585,11 @@ public class CardBattleManager : MonoBehaviour
         playerMonsterBase.CharactorTag = (BattleMonsterTag.CharactorTag)playerNumber;
         _playerMonsterBaseList[playerNumber] = playerMonsterBase;
 
-        //味方ステータスの表示
-        HpGauge newHpView = Instantiate(_enemyStatusPrefab);
-        newHpView.transform.SetParent(playerPos);
-        newHpView.transform.position = playerPos.position + new Vector3(0, 2.5f, 0);
-        _playerHpListInWorld.Add(newHpView);
+        ////味方ステータスの表示
+        //HpGauge newHpView = Instantiate(_enemyStatusPrefab);
+        //newHpView.transform.SetParent(playerPos);
+        //newHpView.transform.position = playerPos.position + new Vector3(0, 2.5f, 0);
+        //_playerHpListInWorld.Add(newHpView);
 
     }
 
@@ -634,12 +613,8 @@ public class CardBattleManager : MonoBehaviour
         enemyMonsterBase.CharactorTag = (BattleMonsterTag.CharactorTag)enemyNumber + 10;
         _enemyMonsterBaseList[enemyNumber] = enemyMonsterBase;
         //敵ステータスの表示
-        HpGauge newHpView = Instantiate(_enemyStatusPrefab);
-        newHpView.Setup(enemyMonsterBase.MonsterName, enemyMonsterBase.MaxHp, enemyMonsterBase.CurrentHp, _cameraComponent, null);
-        newHpView.transform.SetParent(enemyPos);
-        newHpView.transform.position = enemyPos.position + new Vector3(10, 2.5f, 0);
-        newHpView.transform.localEulerAngles = new Vector3(0, 180, 0);
-        _enemyHpListInWorld.Add(newHpView);
+        _enemyHpGauge.Setup(enemyMonsterBase, _cameraComponent, null);
+        _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
     }
 
     /// <summary>
@@ -672,8 +647,6 @@ public class CardBattleManager : MonoBehaviour
             _thisTurnTargetMonsterBase = _thisTurnActorMonsterBase;
             return;
         }
-
-        PhaseTarget();
     }
 
     /// <summary>

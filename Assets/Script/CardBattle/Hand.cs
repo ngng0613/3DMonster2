@@ -52,7 +52,7 @@ public class Hand : MonoBehaviour
     {
         for (int i = 0; i < _cardList.Count; i++)
         {
-            if (_cardList[i].CardData == card)
+            if (_cardList[i].Data == card)
             {
                 _trash(_cardList[i]);
                 _cardList.RemoveAt(i);
@@ -74,7 +74,7 @@ public class Hand : MonoBehaviour
         ListUpdate();
         for (int i = 0; i < CardList.Count; i++)
         {
-            CardList[i].ResetSortingOrder();
+            CardList[i].SetSortingOrder(i);
             CardList[i].transform.localPosition = new Vector2(i * 256, 0);
         }
     }
