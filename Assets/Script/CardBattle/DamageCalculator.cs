@@ -15,8 +15,15 @@ public class DamageCalculator : MonoBehaviour
             if (state.Name == Guard.Name)
             {
                 guardCount = state.Count;
-                Debug.Log("ガードされている　ガード値：" + guardCount);
-                state.Count -= spell.EffectValue;
+                if (guardCount > 0)
+                {
+                    Debug.Log("ガードされている　ガード値：" + guardCount);
+                    state.Count -= spell.EffectValue;
+                    if (state.Count < 0)
+                    {
+                        state.Count = 0;
+                    }
+                }
             }
             else
             {
