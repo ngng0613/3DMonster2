@@ -116,7 +116,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] HpGauge _playerHpGauge;
     [SerializeField] HpGauge _enemyHpGauge;
     [SerializeField] EnemyAi _enemyAi;
-    [SerializeField]
+    [SerializeField] Canvas _resultCanvas;
 
     UnityEngine.Random _random = new UnityEngine.Random();
     delegate void Func();
@@ -236,7 +236,7 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator DrawCard()
     {
-        
+
         CardObject card = _playerDeck.Draw();
         if (card != null)
         {
@@ -302,9 +302,9 @@ public class CardBattleManager : MonoBehaviour
 
     void UpdateMp()
     {
-      
+
         _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
-   
+
         _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0].CurrentMp);
     }
 
@@ -402,27 +402,34 @@ public class CardBattleManager : MonoBehaviour
             }
             yield return new WaitForSeconds(1);
         }
-
+        if (CheckIfDead() == true)
+        {
+            yield break;
+        }
         yield return PhaseDraw();
     }
 
 
-    public void CheckIfDead()
+    public bool CheckIfDead()
     {
-
+        bool gameSet = false;
         if (_playerMonsterBaseList[0].CurrentHp <= 0)
         {
+            gameSet = true;
             PhaseLose();
+
         }
         if (_enemyMonsterBaseList[0].CurrentHp <= 0)
         {
+            gameSet = true;
             PhaseWin();
         }
+        return gameSet;
     }
 
     public void PhaseWin()
     {
-
+        _resultCanvas.gameObject.SetActive(true);
     }
 
     public void PhaseLose()
@@ -489,6 +496,7 @@ public class CardBattleManager : MonoBehaviour
     {
         StartCoroutine(PlayCardCorotine(card));
         _playerStatusIconView.UpdateView();
+
     }
 
     public IEnumerator PlayCardCorotine(CardData card)
@@ -539,6 +547,11 @@ public class CardBattleManager : MonoBehaviour
             _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
             yield return new WaitForSeconds(1f);
             _enemyStatusIconView.UpdateView();
+            if (CheckIfDead() == true)
+            {
+                yield break;
+            }
+
         }
 
 
@@ -615,27 +628,6 @@ public class CardBattleManager : MonoBehaviour
         //敵ステータスの表示
         _enemyHpGauge.Setup(enemyMonsterBase, _cameraComponent, null);
         _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
-    }
-
-    /// <summary>
-    /// 対象モンスターが生きているか確認
-    /// </summary>
-    /// <param name="monster">確認する対象モンスター</param>
-    /// <returns>生きている = true, 死んでいる = false</returns>
-    bool CheckIfAlived(MonsterBase monster)
-    {
-        if (!monster)
-        {
-            return false;
-        }
-        if (monster.CurrentHp > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     public void SetUseSkill(SkillBase skill)
