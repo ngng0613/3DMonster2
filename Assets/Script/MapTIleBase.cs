@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapTIleBase : MonoBehaviour
+public class MapTileBase : MonoBehaviour
 {
     [SerializeField] Image _mainImage;
 }
