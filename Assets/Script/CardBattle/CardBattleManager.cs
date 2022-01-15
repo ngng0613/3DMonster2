@@ -213,7 +213,7 @@ public class CardBattleManager : MonoBehaviour
         sequence = DOTween.Sequence();
         sequence
         .Append(_startAnimationCanvasGroup.DOFade(1.0f, 1.0f))
-        .AppendInterval(2.0f)
+        .AppendInterval(1.0f)
         .AppendCallback(() => _soundManager.PlaySe(SoundManager.SeList.BattleStart))
         .Append(_startAnimationCanvasGroup.gameObject.transform.DOScale(10.0f, 1.0f))
         .Insert(3.0f, _startAnimationCanvasGroup.DOFade(0.0f, 0.5f))
