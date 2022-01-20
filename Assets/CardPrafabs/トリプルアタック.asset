@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f15c0a2bdc04b4a8614a9d67d66170, type: 3}
+  m_Name: "\u30C8\u30EA\u30D7\u30EB\u30A2\u30BF\u30C3\u30AF"
+  m_EditorClassIdentifier: 
+  _cardName: "\u30C8\u30EA\u30D7\u30EB\u30A2\u30BF\u30C3\u30AF"
+  _mainImage: {fileID: 0}
+  _cost: 1
+  _flavoursText: "\u6575\u306B5\u30C0\u30E1\u30FC\u30B8\u30923\u56DE\u4E0E\u3048\u308B"
+  _cardSpellBases:
+  - Type: 0
+    Target: 0
+    EffectValue: 5
+    Status: {fileID: 0}
+  - Type: 0
+    Target: 0
+    EffectValue: 5
+    Status: {fileID: 0}
+  - Type: 0
+    Target: 0
+    EffectValue: 5
+    Status: {fileID: 0}
