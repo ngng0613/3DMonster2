@@ -87,6 +87,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] DamageCalculator _damageCalculator;
     [SerializeField] StatusIconView _playerStatusIconView;
     [SerializeField] StatusIconView _enemyStatusIconView;
+    [SerializeField] ResultManager _resultManager;
 
     /*
      * オブジェクト
@@ -129,7 +130,6 @@ public class CardBattleManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         //初期化
-
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
         MonsterBase _playerMonster = _playerMonsterBaseList[0];
@@ -425,6 +425,7 @@ public class CardBattleManager : MonoBehaviour
     {
         //リザルト表示
         _resultCanvas.gameObject.SetActive(true);
+        _resultManager.AnimationStart();
     }
 
     public void PhaseLose()
@@ -482,8 +483,6 @@ public class CardBattleManager : MonoBehaviour
             return false;
         }
     }
-
-
 
     /// <summary>
     /// カードを使用する
@@ -547,7 +546,6 @@ public class CardBattleManager : MonoBehaviour
 
 
     }
-
     void AttackCoroutine(CardSpellBase spell)
     {
 
@@ -563,11 +561,6 @@ public class CardBattleManager : MonoBehaviour
         damageView.Setup(damage, "", Color.white, _cameraComponent);
         damageView.transform.position += new Vector3(0, 1, -10);
         damageView.Activate();
-
-    }
-
-    public void TurnEnd()
-    {
 
     }
 
@@ -718,7 +711,6 @@ public class CardBattleManager : MonoBehaviour
         InputManager.ResetInputSettings();
         InputManager.InputEnter = GameEndProcess;
     }
-
 
     void GameEndProcess()
     {
