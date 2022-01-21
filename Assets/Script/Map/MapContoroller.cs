@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
 
 public class MapContoroller : MonoBehaviour
 {
@@ -16,7 +18,14 @@ public class MapContoroller : MonoBehaviour
     {
         for (int i = 0; i < _mapEventArray.Length; i++)
         {
-            _mapEventArray[i].MovePlayer = MovePlayer;
+            MapEvent mEvent = _mapEventArray[i];
+            mEvent.MovePlayer = MovePlayer;
+            //型チェック
+            //もしバトルイベントなら
+            if (mEvent.GetType() == typeof(MapEventBattle))
+            {
+                mEvent.EventAction += BattleEvent;
+            }
         }
     }
 
@@ -45,6 +54,19 @@ public class MapContoroller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// マップイベントボタンが押された際に、プレイヤーの場所から該当するイベントを探す
+    /// </summary>
+    public void EventButton()
+    {
+        MapEvent mEvent = _mapEventArray.Where(mapEvent => mapEvent.transform.position == _player.transform.position) as MapEvent;
+
+    }
+
+    public void BattleEvent()
+    {
+        Debug.Log("バトル開始");
+    }
 
     public void MovePlayer(Vector3 pos)
     {
