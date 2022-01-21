@@ -24,7 +24,7 @@ public class MapContoroller : MonoBehaviour
             //もしバトルイベントなら
             if (mEvent.GetType() == typeof(MapEventBattle))
             {
-                mEvent.EventAction += BattleEvent;
+                Debug.Log("ああ");
             }
         }
     }
@@ -59,14 +59,14 @@ public class MapContoroller : MonoBehaviour
     /// </summary>
     public void EventButton()
     {
-        MapEvent mEvent = _mapEventArray.Where(mapEvent => mapEvent.transform.position == _player.transform.position) as MapEvent;
+        Debug.Log(_mapEventArray[1].transform.position +"    "+ _player.transform.position);
+        MapEvent mEvent = _mapEventArray.Where(mapEvent => (mapEvent.transform.position.x == _player.transform.position.x) && (mapEvent.transform.position.y == _player.transform.position.y)).FirstOrDefault();
+        Debug.Log(mEvent);
+        mEvent.StartEvent();
 
     }
 
-    public void BattleEvent()
-    {
-        Debug.Log("バトル開始");
-    }
+
 
     public void MovePlayer(Vector3 pos)
     {

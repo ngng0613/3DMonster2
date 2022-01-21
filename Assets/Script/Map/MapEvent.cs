@@ -18,6 +18,11 @@ public class MapEvent : EventBase
     [SerializeField] Sprite _spriteUnselected;
     [SerializeField] SpriteRenderer _spriteRenderer;
 
+    public void StartEvent()
+    {
+        Debug.Log(transform.position +"の座標のイベントを開始します");
+    }
+
     public void OnMouseOver()
     {
         _isSelect = true;
