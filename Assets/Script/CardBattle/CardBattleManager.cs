@@ -219,15 +219,7 @@ public class CardBattleManager : MonoBehaviour
         .Insert(1.5f, _startAnimationCanvasGroup.DOFade(0.0f, 0.5f))
         .InsertCallback(1.5f, () =>
         {
-            //フェードアウト
-            if (_fade.isActiveAndEnabled == true)
-            {
-                _fade.FadeOut(1.0f, () => PhasePreparation());
-            }
-            else
-            {
-                PhasePreparation();
-            }
+            PhasePreparation();
         });
     }
 
@@ -236,7 +228,7 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator DrawCard()
     {
-        
+
         CardObject card = _playerDeck.Draw();
         if (card != null)
         {
@@ -302,9 +294,9 @@ public class CardBattleManager : MonoBehaviour
 
     void UpdateMp()
     {
-      
+
         _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
-   
+
         _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0].CurrentMp);
     }
 
@@ -441,7 +433,6 @@ public class CardBattleManager : MonoBehaviour
     {
         if (phase == Phase.Win)
         {
-
             _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.Player1);
         }
     }
@@ -475,7 +466,7 @@ public class CardBattleManager : MonoBehaviour
         {
             _enemyMonsterBaseList[0].CurrentMp -= card.Cost;
             UpdateMp();
-         
+
             return true;
         }
         else
@@ -719,7 +710,6 @@ public class CardBattleManager : MonoBehaviour
         if (_fade.isActiveAndEnabled == true)
         {
             _soundManager.StopBgm();
-            _fade.FadeIn(1.0f, BackToFrontScene);
         }
         else
         {

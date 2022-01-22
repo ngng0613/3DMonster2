@@ -21,7 +21,6 @@ public class TitleSceneManager : MonoBehaviour
     void Start()
     {
 
-        _fade.FadeOut(_fadeSpeed, SetInput);
     }
 
     void SetInput()
@@ -33,7 +32,6 @@ public class TitleSceneManager : MonoBehaviour
     void GameStart()
     {
         _soundManager.StopBgm();
-        _fade.FadeIn(_fadeSpeed, LoadScene);
     }
 
     void ButtonAnimation()

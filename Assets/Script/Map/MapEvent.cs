@@ -21,6 +21,7 @@ public class MapEvent : EventBase
     public void StartEvent()
     {
         Debug.Log(transform.position +"の座標のイベントを開始します");
+        EventAction.Invoke();
     }
 
     public void OnMouseOver()

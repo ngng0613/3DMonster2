@@ -11,7 +11,7 @@ public class CardData : ScriptableObject
     [SerializeField] string _cardName;
     [SerializeField] Sprite _mainImage;
     [SerializeField] int _cost;
-    [SerializeField,TextArea] string _flavoursText;
+    [SerializeField] CardSpellBase _spellBase;
     [SerializeField] List<CardSpellBase> _cardSpellBases;
 
     public string CardName { get => _cardName; set => _cardName = value; }

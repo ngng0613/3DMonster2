@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 
@@ -12,19 +14,20 @@ public class MapContoroller : MonoBehaviour
     [SerializeField] GameObject _player;
     [SerializeField] float _playerMoveSpeed = 1.0f;
     [SerializeField] MapEvent[] _mapEventArray;
+    [SerializeField] Fade _fade;
     Vector3 _moveToPos;
     bool _isMoving = false;
     private void Start()
     {
         for (int i = 0; i < _mapEventArray.Length; i++)
         {
-            MapEvent mEvent = _mapEventArray[i];
-            mEvent.MovePlayer = MovePlayer;
+            MapEvent mapEvent = _mapEventArray[i];
+            mapEvent.MovePlayer = MovePlayer;
             //型チェック
             //もしバトルイベントなら
-            if (mEvent.GetType() == typeof(MapEventBattle))
+            if (mapEvent.GetType() == typeof(MapEventBattle))
             {
-                Debug.Log("ああ");
+                mapEvent.EventAction += BattleStart;
             }
         }
     }
@@ -60,13 +63,12 @@ public class MapContoroller : MonoBehaviour
     public void EventButton()
     {
         Debug.Log(_mapEventArray[1].transform.position +"    "+ _player.transform.position);
-        MapEvent mEvent = _mapEventArray.Where(mapEvent => (mapEvent.transform.position.x == _player.transform.position.x) && (mapEvent.transform.position.y == _player.transform.position.y)).FirstOrDefault();
-        Debug.Log(mEvent);
-        mEvent.StartEvent();
-
+        MapEvent mapEvent = _mapEventArray.Where(mEvent => (mEvent.transform.position.x == _player.transform.position.x) && (mEvent.transform.position.y == _player.transform.position.y)).FirstOrDefault();
+        if (mapEvent != null)
+        {
+            mapEvent.StartEvent();
+        }
     }
-
-
 
     public void MovePlayer(Vector3 pos)
     {
@@ -101,7 +103,16 @@ public class MapContoroller : MonoBehaviour
         _isMoving = false;
     }
 
+    public void BattleStart()
+    {
+        _fade.AfterFunction += () => ChangeScene("CardBattle");
+        _fade.StartAnimation();
+    }
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
 
+    }
 
 
 }

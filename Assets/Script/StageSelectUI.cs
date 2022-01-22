@@ -67,7 +67,6 @@ public class StageSelectUI : MonoBehaviour
     public void Activate()
     {
         Player.CanMove = false;
-        GameManager2.CanTalk = false;
         soundManager.PlaySe(SoundManager.SeList.OpenMenu);
         SetInput();
         uiObjects.SetActive(true);
@@ -159,7 +158,6 @@ public class StageSelectUI : MonoBehaviour
         uiObjects.SetActive(false);
         AfterClosed.Invoke();
         Player.CanMove = true;
-        GameManager2.CanTalk = true;
         soundManager.PlaySe(SoundManager.SeList.CloseMenu);
     }
 }

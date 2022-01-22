@@ -53,7 +53,6 @@ public class PartyCreate : MenuContents
         PhaseChoicePosition();
         InputManager.setupCompleted = true;
         allMonsterList = monsterManager.GetAllMonsterList();
-        monsterPartyList = monsterManager.GetPossessionMonsterList().GetRange(0, GameManager2.Progress + 3);
         UpdateParty();
 
     }
