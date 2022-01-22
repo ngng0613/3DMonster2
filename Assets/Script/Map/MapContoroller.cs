@@ -62,7 +62,7 @@ public class MapContoroller : MonoBehaviour
     /// </summary>
     public void EventButton()
     {
-        Debug.Log(_mapEventArray[1].transform.position +"    "+ _player.transform.position);
+        Debug.Log(_mapEventArray[1].transform.position + "    " + _player.transform.position);
         MapEvent mapEvent = _mapEventArray.Where(mEvent => (mEvent.transform.position.x == _player.transform.position.x) && (mEvent.transform.position.y == _player.transform.position.y)).FirstOrDefault();
         if (mapEvent != null)
         {
@@ -96,7 +96,6 @@ public class MapContoroller : MonoBehaviour
             {
                 break;
             }
-
             yield return null;
         }
         _player.transform.position = new Vector3(_moveToPos.x, _moveToPos.y, startPos.z);
@@ -105,14 +104,7 @@ public class MapContoroller : MonoBehaviour
 
     public void BattleStart()
     {
-        _fade.AfterFunction += () => ChangeScene("CardBattle");
+        _fade.AfterFunction += () => GameManager.Instance.ChangeScene("CardBattle");
         _fade.StartAnimation();
     }
-    public void ChangeScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-
-    }
-
-
 }
