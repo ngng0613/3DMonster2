@@ -17,12 +17,16 @@ public class ResultManager : MonoBehaviour
     private void Start()
     {
         _sequence = DOTween.Sequence();
-        //AnimationStart();
     }
     public void AnimationStart()
     {
         _sequence.Append(_resultTitle.transform.DOLocalMoveX(_titlePos.x, _displaySpeed))
-                 .Insert(0,_resultPanel.transform.DOScaleY(1.0f, _displaySpeed));
+                 .Insert(0, _resultPanel.transform.DOScaleY(1.0f, _displaySpeed));
+
+    }
+
+    public void GetMonster(MonsterBase monster)
+    {
 
     }
 

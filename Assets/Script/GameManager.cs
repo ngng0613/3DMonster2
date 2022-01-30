@@ -9,7 +9,13 @@ public class GameManager
     public static GameManager Instance => s_instance;
     public void ChangeScene(string sceneName)
     {
+        SceneManager.sceneLoaded += A;
         SceneManager.LoadSceneAsync(sceneName);
+    }
+
+    public void A(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("aaa");
     }
 
 }

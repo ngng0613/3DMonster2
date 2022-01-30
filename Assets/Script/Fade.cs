@@ -19,7 +19,7 @@ public class Fade : MonoBehaviour
 
     public void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
         Color color = _mainImage.color;
         color.a = 0;
         _mainImage.color = color;
