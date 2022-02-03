@@ -36,6 +36,8 @@ public class CardObject : MonoBehaviour
 
     public bool InHand = false;
 
+    public bool Inbattle = false;
+
     /// <summary>
     /// 初期設定
     /// </summary>
@@ -90,20 +92,27 @@ public class CardObject : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        this.gameObject.transform.DOLocalMoveY(156, 0.2f);
-        this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
-        _canvas.sortingOrder = 100;
+        if (Inbattle == true)
+        {
+            this.gameObject.transform.DOLocalMoveY(156, 0.2f);
+            this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
+            _canvas.sortingOrder = 100;
+        }
     }
     public void OnPointerExit()
     {
-        this.gameObject.transform.DOLocalMoveY(0, 0.2f);
-        this.gameObject.transform.DOScale(Vector3.one, 0.2f);
-        _canvas.sortingOrder = _sortingOrder;
+        if (Inbattle == true)
+        {
+            this.gameObject.transform.DOLocalMoveY(0, 0.2f);
+            this.gameObject.transform.DOScale(Vector3.one, 0.2f);
+            _canvas.sortingOrder = _sortingOrder;
+        }
+
     }
 
     public void OnMouseDown()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Inbattle)
         {
             _relativePos = this.gameObject.transform.position;
             _firstMousePos = Input.mousePosition;
@@ -113,7 +122,7 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseDrag()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Inbattle)
         {
             this.gameObject.transform.position = _relativePos + Input.mousePosition - _firstMousePos;
         }
@@ -121,7 +130,7 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseUp()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && Inbattle)
         {
             _handUpdateDelegate.Invoke();
         }
