@@ -51,7 +51,8 @@ public class CardObject : MonoBehaviour
         UpdateText();
     }
 
-    private void UpdateText()
+
+    public void UpdateText()
     {
         _nameText.text = Data.CardName;
         _image.sprite = Data.MainImage;

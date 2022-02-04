@@ -7,6 +7,9 @@ public class GameManager
 {
     static GameManager s_instance = new GameManager();
     public static GameManager Instance => s_instance;
+
+    public List<MonsterBase> MonsterList = new List<MonsterBase>();
+
     public void ChangeScene(string sceneName)
     {
         SceneManager.sceneLoaded += A;

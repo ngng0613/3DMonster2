@@ -87,7 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a5a4ded2df01c498a3beb9222ad72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monster: {fileID: 0}
+  _monster: {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8,
+    type: 3}
   _slotTagName1: MonsterSlot1
   _slotTagName2: MonsterSlot2
   _slotTagName3: MonsterSlot3
