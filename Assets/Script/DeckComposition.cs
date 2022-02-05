@@ -33,6 +33,11 @@ public class DeckComposition : MonoBehaviour
 
     }
 
+    public void Activate()
+    {
+        this.gameObject.SetActive(true);
+    }
+
     public void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
     {
         if (SetParts[slotId - 1] != null)

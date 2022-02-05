@@ -21,6 +21,8 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] StageData _stageDataForDebug;
     [SerializeField] Deck _playerDeck;
     [SerializeField] Deck _enemyDeck;
+
+
     public enum Phase
     {
         start = 0,
@@ -36,13 +38,11 @@ public class CardBattleManager : MonoBehaviour
         Lose,
     }
 
+    [SerializeField] List<MonsterBase> _debugMonsters;
+
 
     [SerializeField] Phase _phase = Phase.start;
-    SkillBase _defaultSkill;
     public bool KeyReception { get; set; } = false;
-    int _maximumNumberOfMonster = 3;
-    int _numberOfPossessionMonster = 0;
-    int _turnOrder = 0;
 
     float _cameraMovementTime = 1.0f;
     [SerializeField] float _tweenSpeed = 1.0f;
@@ -129,6 +129,12 @@ public class CardBattleManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
 
+        if (GameManager.Instance.MonsterList.Count < 3)
+        {
+            GameManager.Instance.MonsterList = _debugMonsters; 
+        }
+
+
         //初期化
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
@@ -136,6 +142,7 @@ public class CardBattleManager : MonoBehaviour
         _playerHpGauge.Setup(_playerMonster, _cameraComponent, null);
         _playerStatusIconView.Monster = _playerMonsterBaseList[0];
         _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
+
         //ステージデータ読み込み
         if (StageData != null)
         {
@@ -165,17 +172,25 @@ public class CardBattleManager : MonoBehaviour
 
 
         //一度ゲームオブジェクトのデッキをつくる
+
+        List<MonsterBase> monsterList = GameManager.Instance.MonsterList;
+
         List<CardObject> playerObjectDeck = new List<CardObject>();
-        for (int i = 0; i < _playerMonster.CardDatas.Count; i++)
+        for (int i = 0; i < monsterList.Count; i++)
         {
-            CardObject tempCard = Instantiate(_cardObjectPrefab);
-            tempCard.Data = _playerMonster.CardDatas[i];
-            tempCard.Check = CheckIfCanUseCardPlayerSide;
-            //画面外で保存
-            tempCard.transform.position = new Vector3(-200, -500, -1000);
-            tempCard.gameObject.transform.SetParent(_playerDeck.transform);
-            playerObjectDeck.Add(tempCard);
+            for (int k = 0; k < monsterList[i].CardDatas.Count; k++)
+            {
+                CardObject tempCard = Instantiate(_cardObjectPrefab);
+                tempCard.Inbattle = true;
+                tempCard.Data = monsterList[i].CardDatas[k];
+                tempCard.Check = CheckIfCanUseCardPlayerSide;
+                //画面外で保存
+                tempCard.transform.position = new Vector3(-200, -500, -1000);
+                tempCard.gameObject.transform.SetParent(_playerDeck.transform);
+                playerObjectDeck.Add(tempCard);
+            }
         }
+
         _playerDeck.Setup(playerObjectDeck);
         //カード使用時の処理の追加
         _hand.Setup(PlayCard, _playerDeck.Trash);
@@ -187,6 +202,7 @@ public class CardBattleManager : MonoBehaviour
         for (int i = 0; i < _enemyMonsterBaseList[0].CardDatas.Count; i++)
         {
             CardObject tempCard = Instantiate(_cardObjectPrefab);
+            tempCard.Inbattle = true;
             tempCard.Data = _enemyMonsterBaseList[0].CardDatas[i];
             tempCard.Check = CheckIfCanUseCardEnemySide;
             //画面外で保存
@@ -249,7 +265,6 @@ public class CardBattleManager : MonoBehaviour
         allMonsterBaseList.AddRange(_playerMonsterBaseList);
         allMonsterBaseList.AddRange(_enemyMonsterBaseList);
 
-        _turnOrder = 0;
         _phase = Phase.Wait;
         StartCoroutine(PhaseDraw());
     }
@@ -311,7 +326,6 @@ public class CardBattleManager : MonoBehaviour
                 .AppendCallback(() =>
                 {
                     _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-                    _turnOrder = 0;
                     _phase = Phase.Wait;
                 });
     }
