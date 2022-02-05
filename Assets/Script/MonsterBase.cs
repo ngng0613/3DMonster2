@@ -68,6 +68,10 @@ public class MonsterBase : MonoBehaviour
     public List<StatusEffectBase> StatusEffectList { get => _statusEffectList; set => _statusEffectList = value; }
     public List<CardData> CardDatas { get => _cardDatas; set => _cardDatas = value; }
     public int CurrentMp1 { get => _currentMp; set => _currentMp = value; }
+    public int GetExp { get => _getExp; set => _getExp = value; }
+    public int Money { get => _money; set => _money = value; }
+
+
 
 
     /// <summary>

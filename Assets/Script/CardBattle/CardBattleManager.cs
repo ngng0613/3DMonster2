@@ -134,7 +134,6 @@ public class CardBattleManager : MonoBehaviour
             GameManager.Instance.MonsterList = _debugMonsters; 
         }
 
-
         //初期化
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
@@ -430,8 +429,10 @@ public class CardBattleManager : MonoBehaviour
     public void PhaseWin()
     {
         //リザルト表示
+        _resultManager.Setup(_enemyMonsterBaseList[0]);
         _resultCanvas.gameObject.SetActive(true);
         _resultManager.AnimationStart();
+
     }
 
     public void PhaseLose()
@@ -728,14 +729,14 @@ public class CardBattleManager : MonoBehaviour
         else
         {
             _soundManager.StopBgm();
-            BackToFrontScene();
+            BackToMap();
         }
 
     }
 
-    void BackToFrontScene()
+    void BackToMap()
     {
-        SceneManager.LoadScene("Front");
+        SceneManager.LoadScene("FieldMap");
     }
 }
 
