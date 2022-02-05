@@ -19,6 +19,8 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 
     public delegate void SetPanelDelegate(MonsterBase monster, int slotId, PartOfMonsterList partOfMonsterList);
     public SetPanelDelegate SetMonsterSlot;
+    public delegate void ReleaseDelegate(PartOfMonsterList part);
+    public ReleaseDelegate Release;
     bool isSet = false;
 
     Sequence _sequence;
@@ -47,6 +49,7 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 
     public void OnDrag()
     {
+        Release(this);
         this.gameObject.transform.position = Input.mousePosition;
     }
 
@@ -97,7 +100,9 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 
     public void BackToBasePos()
     {
+        Release.Invoke(this);
         isSet = false;
         _sequence.Append(this.gameObject.transform.DOMove(BasePos, 1.0f / _moveSpeed));
+        
     }
 }

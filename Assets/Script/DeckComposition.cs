@@ -15,7 +15,7 @@ public class DeckComposition : MonoBehaviour
     [SerializeField] CardObject[] _cardList2 = new CardObject[5];
     [SerializeField] CardObject[] _cardList3 = new CardObject[5];
 
-    PartOfMonsterList[] _setParts = new PartOfMonsterList[3];
+    public PartOfMonsterList[] SetParts = new PartOfMonsterList[3];
 
     public void Start()
     {
@@ -28,17 +28,18 @@ public class DeckComposition : MonoBehaviour
             part.Monster = GameManager.Instance.MonsterList[i];
             part.DisplayUpdate();
             part.SetMonsterSlot = SetMonsterSlot;
+            part.Release = ReleaseMonster;
         }
 
     }
 
     public void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
     {
-        if (_setParts[slotId - 1] != null)
+        if (SetParts[slotId - 1] != null)
         {
-            _setParts[slotId - 1].BackToBasePos();
+            SetParts[slotId - 1].BackToBasePos();
         }
-        _setParts[slotId - 1] = part;
+        SetParts[slotId - 1] = part;
         switch (slotId)
         {
             case 1:
@@ -123,4 +124,47 @@ public class DeckComposition : MonoBehaviour
         }
     }
 
+    public void Decide()
+    {
+        List<MonsterBase> monsterList = new List<MonsterBase>();
+        for (int i = 0; i < SetParts.Length; i++)
+        {
+            if (SetParts[i] != null)
+            {
+                monsterList.Add(SetParts[i].Monster);
+            }
+            else
+            {
+                Error("モンスターが3体セットされていません");
+                break;
+            }
+
+        }
+        if (monsterList.Count >= 3)
+        {
+            GameManager.Instance.MonsterList = monsterList;
+        }
+    }
+
+    public void ReleaseMonster(PartOfMonsterList part)
+    {
+        for (int i = 0; i < SetParts.Length; i++)
+        {
+            if (SetParts[i] == part)
+            {
+                SetParts[i] = null;
+            }
+
+        }
+    }
+
+    public void Error(string text)
+    {
+        Debug.Log(text);
+    }
+
+    public void End()
+    {
+        this.gameObject.SetActive(false);
+    }
 }
