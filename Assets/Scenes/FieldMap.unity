@@ -1607,6 +1607,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &325858463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 325858464}
+  - component: {fileID: 325858465}
+  m_Layer: 0
+  m_Name: SetupManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &325858464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325858463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &325858465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325858463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4bed315f6bf7864f9f687b5e9b1d63f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _monsterList:
+  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
+  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
+  - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
+  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
 --- !u!1 &365315803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,6 +2120,11 @@ PrefabInstance:
     - target: {fileID: 6492962593200496021, guid: f4f02d4c4bdf8cf4ebac2fefba5dcfdc,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033723987403845558, guid: f4f02d4c4bdf8cf4ebac2fefba5dcfdc,
+        type: 3}
+      propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3019,7 +3072,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_TargetDisplay: 0
 --- !u!224 &1416000764
 RectTransform:
