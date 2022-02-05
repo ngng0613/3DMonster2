@@ -34,15 +34,15 @@ public class DeckComposition : MonoBehaviour
 
     public void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
     {
-        if (_setParts[slotId] != null)
+        if (_setParts[slotId - 1] != null)
         {
-            _setParts[slotId].BackToBasePos();
+            _setParts[slotId - 1].BackToBasePos();
         }
-        _setParts[slotId] = part;
+        _setParts[slotId - 1] = part;
         switch (slotId)
         {
             case 1:
-           
+
                 Debug.Log($"スロット1に{monster.MonsterName}をセットしました");
                 break;
 
