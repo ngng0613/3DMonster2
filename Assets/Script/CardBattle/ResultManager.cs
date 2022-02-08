@@ -13,6 +13,14 @@ public class ResultManager : MonoBehaviour
     Sequence _sequence;
     [SerializeField] Vector2 _titlePos;
     [SerializeField] float _displaySpeed = 1.0f;
+    MonsterBase _enemyMonster;
+    [SerializeField] TextMeshProUGUI _resultMoneyText;
+
+    public void Setup(MonsterBase monster)
+    {
+        _enemyMonster = monster;
+        _resultMoneyText.text = _enemyMonster.Money.ToString();
+    }
 
     private void Start()
     {
@@ -25,9 +33,11 @@ public class ResultManager : MonoBehaviour
 
     }
 
+    
+
     public void GetMonster(MonsterBase monster)
     {
-
+        
     }
 
 }

@@ -10,6 +10,7 @@ public class DeckComposition : MonoBehaviour
     [SerializeField] float _spinSpeed = 3.0f;
 
     [SerializeField] GameObject[] _partsPosition;
+    [SerializeField] List<PartOfMonsterList> _parts;
 
     [SerializeField] CardObject[] _cardList1 = new CardObject[5];
     [SerializeField] CardObject[] _cardList2 = new CardObject[5];
@@ -17,9 +18,9 @@ public class DeckComposition : MonoBehaviour
 
     public PartOfMonsterList[] SetParts = new PartOfMonsterList[3];
 
-    public void Start()
+    public void Activate()
     {
-
+        this.gameObject.SetActive(true);
         for (int i = 0; i < _partsPosition.Length; i++)
         {
             PartOfMonsterList part = Instantiate(_partOfMonsterListPrefab, _lane.transform);
@@ -29,13 +30,18 @@ public class DeckComposition : MonoBehaviour
             part.DisplayUpdate();
             part.SetMonsterSlot = SetMonsterSlot;
             part.Release = ReleaseMonster;
+            _parts.Add(part);
         }
-
     }
 
-    public void Activate()
+    public void Deactivate()
     {
-        this.gameObject.SetActive(true);
+        for (int i = 0; i < _parts.Count; i++)
+        {
+            PartOfMonsterList tempPart = _parts[i];
+            Destroy(_parts[i].gameObject);
+            _parts.Remove(tempPart);
+        }
     }
 
     public void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
@@ -64,7 +70,6 @@ public class DeckComposition : MonoBehaviour
                 break;
         }
         StartCoroutine(SetMonsterAnimation(monster, slotId));
-
 
     }
 
@@ -170,6 +175,7 @@ public class DeckComposition : MonoBehaviour
 
     public void End()
     {
+        Deactivate();
         this.gameObject.SetActive(false);
     }
 }

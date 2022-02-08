@@ -17,6 +17,8 @@ public class MapContoroller : MonoBehaviour
     [SerializeField] Fade _fade;
     Vector3 _moveToPos;
     bool _isMoving = false;
+    [SerializeField] DeckComposition _deckComposition;
+
     private void Start()
     {
         for (int i = 0; i < _mapEventArray.Length; i++)
@@ -106,5 +108,11 @@ public class MapContoroller : MonoBehaviour
     {
         _fade.AfterFunction += () => GameManager.Instance.ChangeScene("CardBattle");
         _fade.StartAnimation();
+    }
+
+    public void DeckCompositionActivate()
+    {
+        _deckComposition.gameObject.SetActive(true);
+        _deckComposition.Activate();
     }
 }
