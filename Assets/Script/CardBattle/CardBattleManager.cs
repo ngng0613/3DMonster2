@@ -172,7 +172,7 @@ public class CardBattleManager : MonoBehaviour
 
         //一度ゲームオブジェクトのデッキをつくる
 
-        List<MonsterBase> monsterList = GameManager.Instance.MonsterList;
+        List<MonsterBase> monsterList = GameManager.Instance.MonsterParty;
 
         List<CardObject> playerObjectDeck = new List<CardObject>();
         for (int i = 0; i < monsterList.Count; i++)

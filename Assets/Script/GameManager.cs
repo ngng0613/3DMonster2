@@ -9,6 +9,7 @@ public class GameManager
     public static GameManager Instance => s_instance;
 
     public List<MonsterBase> MonsterList = new List<MonsterBase>();
+    public List<MonsterBase> MonsterParty = new List<MonsterBase>();
 
     public void ChangeScene(string sceneName)
     {
