@@ -16,6 +16,10 @@ public class ResultManager : MonoBehaviour
     MonsterBase _enemyMonster;
     [SerializeField] TextMeshProUGUI _resultMoneyText;
 
+    [SerializeField] Image _captureEnemyButtonImage;
+
+    bool _captured = false;
+
     public void Setup(MonsterBase monster)
     {
         _enemyMonster = monster;
@@ -33,11 +37,14 @@ public class ResultManager : MonoBehaviour
 
     }
 
-    
-
-    public void GetMonster(MonsterBase monster)
+    public void CaptureMonster()
     {
-        
+        if (_captured == true)
+        {
+            return;
+        }
+        _captureEnemyButtonImage.color = Color.gray;
+        GameManager.Instance.MonsterList.Add(_enemyMonster);
     }
 
 }
