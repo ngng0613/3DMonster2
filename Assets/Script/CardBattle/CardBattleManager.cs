@@ -128,12 +128,6 @@ public class CardBattleManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-
-        if (GameManager.Instance.MonsterList.Count < 3)
-        {
-            GameManager.Instance.MonsterList = _debugMonsters; 
-        }
-
         //初期化
         _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
@@ -164,14 +158,14 @@ public class CardBattleManager : MonoBehaviour
                 }
             }
         }
-        if (MonsterManager.PartyMonsterList == null)
+        if (GameManager.Instance.MonsterParty.Count == 0)
         {
-            monsterManager.SetDebugParty();
+            GameManager.Instance.MonsterParty = _debugMonsters;
         }
 
 
         //一度ゲームオブジェクトのデッキをつくる
-
+        
         List<MonsterBase> monsterList = GameManager.Instance.MonsterParty;
 
         List<CardObject> playerObjectDeck = new List<CardObject>();

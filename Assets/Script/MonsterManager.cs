@@ -102,12 +102,11 @@ public class MonsterManager : MonoBehaviour
         {
             MonsterManager.PartyMonsterList = _possessionMonsterList;
         }
-        //gameManager = GetComponent<GameManager>();
     }
 
     public void SetDebugParty()
     {
-        MonsterManager.PartyMonsterList = _possessionMonsterList;
+        GameManager.Instance.MonsterParty = _possessionMonsterList;
     }
 
     public void Setup()
