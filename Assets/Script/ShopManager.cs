@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    
     public void Setup()
     {
 
@@ -13,12 +12,12 @@ public class ShopManager : MonoBehaviour
 
     public void Activate()
     {
-    
+        
     }
 
     public void Deactivate()
     {
-
+        this.gameObject.SetActive(false);
 
     }
 

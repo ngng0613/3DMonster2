@@ -9,7 +9,8 @@ public class DeckComposition : MonoBehaviour
     [SerializeField] GameObject _lane;
     [SerializeField] float _spinSpeed = 3.0f;
 
-    [SerializeField] GameObject[] _partsPosition;
+    [SerializeField] GameObject[] _partySlotPosition;
+    [SerializeField] GameObject[] _subSlotPosition;
     [SerializeField] PartOfMonsterList[] _parts;
 
     [SerializeField] CardObject[] _cardList1 = new CardObject[5];
@@ -21,12 +22,27 @@ public class DeckComposition : MonoBehaviour
     public void Activate()
     {
         _parts = new PartOfMonsterList[4];
+        
         this.gameObject.SetActive(true);
-        for (int i = 0; i < _partsPosition.Length; i++)
+        for (int i = 0; i < _subSlotPosition.Length; i++)
         {
             PartOfMonsterList part = Instantiate(_partOfMonsterListPrefab, _lane.transform);
-            part.transform.position = _partsPosition[i].transform.position;
-            part.BasePos = _partsPosition[i].transform.position;
+            part.transform.position = _subSlotPosition[i].transform.position;
+            part.BasePos = _subSlotPosition[i].transform.position;
+            part.Monster = GameManager.Instance.MonsterList[i];
+            part.DisplayUpdate();
+            part.SetMonsterSlot = SetMonsterSlot;
+            part.Release = ReleaseMonster;
+            _parts[i] = part;
+        }
+
+
+
+        for (int i = 0; i < _subSlotPosition.Length; i++)
+        {
+            PartOfMonsterList part = Instantiate(_partOfMonsterListPrefab, _lane.transform);
+            part.transform.position = _subSlotPosition[i].transform.position;
+            part.BasePos = _subSlotPosition[i].transform.position;
             part.Monster = GameManager.Instance.MonsterList[i];
             part.DisplayUpdate();
             part.SetMonsterSlot = SetMonsterSlot;

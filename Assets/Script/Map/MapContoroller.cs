@@ -18,6 +18,7 @@ public class MapContoroller : MonoBehaviour
     Vector3 _moveToPos;
     bool _isMoving = false;
     [SerializeField] DeckComposition _deckComposition;
+    [SerializeField] ShopManager _shopManager;
 
     private void Start()
     {
@@ -114,5 +115,11 @@ public class MapContoroller : MonoBehaviour
     {
         _deckComposition.gameObject.SetActive(true);
         _deckComposition.Activate();
+    }
+
+    public void ShopActivate()
+    {
+        _shopManager.gameObject.SetActive(true);
+        _shopManager.Activate();
     }
 }

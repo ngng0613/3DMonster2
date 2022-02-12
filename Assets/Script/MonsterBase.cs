@@ -53,6 +53,8 @@ public class MonsterBase : MonoBehaviour
 
     [SerializeField] List<CardData> _cardDatas;
 
+    bool _inParty = false;
+
     public int Id { get => _id; set => _id = value; }
     public float IndividualID { get => _individualID; set => _individualID = value; }
     public string MonsterName { get => _monsterName; set => _monsterName = value; }
@@ -67,9 +69,9 @@ public class MonsterBase : MonoBehaviour
     public GameObject MyPrefab { get => _myPrefab; set => _myPrefab = value; }
     public List<StatusEffectBase> StatusEffectList { get => _statusEffectList; set => _statusEffectList = value; }
     public List<CardData> CardDatas { get => _cardDatas; set => _cardDatas = value; }
-    public int CurrentMp1 { get => _currentMp; set => _currentMp = value; }
     public int GetExp { get => _getExp; set => _getExp = value; }
     public int Money { get => _money; set => _money = value; }
+    public bool InParty { get => _inParty; set => _inParty = value; }
 
 
 

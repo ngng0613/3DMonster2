@@ -1816,7 +1816,11 @@ MonoBehaviour:
     type: 3}
   _lane: {fileID: 7910668694105589987}
   _spinSpeed: 20
-  _partsPosition:
+  _partySlotPosition:
+  - {fileID: 5662866787010577256}
+  - {fileID: 1561618222561886863}
+  - {fileID: 5209380052804180890}
+  _subSlotPosition:
   - {fileID: 5849191082066635314}
   - {fileID: 8704965945906851932}
   - {fileID: 5042047164277034576}
