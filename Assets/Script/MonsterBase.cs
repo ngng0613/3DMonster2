@@ -65,7 +65,7 @@ public class MonsterBase : MonoBehaviour
     public int MaxHp { get => _maxHp; set => _maxHp = value; }
     public int CurrentHp { get => _currentHp; set => _currentHp = value; }
     public int MaxMp { get => _maxMp; set => _maxMp = value; }
-    public int CurrentMp { get => CurrentMp1; set => CurrentMp1 = value; }
+    public int CurrentMp { get => _currentMp; set => _currentMp = value; }
     public GameObject MyPrefab { get => _myPrefab; set => _myPrefab = value; }
     public List<StatusEffectBase> StatusEffectList { get => _statusEffectList; set => _statusEffectList = value; }
     public List<CardData> CardDatas { get => _cardDatas; set => _cardDatas = value; }
