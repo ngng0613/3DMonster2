@@ -37,9 +37,7 @@ public class ResultManager : MonoBehaviour
 
     }
 
-    
-
-    public void CaptureMonster(MonsterBase monster)
+    public void CaptureMonster()
     {
         if (_captured == true)
         {
