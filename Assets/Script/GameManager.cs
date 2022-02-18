@@ -11,15 +11,12 @@ public class GameManager
     public List<MonsterBase> MonsterList = new List<MonsterBase>();
     public List<MonsterBase> MonsterParty = new List<MonsterBase>();
 
+    public StageData NextBattleStage;
+
     public void ChangeScene(string sceneName)
     {
-        SceneManager.sceneLoaded += A;
         SceneManager.LoadSceneAsync(sceneName);
     }
 
-    public void A(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("aaa");
-    }
 
 }

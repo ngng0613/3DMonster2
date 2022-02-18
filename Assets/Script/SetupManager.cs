@@ -8,10 +8,21 @@ public class SetupManager : MonoBehaviour
 
     void Awake()
     {
-        GameManager.Instance.MonsterList = _monsterList;
-        GameManager.Instance.MonsterParty.Add(_monsterList[0]);
-        GameManager.Instance.MonsterParty.Add(_monsterList[1]);
-        GameManager.Instance.MonsterParty.Add(_monsterList[2]);
+        if (GameManager.Instance.MonsterList.Count <= 0)
+        {
+            Debug.LogWarning("モンスターリストを初期化しました");
+            GameManager.Instance.MonsterList = _monsterList;
+            GameManager.Instance.MonsterParty.Add(_monsterList[0]);
+            GameManager.Instance.MonsterParty.Add(_monsterList[1]);
+            GameManager.Instance.MonsterParty.Add(_monsterList[2]);
+        }
+        else
+        {
+            foreach (var item in GameManager.Instance.MonsterList)
+            {
+                Debug.Log(item.NickName);
+            }
+            _monsterList = GameManager.Instance.MonsterList;
+        }
     }
-
 }

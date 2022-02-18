@@ -1551,7 +1551,9 @@ MonoBehaviour:
   _isSelect: 0
   _spriteSelected: {fileID: 21300000, guid: 9de85e4734dfc1f4fa6ca1bb04abd479, type: 3}
   _spriteUnselected: {fileID: 21300000, guid: 912298484232d1344afe6bc4634c2b09, type: 3}
-  _spriteRenderer: {fileID: 1793349200}
+  _backgroundSprite: {fileID: 1793349200}
+  _mainSprite: {fileID: 673380261}
+  _stage: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae, type: 3}
 --- !u!212 &199314525
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1811,9 +1813,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterList:
   - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
-  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
+  - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
-  - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
+  - {fileID: 0}
 --- !u!1 &365315803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2849,7 +2851,9 @@ MonoBehaviour:
   _isSelect: 0
   _spriteSelected: {fileID: 21300000, guid: 9de85e4734dfc1f4fa6ca1bb04abd479, type: 3}
   _spriteUnselected: {fileID: 21300000, guid: 912298484232d1344afe6bc4634c2b09, type: 3}
-  _spriteRenderer: {fileID: 1361643086}
+  _backgroundSprite: {fileID: 1361643086}
+  _mainSprite: {fileID: 7156382628805187338}
+  _stage: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae, type: 3}
 --- !u!212 &1110821569
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4307,7 +4311,9 @@ MonoBehaviour:
   _isSelect: 0
   _spriteSelected: {fileID: 21300000, guid: 9de85e4734dfc1f4fa6ca1bb04abd479, type: 3}
   _spriteUnselected: {fileID: 21300000, guid: 912298484232d1344afe6bc4634c2b09, type: 3}
-  _spriteRenderer: {fileID: 1542107941}
+  _backgroundSprite: {fileID: 1542107941}
+  _mainSprite: {fileID: 316387204}
+  _stage: {fileID: 7619503526395115513, guid: d53d4f14b31e3544f9e4dc6366be9e08, type: 3}
 --- !u!212 &1820361416
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4606,6 +4612,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2513230884820224656, guid: 79db2b4b9bf36fb419bcd94ec1b04314,
+        type: 3}
+      propertyPath: _moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513230885033409682, guid: 79db2b4b9bf36fb419bcd94ec1b04314,
+        type: 3}
+      propertyPath: _moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2513230885163755136, guid: 79db2b4b9bf36fb419bcd94ec1b04314,
         type: 3}
       propertyPath: m_Name
@@ -4755,6 +4771,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513230885816203629, guid: 79db2b4b9bf36fb419bcd94ec1b04314,
+        type: 3}
+      propertyPath: _moveSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2513230886483831403, guid: 79db2b4b9bf36fb419bcd94ec1b04314,
         type: 3}

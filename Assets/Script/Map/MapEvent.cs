@@ -12,13 +12,14 @@ public class MapEvent : EventBase
 
     public delegate void MovePositionDelegate(Vector3 pos);
     public MovePositionDelegate MovePlayer;
-    [SerializeField] bool _isSelect = false;
-    Player _player;
-    [SerializeField] Sprite _spriteSelected;
-    [SerializeField] Sprite _spriteUnselected;
-    [SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] protected bool _isSelect = false;
+    protected Player _player;
+    [SerializeField] protected Sprite _spriteSelected;
+    [SerializeField] protected Sprite _spriteUnselected;
+    [SerializeField] protected SpriteRenderer _backgroundSprite;
+    [SerializeField] protected SpriteRenderer _mainSprite;
 
-    public void StartEvent()
+    public virtual void StartEvent()
     {
         Debug.Log(transform.position +"の座標のイベントを開始します");
         EventAction.Invoke();
@@ -27,7 +28,7 @@ public class MapEvent : EventBase
     public void OnMouseOver()
     {
         _isSelect = true;
-        _spriteRenderer.sprite = _spriteSelected;
+        _backgroundSprite.sprite = _spriteSelected;
     }
 
     public void OnMouseDown()
@@ -38,7 +39,7 @@ public class MapEvent : EventBase
     public void OnMouseExit()
     {
         _isSelect = false;
-        _spriteRenderer.sprite = _spriteUnselected;
+        _backgroundSprite.sprite = _spriteUnselected;
      
     }
 }

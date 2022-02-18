@@ -17,7 +17,7 @@ public enum Side
 public class CardBattleManager : MonoBehaviour
 {
     Sequence sequence;
-    public static StageData StageData;
+    StageData _stageData;
     [SerializeField] StageData _stageDataForDebug;
     [SerializeField] Deck _playerDeck;
     [SerializeField] Deck _enemyDeck;
@@ -137,17 +137,17 @@ public class CardBattleManager : MonoBehaviour
         _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
 
         //ステージデータ読み込み
-        if (StageData != null)
+        _stageData = GameManager.Instance.NextBattleStage;
+        if (_stageData != null)
         {
-            for (int i = 0; i < StageData.EnemyData.Count; i++)
-            {
-                SetEnemyMonsterBase(_enemyMonsterObjectsList[i], i, _enemyMonsterPositionList[i], _enemyMonsterBaseList[i]);
-            }
+            _enemyMonsterBaseList[0] = _stageData.EnemyMonster;
+            SetEnemyMonsterBase(_enemyMonsterObjectsList[0], 0, _enemyMonsterPositionList[0], _enemyMonsterBaseList[0]);
+
         }
         else
         {
             Debug.LogWarning("ステージデータがありませんでした.デバッグ用のステージデータを読み込みます");
-            StageData = _stageDataForDebug;
+            _stageData = _stageDataForDebug;
             //敵情報のセット
             for (int i = 0; i < _enemyMonsterObjectsList.Count; i++)
             {
@@ -599,7 +599,7 @@ public class CardBattleManager : MonoBehaviour
     /// <param name="enemyMonsterBase">敵の情報</param>
     void SetEnemyMonsterBase(GameObject enemyObject, int enemyNumber, Transform enemyPos, MonsterBase enemyMonsterBase)
     {
-        enemyObject = Instantiate(monsterManager.GetMonsterPrefab(StageData.EnemyData[enemyNumber].Id), enemyPos.transform.position, Quaternion.identity);
+        enemyObject = Instantiate(monsterManager.GetMonsterPrefab(_stageData.EnemyMonster.Id), enemyPos.transform.position, Quaternion.identity);
 
         Vector3 tempDir = enemyObject.transform.localEulerAngles;
         tempDir.y += 180;

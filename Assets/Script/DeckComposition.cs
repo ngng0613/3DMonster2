@@ -22,24 +22,18 @@ public class DeckComposition : MonoBehaviour
     public void Activate()
     {
         _parts = new PartOfMonsterList[4];
-        
+
         this.gameObject.SetActive(true);
-        for (int i = 0; i < _subSlotPosition.Length; i++)
+        for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
         {
-            PartOfMonsterList part = Instantiate(_partOfMonsterListPrefab, _lane.transform);
-            part.transform.position = _subSlotPosition[i].transform.position;
-            part.BasePos = _subSlotPosition[i].transform.position;
-            part.Monster = GameManager.Instance.MonsterList[i];
-            part.DisplayUpdate();
-            part.SetMonsterSlot = SetMonsterSlot;
-            part.Release = ReleaseMonster;
-            _parts[i] = part;
-        }
-
-
-
-        for (int i = 0; i < _subSlotPosition.Length; i++)
-        {
+            if (i >= _subSlotPosition.Length)
+            {
+                return;
+            }
+            if (GameManager.Instance.MonsterList[i] == null)
+            {
+                return;
+            }
             PartOfMonsterList part = Instantiate(_partOfMonsterListPrefab, _lane.transform);
             part.transform.position = _subSlotPosition[i].transform.position;
             part.BasePos = _subSlotPosition[i].transform.position;
@@ -53,10 +47,12 @@ public class DeckComposition : MonoBehaviour
 
     public void Deactivate()
     {
-        int partsCount = _parts.Length;
-        for (int i = 0; i < partsCount; i++)
+        for (int i = 0; i < _parts.Length; i++)
         {
-            Debug.Log(i);
+            if (_parts[i] == null)
+            {
+                return;
+            }
             Destroy(_parts[i].gameObject);
             _parts[i] = null;
         }

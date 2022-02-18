@@ -27,7 +27,7 @@ public class ResultManager : MonoBehaviour
 
     public void Setup(MonsterBase monster)
     {
-        _enemyMonster = monster;
+        _enemyMonster = GameManager.Instance.NextBattleStage.EnemyMonster;
         _resultMoneyText.text = _enemyMonster.Money.ToString();
         _monsterImage.sprite = monster.Image;
         for (int i = 0; i < 5; i++)
@@ -55,6 +55,8 @@ public class ResultManager : MonoBehaviour
         }
         _captureEnemyButtonImage.color = Color.gray;
         GameManager.Instance.MonsterList.Add(_enemyMonster);
+        Debug.Log($"{_enemyMonster.NickName}を捕獲");
+        _captured = true;
     }
 
     public void BackToMap()
