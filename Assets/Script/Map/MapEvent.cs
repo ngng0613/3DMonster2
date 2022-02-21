@@ -8,6 +8,8 @@ using System.Linq;
 
 public class MapEvent : EventBase
 {
+    [SerializeField] bool _isActive = true;
+
     public Action EventAction;
 
     public delegate void MovePositionDelegate(Vector3 pos);
@@ -19,10 +21,17 @@ public class MapEvent : EventBase
     [SerializeField] protected SpriteRenderer _backgroundSprite;
     [SerializeField] protected SpriteRenderer _mainSprite;
 
+
+
     public virtual void StartEvent()
     {
-        Debug.Log(transform.position +"の座標のイベントを開始します");
+        Debug.Log(transform.position + "の座標のイベントを開始します");
         EventAction.Invoke();
+    }
+
+    public void Deactivate()
+    {
+        _isActive = false;
     }
 
     public void OnMouseOver()
@@ -40,6 +49,6 @@ public class MapEvent : EventBase
     {
         _isSelect = false;
         _backgroundSprite.sprite = _spriteUnselected;
-     
+
     }
 }

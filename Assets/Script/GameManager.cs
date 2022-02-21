@@ -10,6 +10,7 @@ public class GameManager
 
     public List<MonsterBase> MonsterList = new List<MonsterBase>();
     public List<MonsterBase> MonsterParty = new List<MonsterBase>();
+    public Vector2 PlayeraPos;
 
     public StageData NextBattleStage;
 

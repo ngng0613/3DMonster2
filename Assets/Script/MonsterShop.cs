@@ -1,37 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
-public class DeckComposition : MonoBehaviour
+public class MonsterShop : DeckComposition
 {
-    public enum Mode
-    {
-        Composition,
-        Release
-    }
-
-    [SerializeField] protected PartOfMonsterList _partOfMonsterListPrefab;
-    [SerializeField] protected GameObject _lane;
-    [SerializeField] protected float _spinSpeed = 3.0f;
-
-    [SerializeField] protected GameObject[] _partySlotPosition;
-    [SerializeField] protected GameObject[] _subSlotPosition;
-    [SerializeField] protected PartOfMonsterList[] _parts;
-
-    [SerializeField] protected CardObject[] _cardList1 = new CardObject[5];
-    [SerializeField] protected CardObject[] _cardList2 = new CardObject[5];
-    [SerializeField] protected CardObject[] _cardList3 = new CardObject[5];
-
-    public PartOfMonsterList[] SetParts = new PartOfMonsterList[3];
-
-    public delegate void AfterFuncDelegate();
-    public AfterFuncDelegate AfterFunc;
+    public GameObject _confirmWindow;
 
     /// <summary>
     /// 起動処理
     /// </summary>
-    public virtual void Activate()
+    public override void Activate()
     {
         _parts = new PartOfMonsterList[4];
 
@@ -55,17 +33,8 @@ public class DeckComposition : MonoBehaviour
             part.Monster = GameManager.Instance.MonsterList[i];
             part.DisplayUpdate();
             part.SetMonsterSlot = SetMonsterSlot;
-            part.Release = ReleaseFromParty;
             _parts[i] = part;
             part.Id = i;
-
-            //パーティーに参加済みのモンスターはあらかじめパーティースロットにセットしておく
-            if (part.Monster.InParty == true && partyCount < _partySlotPosition.Length)
-            {
-                part.transform.position = _partySlotPosition[partyCount].transform.position;
-                SetMonsterSlot(part.Monster, partyCount + 1, part);
-                partyCount++;
-            }
 
         }
 
@@ -74,7 +43,7 @@ public class DeckComposition : MonoBehaviour
     /// <summary>
     /// 終了処理
     /// </summary>
-    public virtual void Deactivate()
+    public override void Deactivate()
     {
         for (int i = 0; i < _parts.Length; i++)
         {
@@ -85,7 +54,10 @@ public class DeckComposition : MonoBehaviour
             Destroy(_parts[i].gameObject);
             _parts[i] = null;
         }
-        AfterFunc.Invoke();
+        if (AfterFunc != null)
+        {
+            AfterFunc.Invoke();
+        }
         this.gameObject.SetActive(false);
     }
 
@@ -95,7 +67,7 @@ public class DeckComposition : MonoBehaviour
     /// <param name="monster">セットしたモンスター</param>
     /// <param name="slotId">セットされたスロット番号</param>
     /// <param name="part">セットされたモンスターリスト内のオブジェクト</param>
-    public virtual void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
+    public override void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
     {
         if (SetParts[slotId - 1] != null)
         {
@@ -131,7 +103,7 @@ public class DeckComposition : MonoBehaviour
     /// <param name="monster">セットしたモンスター</param>
     /// <param name="slotId">セットされたパーティーのスロット番号</param>
     /// <returns></returns>
-    public virtual IEnumerator SetMonsterAnimation(MonsterBase monster, int slotId)
+    public override IEnumerator SetMonsterAnimation(MonsterBase monster, int slotId)
     {
         switch (slotId)
         {
@@ -170,7 +142,7 @@ public class DeckComposition : MonoBehaviour
     /// <param name="obj">対象カードオブジェクト</param>
     /// <param name="data">更新するカードデータ<param>
     /// <returns></returns>
-    public virtual IEnumerator CardSpin(CardObject obj, CardData data)
+    public override IEnumerator CardSpin(CardObject obj, CardData data)
     {
         while (true)
         {
@@ -200,7 +172,7 @@ public class DeckComposition : MonoBehaviour
     /// <summary>
     /// デッキ編成の決定
     /// </summary>
-    public virtual void Decide()
+    public override void Decide()
     {
         List<MonsterBase> monsterList = new List<MonsterBase>();
         for (int i = 0; i < SetParts.Length; i++)
@@ -226,15 +198,46 @@ public class DeckComposition : MonoBehaviour
     /// パーティーからモンスターが外れた際の処理
     /// </summary>
     /// <param name="part"></param>
-    public virtual void ReleaseFromParty(PartOfMonsterList part)
+    public override void ReleaseFromParty(PartOfMonsterList part)
     {
         for (int i = 0; i < SetParts.Length; i++)
         {
             if (SetParts[i] == part)
             {
-                part.Monster.InParty = false;
                 SetParts[i] = null;
             }
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void ReleaseFromMonsterList()
+    {
+        for (int i = 0; i < SetParts.Length; i++)
+        {
+            if (SetParts[i] != null)
+            {
+                GameManager.Instance.MonsterList.RemoveAt(SetParts[i].Id);
+                Destroy(SetParts[i].gameObject);
+            }
+        }
+        CloseConfirmWindow();
+        Deactivate();
+        Activate();
+    }
+
+    /// <summary>
+    /// 確認画面の表示
+    /// </summary>
+    public void DisplayConfirmWindow()
+    {
+        _confirmWindow.SetActive(true);
+    }
+
+    public void CloseConfirmWindow()
+    {
+        _confirmWindow.SetActive(false);
+    }
+
 }

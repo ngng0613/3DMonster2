@@ -8,6 +8,7 @@ using DG.Tweening;
 
 public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 {
+    int _id;
     public MonsterBase Monster;
     [SerializeField] string _slotTagName1 = "";
     [SerializeField] string _slotTagName2 = "";
@@ -21,9 +22,11 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
     public SetPanelDelegate SetMonsterSlot;
     public delegate void ReleaseDelegate(PartOfMonsterList part);
     public ReleaseDelegate Release;
-    bool isSet = false;
+    bool _isSet = false;
 
     Sequence _sequence;
+
+    public int Id { get => _id; set => _id = value; }
 
     private void Start()
     {
@@ -49,16 +52,18 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 
     public void OnDrag()
     {
-        Release(this);
+        if (Release != null)
+        {
+            Release(this);
+        }
         this.gameObject.transform.position = Input.mousePosition;
     }
 
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
     {
-
         var raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raycastResults);
-        isSet = false;
+        _isSet = false;
         foreach (var hit in raycastResults)
         {
             Debug.Log(hit.gameObject.name);
@@ -68,8 +73,8 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
                 {
                     ///モンスタースロットにセットされた
                     this.gameObject.transform.position = hit.gameObject.transform.position;
-                    SetMonsterSlot.Invoke(Monster, 1,this);
-                    isSet = true;
+                    SetMonsterSlot.Invoke(Monster, 1, this);
+                    _isSet = true;
 
                 }
                 else if (hit.gameObject.CompareTag(_slotTagName2))
@@ -77,14 +82,14 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
                     ///モンスタースロットにセットされた
                     this.gameObject.transform.position = hit.gameObject.transform.position;
                     SetMonsterSlot.Invoke(Monster, 2, this);
-                    isSet = true;
+                    _isSet = true;
                 }
                 else if (hit.gameObject.CompareTag(_slotTagName3))
                 {
                     ///モンスタースロットにセットされた
                     this.gameObject.transform.position = hit.gameObject.transform.position;
                     SetMonsterSlot.Invoke(Monster, 3, this);
-                    isSet = true;
+                    _isSet = true;
                 }
                 else if (hit.gameObject.CompareTag(this.gameObject.tag))
                 {
@@ -92,7 +97,7 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
                 }
             }
         }
-        if (isSet == false)
+        if (_isSet == false)
         {
             BackToBasePos();
         }
@@ -100,9 +105,12 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 
     public void BackToBasePos()
     {
-        Release.Invoke(this);
-        isSet = false;
+        if (Release != null)
+        {
+            Release.Invoke(this);
+        }
+        _isSet = false;
         _sequence.Append(this.gameObject.transform.DOMove(BasePos, 1.0f / _moveSpeed));
-        
+
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class SetupManager : MonoBehaviour
 {
     [SerializeField] List<MonsterBase> _monsterList;
+    [SerializeField] ShopManager _shopManager;
 
     void Awake()
     {
@@ -12,6 +13,14 @@ public class SetupManager : MonoBehaviour
         {
             Debug.LogWarning("モンスターリストを初期化しました");
             GameManager.Instance.MonsterList = _monsterList;
+            for (int i = 0; i < 3; i++)
+            {
+                if (i >= _monsterList.Count)
+                {
+                    continue;
+                }
+                _monsterList[i].InParty = true;
+            }
             GameManager.Instance.MonsterParty.Add(_monsterList[0]);
             GameManager.Instance.MonsterParty.Add(_monsterList[1]);
             GameManager.Instance.MonsterParty.Add(_monsterList[2]);
@@ -24,5 +33,7 @@ public class SetupManager : MonoBehaviour
             }
             _monsterList = GameManager.Instance.MonsterList;
         }
+
+        _shopManager.Setup();
     }
 }

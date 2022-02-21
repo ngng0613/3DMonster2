@@ -54,9 +54,6 @@ public class CardBattleManager : MonoBehaviour
     MonsterBase _thisTurnTargetMonsterBase;
 
 
-    List<BattleMonsterTag.CharactorTag> _turnListTurnCharactor = new List<BattleMonsterTag.CharactorTag>();
-    List<MonsterBase> _turnOrderListMonsterBase = new List<MonsterBase>();
-
     /// <summary>
     /// 攻撃待機しているキャラクター（同時に攻撃順が回った際に使う）
     /// </summary>
@@ -79,9 +76,6 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] EffectManager _effectManager;
     [SerializeField] SkillView _skillView;
     [SerializeField] HpGauge _enemyStatusPrefab;
-    [SerializeField] List<HpGauge> _playerHpList = new List<HpGauge>();
-    [SerializeField] List<HpGauge> _playerHpListInWorld = new List<HpGauge>();
-    [SerializeField] List<HpGauge> _enemyHpListInWorld = new List<HpGauge>();
     [SerializeField] TurnDisplay _turnDisplay;
     [SerializeField] IconManager _iconManager;
     [SerializeField] DamageCalculator _damageCalculator;
@@ -129,7 +123,6 @@ public class CardBattleManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         //初期化
-        _turnOrderListMonsterBase = new List<MonsterBase>();
         _cameraComponent = _battleCamera.GetComponent<Camera>();
         MonsterBase _playerMonster = _playerMonsterBaseList[0];
         _playerHpGauge.Setup(_playerMonster, _cameraComponent, null);
@@ -493,6 +486,11 @@ public class CardBattleManager : MonoBehaviour
         _playerStatusIconView.UpdateView();
     }
 
+    /// <summary>
+    /// カードを使用した際の処理
+    /// </summary>
+    /// <param name="card"></param>
+    /// <returns></returns>
     public IEnumerator PlayCardCorotine(CardData card)
     {
         for (int i = 0; i < card.CardSpellBases.Count; i++)
@@ -546,6 +544,11 @@ public class CardBattleManager : MonoBehaviour
 
 
     }
+
+    /// <summary>
+    /// 攻撃処理のコルーチン
+    /// </summary>
+    /// <param name="spell"></param>
     void AttackCoroutine(CardSpellBase spell)
     {
 
@@ -614,37 +617,6 @@ public class CardBattleManager : MonoBehaviour
         _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
     }
 
-    /// <summary>
-    /// 対象モンスターが生きているか確認
-    /// </summary>
-    /// <param name="monster">確認する対象モンスター</param>
-    /// <returns>生きている = true, 死んでいる = false</returns>
-    bool CheckIfAlived(MonsterBase monster)
-    {
-        if (!monster)
-        {
-            return false;
-        }
-        if (monster.CurrentHp > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void SetUseSkill(SkillBase skill)
-    {
-        _useSkill = skill;
-        if (_useSkill.GetSkillType() == SkillBase.SkillType.Guard || _useSkill.GetSkillType() == SkillBase.SkillType.Charge) //防御,チャージ時
-        {
-            _thisTurnTarget = _thisTurnActor;
-            _thisTurnTargetMonsterBase = _thisTurnActorMonsterBase;
-            return;
-        }
-    }
 
     /// <summary>
     /// ターゲットの設定
@@ -677,39 +649,6 @@ public class CardBattleManager : MonoBehaviour
                 break;
         }
         _phase = Phase.Attack;
-    }
-
-    /// <summary>
-    /// 勝利演出
-    /// </summary>
-    void VictoryProduction()
-    {
-        _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-        _gameVictoryObjects.SetActive(true);
-        sequence = DOTween.Sequence();
-        sequence.Append(_gameVictoryObjects.transform.DOScale(Vector3.one, _tweenSpeed))
-                .AppendCallback(WaitingForGameEnd);
-
-    }
-
-    /// <summary>
-    /// 敗北演出
-    /// </summary>
-    void LoseProduction()
-    {
-        _battleCamera.SetCameraPosition(BattleCamera.CameraPosition.DefaultPositon);
-        _gameLoseObjects.SetActive(true);
-        sequence = DOTween.Sequence();
-        sequence.Append(_gameLoseObjects.transform.DOScale(Vector3.one, _tweenSpeed))
-                .AppendCallback(WaitingForGameEnd);
-    }
-
-    void WaitingForGameEnd()
-    {
-        _nextButton.SetActive(true);
-        _nextButton.transform.DOScale(Vector3.one, _tweenSpeed / 2);
-        InputManager.ResetInputSettings();
-        InputManager.InputEnter = GameEndProcess;
     }
 
     void GameEndProcess()

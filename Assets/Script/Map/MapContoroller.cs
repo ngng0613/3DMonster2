@@ -20,8 +20,13 @@ public class MapContoroller : MonoBehaviour
     [SerializeField] DeckComposition _deckComposition;
     [SerializeField] ShopManager _shopManager;
 
+    bool _dontMove = false;
+
     private void Start()
     {
+        _shopManager.AfterFunc = CanMoving;
+        _deckComposition.AfterFunc = CanMoving;
+
         for (int i = 0; i < _mapEventArray.Length; i++)
         {
             MapEvent mapEvent = _mapEventArray[i];
@@ -33,6 +38,7 @@ public class MapContoroller : MonoBehaviour
                 mapEvent.EventAction += BattleStart;
             }
         }
+        _player.transform.position = GameManager.Instance.PlayeraPos;
     }
 
     private void Update()
@@ -75,6 +81,10 @@ public class MapContoroller : MonoBehaviour
 
     public void MovePlayer(Vector3 pos)
     {
+        if (_dontMove)
+        {
+            return;
+        }
         if (_isMoving == true || (pos.x == _player.transform.position.x && pos.y == _player.transform.position.y))
         {
             return;
@@ -107,6 +117,7 @@ public class MapContoroller : MonoBehaviour
 
     public void BattleStart()
     {
+        GameManager.Instance.PlayeraPos = _player.transform.position;
         _fade.AfterFunction += () => GameManager.Instance.ChangeScene("CardBattle");
         _fade.StartAnimation();
     }
@@ -114,12 +125,19 @@ public class MapContoroller : MonoBehaviour
     public void DeckCompositionActivate()
     {
         _deckComposition.gameObject.SetActive(true);
+        _dontMove = true;
         _deckComposition.Activate();
     }
 
     public void ShopActivate()
     {
         _shopManager.gameObject.SetActive(true);
+        _dontMove = true;
         _shopManager.Activate();
+    }
+
+    public void CanMoving()
+    {
+        _dontMove = false;
     }
 }
