@@ -66,7 +66,6 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
         _isSet = false;
         foreach (var hit in raycastResults)
         {
-            Debug.Log(hit.gameObject.name);
             if (hit.gameObject.tag != null)
             {
                 if (hit.gameObject.CompareTag(_slotTagName1))

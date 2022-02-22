@@ -19,6 +19,16 @@ public class MapContoroller : MonoBehaviour
     bool _isMoving = false;
     [SerializeField] DeckComposition _deckComposition;
     [SerializeField] ShopManager _shopManager;
+    [Header("移動可能距離")]
+    [SerializeField] float _moveLength = 1.0f;
+
+    [Header("プレイヤーのコライダー")]
+    [SerializeField] Collider _playerCollider;
+    /// <summary>
+    /// 次に移動可能なマスのリスト
+    /// </summary>
+    List<MapEvent> _nextMapEvent = new List<MapEvent>();
+
 
     bool _dontMove = false;
 
@@ -39,6 +49,9 @@ public class MapContoroller : MonoBehaviour
             }
         }
         _player.transform.position = GameManager.Instance.PlayeraPos;
+    
+        //プレイヤーが次に移動可能なマスを調べる
+        
     }
 
     private void Update()
@@ -111,6 +124,7 @@ public class MapContoroller : MonoBehaviour
             }
             yield return null;
         }
+
         _player.transform.position = new Vector3(_moveToPos.x, _moveToPos.y, startPos.z);
         _isMoving = false;
     }

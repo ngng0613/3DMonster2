@@ -8,7 +8,7 @@ using System.Linq;
 
 public class MapEvent : EventBase
 {
-    [SerializeField] bool _isActive = true;
+    [SerializeField] protected bool _isActive = true;
 
     public Action EventAction;
 
@@ -21,17 +21,12 @@ public class MapEvent : EventBase
     [SerializeField] protected SpriteRenderer _backgroundSprite;
     [SerializeField] protected SpriteRenderer _mainSprite;
 
-
+    public bool IsActive { get => _isActive; set => _isActive = value; }
 
     public virtual void StartEvent()
     {
         Debug.Log(transform.position + "の座標のイベントを開始します");
         EventAction.Invoke();
-    }
-
-    public void Deactivate()
-    {
-        _isActive = false;
     }
 
     public void OnMouseOver()
@@ -42,6 +37,10 @@ public class MapEvent : EventBase
 
     public void OnMouseDown()
     {
+        if (IsActive == false)
+        {
+            return;
+        }
         MovePlayer.Invoke(this.transform.position);
     }
 
@@ -49,6 +48,5 @@ public class MapEvent : EventBase
     {
         _isSelect = false;
         _backgroundSprite.sprite = _spriteUnselected;
-
     }
 }

@@ -20,6 +20,8 @@ public class ResultManager : MonoBehaviour
     [SerializeField] CardObject[] _cardObjects = new CardObject[5];
 
     [SerializeField] Image _captureEnemyButtonImage;
+    [SerializeField] MessageUi _releaseMessage;
+    [SerializeField] MessageUi _capturedMessage;
 
     bool _captured = false;
 
@@ -53,9 +55,15 @@ public class ResultManager : MonoBehaviour
         {
             return;
         }
+        if (GameManager.Instance.MonsterList.Count >= GameManager.Instance.MonsterMaxCount)
+        {
+            _releaseMessage.Activate();
+            return;
+        }
         _captureEnemyButtonImage.color = Color.gray;
         GameManager.Instance.MonsterList.Add(_enemyMonster);
         Debug.Log($"{_enemyMonster.NickName}を捕獲");
+        _capturedMessage.Activate();
         _captured = true;
     }
 

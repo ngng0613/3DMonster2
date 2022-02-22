@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MonsterShop : DeckComposition
 {
@@ -11,7 +12,7 @@ public class MonsterShop : DeckComposition
     /// </summary>
     public override void Activate()
     {
-        _parts = new PartOfMonsterList[4];
+        _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
 
@@ -32,6 +33,7 @@ public class MonsterShop : DeckComposition
             part.BasePos = _subSlotPosition[i].transform.position;
             part.Monster = GameManager.Instance.MonsterList[i];
             part.DisplayUpdate();
+            part.Release = ReleaseFromParty;
             part.SetMonsterSlot = SetMonsterSlot;
             _parts[i] = part;
             part.Id = i;
@@ -210,17 +212,27 @@ public class MonsterShop : DeckComposition
     }
 
     /// <summary>
-    /// 
+    /// モンスターを所持モンスターリストから外す処理
     /// </summary>
     public void ReleaseFromMonsterList()
     {
+        MonsterBase[] tempList = GameManager.Instance.MonsterList.ToArray();
         for (int i = 0; i < SetParts.Length; i++)
         {
-            if (SetParts[i] != null)
+            if (SetParts[i] == null)
             {
-                GameManager.Instance.MonsterList.RemoveAt(SetParts[i].Id);
-                Destroy(SetParts[i].gameObject);
+                continue;
             }
+            int id = SetParts[i].Id;
+            Destroy(SetParts[i].gameObject);
+            tempList[id] = null;
+        }
+        GameManager.Instance.MonsterList = tempList.ToList();
+        GameManager.Instance.MonsterList.RemoveAll(item => item == null);
+
+        for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
+        {
+            Debug.Log(GameManager.Instance.MonsterList[i].NickName);
         }
         CloseConfirmWindow();
         Deactivate();

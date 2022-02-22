@@ -56,7 +56,7 @@ public class CardObject : MonoBehaviour
     {
         _nameText.text = Data.CardName;
         _image.sprite = Data.MainImage;
-        _costText.text = Data.Cost.ToString(); ;
+        _costText.text = Data.Cost.ToString();
     }
 
     IEnumerator PlayUpdate()
