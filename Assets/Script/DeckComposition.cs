@@ -33,7 +33,7 @@ public class DeckComposition : MonoBehaviour
     /// </summary>
     public virtual void Activate()
     {
-        _parts = new PartOfMonsterList[4];
+        _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
 
@@ -174,7 +174,7 @@ public class DeckComposition : MonoBehaviour
     {
         while (true)
         {
-            obj.transform.localEulerAngles += new Vector3(0, _spinSpeed, 0);
+            obj.transform.localEulerAngles += new Vector3(0, _spinSpeed * Time.deltaTime, 0);
             if (obj.transform.localEulerAngles.y >= 90)
             {
                 obj.transform.localEulerAngles = new Vector3(0, 90, 0);
@@ -187,7 +187,7 @@ public class DeckComposition : MonoBehaviour
         obj.UpdateText();
         while (true)
         {
-            obj.transform.localEulerAngles -= new Vector3(0, _spinSpeed, 0);
+            obj.transform.localEulerAngles -= new Vector3(0, _spinSpeed * Time.deltaTime, 0);
             if (obj.transform.localEulerAngles.y >= 180)
             {
                 obj.transform.localEulerAngles = Vector3.zero;

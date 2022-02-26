@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 
 public class MapContoroller : MonoBehaviour
 {
+    [SerializeField] PlayerObject _playerObject;
     [SerializeField] CameraPlus _cameraPlus;
     [SerializeField] float _zoom = 1.0f;
     [SerializeField] GameObject _player;
@@ -22,12 +23,12 @@ public class MapContoroller : MonoBehaviour
     [Header("移動可能距離")]
     [SerializeField] float _moveLength = 1.0f;
 
-    [Header("プレイヤーのコライダー")]
-    [SerializeField] Collider _playerCollider;
     /// <summary>
     /// 次に移動可能なマスのリスト
     /// </summary>
-    List<MapEvent> _nextMapEvent = new List<MapEvent>();
+    [SerializeField] List<MapEvent> _nextMapEventList;
+
+    [SerializeField] MessageUi _restPointMessage;
 
 
     bool _dontMove = false;
@@ -47,11 +48,22 @@ public class MapContoroller : MonoBehaviour
             {
                 mapEvent.EventAction += BattleStart;
             }
+            else if (mapEvent.GetType() == typeof(MapEventRestPoint))
+            {
+                mapEvent.EventAction += RestPoint; 
+            }
         }
         _player.transform.position = GameManager.Instance.PlayeraPos;
-    
+
         //プレイヤーが次に移動可能なマスを調べる
-        
+        StartCoroutine(SetupCoroutine());
+
+    }
+
+    IEnumerator SetupCoroutine()
+    {
+        yield return null;
+        UpdateNextMap();
     }
 
     private void Update()
@@ -80,9 +92,9 @@ public class MapContoroller : MonoBehaviour
     }
 
     /// <summary>
-    /// マップイベントボタンが押された際に、プレイヤーの場所から該当するイベントを探す
+    /// マップイベント開始
     /// </summary>
-    public void EventButton()
+    public void StartEvent()
     {
         Debug.Log(_mapEventArray[1].transform.position + "    " + _player.transform.position);
         MapEvent mapEvent = _mapEventArray.Where(mEvent => (mEvent.transform.position.x == _player.transform.position.x) && (mEvent.transform.position.y == _player.transform.position.y)).FirstOrDefault();
@@ -102,6 +114,7 @@ public class MapContoroller : MonoBehaviour
         {
             return;
         }
+        _playerObject.ListClear();
         _isMoving = true;
         _moveToPos = pos;
         StartCoroutine(MovePlayerCoroutine());
@@ -126,7 +139,8 @@ public class MapContoroller : MonoBehaviour
         }
 
         _player.transform.position = new Vector3(_moveToPos.x, _moveToPos.y, startPos.z);
-        _isMoving = false;
+
+        StartEvent();
     }
 
     public void BattleStart()
@@ -134,6 +148,13 @@ public class MapContoroller : MonoBehaviour
         GameManager.Instance.PlayeraPos = _player.transform.position;
         _fade.AfterFunction += () => GameManager.Instance.ChangeScene("CardBattle");
         _fade.StartAnimation();
+    }
+
+    public void RestPoint()
+    {
+        GameManager.Instance.PlayeraPos = _player.transform.position;
+        _restPointMessage.Activate();
+        _isMoving = false;
     }
 
     public void DeckCompositionActivate()
@@ -153,5 +174,18 @@ public class MapContoroller : MonoBehaviour
     public void CanMoving()
     {
         _dontMove = false;
+    }
+
+    public void UpdateNextMap()
+    {
+        List<GameObject> tempList = _playerObject.EventsAround;
+       
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            MapEvent mapEvent = tempList[i].GetComponent<MapEvent>();
+            mapEvent.IsActive = true;
+            _nextMapEventList.Add(mapEvent);
+            Debug.Log(tempList[i].gameObject.name + "の状態をアクティブにしました");
+        }
     }
 }

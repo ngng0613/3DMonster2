@@ -148,7 +148,7 @@ public class MonsterShop : DeckComposition
     {
         while (true)
         {
-            obj.transform.localEulerAngles += new Vector3(0, _spinSpeed, 0);
+            obj.transform.localEulerAngles += new Vector3(0, _spinSpeed * Time.deltaTime, 0);
             if (obj.transform.localEulerAngles.y >= 90)
             {
                 obj.transform.localEulerAngles = new Vector3(0, 90, 0);
@@ -161,7 +161,7 @@ public class MonsterShop : DeckComposition
         obj.UpdateText();
         while (true)
         {
-            obj.transform.localEulerAngles -= new Vector3(0, _spinSpeed, 0);
+            obj.transform.localEulerAngles -= new Vector3(0, _spinSpeed * Time.deltaTime, 0);
             if (obj.transform.localEulerAngles.y >= 180)
             {
                 obj.transform.localEulerAngles = Vector3.zero;

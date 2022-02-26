@@ -11,6 +11,7 @@ public class GameManager
     public List<MonsterBase> MonsterList = new List<MonsterBase>();
     public List<MonsterBase> MonsterParty = new List<MonsterBase>();
     public Vector2 PlayeraPos;
+    public int PlayerHp = 100;
     public int MonsterMaxCount = 6;
 
     public StageData NextBattleStage;

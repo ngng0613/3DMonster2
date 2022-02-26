@@ -34,62 +34,25 @@ public class MonsterManager : MonoBehaviour
     [System.Serializable]
     public class MonsterSaveData
     {
-        //ID
         public int Id;
 
-        //個別ID
-        public float IndividualID;
-
-        //名前
         public string MonsterName;
-        //ニックネーム
+
         public string NickName;
 
-        //イメージ
         public Sprite Image;
 
-        //属性
-        public string Elements;
-
-        //最大HP
         public int MaxHp;
-        //現在のHP
         public int CurrentHp;
-        //最大MP
         public int MaxMp;
-        //現在のMP
         public int CurrentMp;
 
-        //攻撃力
-        public int Attack;
-        //防御力
-        public int Defence;
-        //特殊攻撃力
-        public int SpAttack;
-        //特殊防御力
-        public int SpDefence;
-        //素早さ
-        public int Speed;
-        //運
-        public int Luck;
-        //命中率
-        public int Hit;
-        //回避率
-        public int Avoidance;
-
-        //ベースのPrefab
         public GameObject MyPrefab;
 
-
-        //レベル
         public int Level;
-        //経験値
         public int Exp;
 
-        //次のレベルまでの経験値
         public int ExpToNextLevel;
-
-        public List<SkillBase> SkillList;
 
     }
 
@@ -274,7 +237,7 @@ public class MonsterManager : MonoBehaviour
             return null;
         }
         return JsonUtility.FromJson<MonsterSaveData>(datastr);
-    }   
+    }
 
     public List<MonsterBase> GetAllMonsterList()
     {

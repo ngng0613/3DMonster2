@@ -13,10 +13,6 @@ public class MonsterBase : MonoBehaviour
     [SerializeField] string _nickName;
     //イメージ
     [SerializeField] Sprite _image;
-    //属性
-    [SerializeField] Element.BattleElement _element;
-    //パッシブスキル
-    [SerializeField] PassiveSkillBase _pSkill;
     //最大HP
     [SerializeField] int _maxHp;
     //現在のHP
@@ -34,9 +30,6 @@ public class MonsterBase : MonoBehaviour
 
 
     [SerializeField] List<StatusEffectBase> _statusEffectList = new List<StatusEffectBase>();
-
-    //戦闘時のキャラ番号
-    public BattleMonsterTag.CharactorTag CharactorTag;
 
     public delegate void Delegate();
     public Delegate AfterAction;
@@ -60,8 +53,6 @@ public class MonsterBase : MonoBehaviour
     public string MonsterName { get => _monsterName; set => _monsterName = value; }
     public string NickName { get => _nickName; set => _nickName = value; }
     public Sprite Image { get => _image; set => _image = value; }
-    public Element.BattleElement Element { get => _element; set => _element = value; }
-    public PassiveSkillBase PSkill { get => _pSkill; set => _pSkill = value; }
     public int MaxHp { get => _maxHp; set => _maxHp = value; }
     public int CurrentHp { get => _currentHp; set => _currentHp = value; }
     public int MaxMp { get => _maxMp; set => _maxMp = value; }
@@ -102,7 +93,13 @@ public class MonsterBase : MonoBehaviour
         if (_checkTheEndOfAnimation)
         {
             //アクションをしていないか確認
-            if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(ActionName))
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName(ActionName))
+            {
+                //アクション中
+                _acted = true;
+                Debug.Log(_animator.GetCurrentAnimatorStateInfo(0));
+            }
+            else
             {
                 //アクション済みなら
                 if (_acted)
@@ -117,12 +114,6 @@ public class MonsterBase : MonoBehaviour
                     AfterAction.Invoke();
                 }
             }
-            else
-            {
-                //アクション中
-                _acted = true;
-            }
-
         }
         if (_checkTheEndOfDeadAnimation)
         {
@@ -161,55 +152,43 @@ public class MonsterBase : MonoBehaviour
 
     public void MotionMove()
     {
+        _checkTheEndOfAnimation = true;
         _animator.SetInteger("BattleMode", 2);
         this.ActionName = "WalkFWD";
     }
 
     public void MotionAttack()
     {
+        _checkTheEndOfAnimation = true;
         _animator.SetInteger("BattleMode", 10);
         this.ActionName = "Attack01";
     }
 
     public void MotionTakeDamege()
     {
+        _checkTheEndOfAnimation = true;
         _animator.SetInteger("BattleMode", 50);
         this.ActionName = "TakeDamage";
     }
 
     public void MotionVictory()
     {
+        _checkTheEndOfAnimation = true;
         _animator.SetInteger("BattleMode", 1000);
         this.ActionName = "Victory";
     }
 
     public void MotionDead()
     {
+        _checkTheEndOfAnimation = true;
         _animator.SetInteger("BattleMode", 999);
         this.ActionName = "Die";
     }
-
-    public void CheckEndOfAnimation()
-    {
-        _checkTheEndOfAnimation = true;
-    }
-
-    public void CheckEndOfAnimation(string actionName)
-    {
-        _checkTheEndOfAnimation = true;
-        this.ActionName = actionName;
-
-    }
-
     public void CheckEndOfDeadAnimation()
     {
         _checkTheEndOfDeadAnimation = true;
     }
 
-    public PassiveSkillBase GetPassiveSkill()
-    {
-        return PSkill;
-    }
     public void TakeDamage(int damage)
     {
         CurrentHp -= damage;

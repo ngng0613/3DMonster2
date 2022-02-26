@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-public class MapEvent : EventBase
+public class MapEvent : EventBase, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] protected bool _isActive = true;
 
@@ -15,7 +15,6 @@ public class MapEvent : EventBase
     public delegate void MovePositionDelegate(Vector3 pos);
     public MovePositionDelegate MovePlayer;
     [SerializeField] protected bool _isSelect = false;
-    protected Player _player;
     [SerializeField] protected Sprite _spriteSelected;
     [SerializeField] protected Sprite _spriteUnselected;
     [SerializeField] protected SpriteRenderer _backgroundSprite;
@@ -29,13 +28,8 @@ public class MapEvent : EventBase
         EventAction.Invoke();
     }
 
-    public void OnMouseOver()
-    {
-        _isSelect = true;
-        _backgroundSprite.sprite = _spriteSelected;
-    }
 
-    public void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (IsActive == false)
         {
@@ -44,7 +38,13 @@ public class MapEvent : EventBase
         MovePlayer.Invoke(this.transform.position);
     }
 
-    public void OnMouseExit()
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _isSelect = true;
+        _backgroundSprite.sprite = _spriteSelected;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
     {
         _isSelect = false;
         _backgroundSprite.sprite = _spriteUnselected;

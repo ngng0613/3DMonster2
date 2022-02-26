@@ -11,12 +11,13 @@ public class CardData : ScriptableObject
     [SerializeField] string _cardName;
     [SerializeField] Sprite _mainImage;
     [SerializeField] int _cost;
-    [SerializeField] CardSpellBase _spellBase;
+    [TextArea, SerializeField] string _flavourText; 
     [SerializeField] List<CardSpellBase> _cardSpellBases;
 
     public string CardName { get => _cardName; set => _cardName = value; }
     public Sprite MainImage { get => _mainImage; set => _mainImage = value; }
     public int Cost { get => _cost; set => _cost = value; }
     public List<CardSpellBase> CardSpellBases { get => _cardSpellBases; set => _cardSpellBases = value; }
+    public string FlavourText { get => _flavourText; set => _flavourText = value; }
 }
 

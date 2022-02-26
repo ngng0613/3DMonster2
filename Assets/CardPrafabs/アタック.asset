@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: "\u30A2\u30BF\u30C3\u30AF"
   m_EditorClassIdentifier: 
   _cardName: "\u30A2\u30BF\u30C3\u30AF"
-  _mainImage: {fileID: 21300000, guid: 15ad792fecced9c40b9a5de869cbe124, type: 3}
+  _mainImage: {fileID: 21300000, guid: f3bedd8852f6c20408e8901383ef5343, type: 3}
   _cost: 1
+  _flavourText: "\u76F8\u624B\u306B\uFF15\u30C0\u30E1\u30FC\u30B8"
   _spellBase:
     Type: 0
     Target: 0

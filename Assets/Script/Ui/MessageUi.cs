@@ -17,7 +17,6 @@ public class MessageUi : MonoBehaviour
 
     public void Activate()
     {
-        Debug.Log("はい");
         //this.gameObject.transform.position = new Vector2();
         StartCoroutine(ActivateCoroutine());
     }

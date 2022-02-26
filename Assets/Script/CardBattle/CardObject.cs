@@ -14,6 +14,7 @@ public class CardObject : MonoBehaviour
     [SerializeField] Canvas _canvas;
     [SerializeField] TextMeshProUGUI _nameText;
     [SerializeField] TextMeshProUGUI _costText;
+    [SerializeField] TextMeshProUGUI _flavourtText;
     [SerializeField] Image _image;
 
     int _sortingOrder = 0;
@@ -36,7 +37,7 @@ public class CardObject : MonoBehaviour
 
     public bool InHand = false;
 
-    public bool Inbattle = false;
+    public bool InBattle = false;
 
     /// <summary>
     /// 初期設定
@@ -45,6 +46,7 @@ public class CardObject : MonoBehaviour
     /// <param name="handUpdate">手札に戻す処理時に呼ぶ関数</param>
     public void Setup(PlayedAction playedAction, Func handUpdate, Remove remove)
     {
+        this.gameObject.transform.localScale = Vector3.one;
         _playedActionDelegate = playedAction;
         _handUpdateDelegate = handUpdate;
         _remove = remove;
@@ -56,7 +58,9 @@ public class CardObject : MonoBehaviour
     {
         _nameText.text = Data.CardName;
         _image.sprite = Data.MainImage;
+        _image.color = Color.white;
         _costText.text = Data.Cost.ToString();
+        _flavourtText.text = Data.FlavourText;
     }
 
     IEnumerator PlayUpdate()
@@ -93,7 +97,7 @@ public class CardObject : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        if (Inbattle == true)
+        if (InBattle == true)
         {
             this.gameObject.transform.DOLocalMoveY(156, 0.2f);
             this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
@@ -102,7 +106,7 @@ public class CardObject : MonoBehaviour
     }
     public void OnPointerExit()
     {
-        if (Inbattle == true)
+        if (InBattle == true)
         {
             this.gameObject.transform.DOLocalMoveY(0, 0.2f);
             this.gameObject.transform.DOScale(Vector3.one, 0.2f);
@@ -113,7 +117,7 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (Input.GetMouseButton(0) && Inbattle)
+        if (Input.GetMouseButton(0) && InBattle)
         {
             _relativePos = this.gameObject.transform.position;
             _firstMousePos = Input.mousePosition;
@@ -123,7 +127,7 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseDrag()
     {
-        if (Input.GetMouseButton(0) && Inbattle)
+        if (Input.GetMouseButton(0) && InBattle)
         {
             this.gameObject.transform.position = _relativePos + Input.mousePosition - _firstMousePos;
         }
@@ -131,7 +135,7 @@ public class CardObject : MonoBehaviour
 
     public void OnMouseUp()
     {
-        if (Input.GetMouseButtonUp(0) && Inbattle)
+        if (Input.GetMouseButtonUp(0) && InBattle)
         {
             _handUpdateDelegate.Invoke();
         }
