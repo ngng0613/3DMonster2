@@ -26,6 +26,8 @@ public class ResultManager : MonoBehaviour
     bool _captured = false;
 
     [SerializeField] string _mapSceneName;
+    public delegate void BackToMapDelegate();
+    public BackToMapDelegate BackToMap;
 
     public void Setup(MonsterBase monster)
     {
@@ -67,9 +69,9 @@ public class ResultManager : MonoBehaviour
         _captured = true;
     }
 
-    public void BackToMap()
+    public void BackToMapButton()
     {
-        SceneManager.LoadScene(_mapSceneName);
+        BackToMap.Invoke();
     }
 
 }

@@ -24,10 +24,7 @@ public class StatusIconView : MonoBehaviour
             if (tempCount <= 0)
             {
                 StatusEffectBaseList.Remove(statusEffect);
-                if (StatusEffectBaseList.Count > 0)
-                {
-                    //i--;
-                }
+                i--;
                 continue;
             }
             StateIcon icon = Instantiate(_stateIconPrefab);

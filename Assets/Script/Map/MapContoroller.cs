@@ -18,7 +18,7 @@ public class MapContoroller : MonoBehaviour
     [SerializeField] Fade _fade;
     Vector3 _moveToPos;
     bool _isMoving = false;
-    [SerializeField] DeckComposition _deckComposition;
+    [SerializeField] DeckManager _deckComposition;
     [SerializeField] ShopManager _shopManager;
     [Header("移動可能距離")]
     [SerializeField] float _moveLength = 1.0f;
@@ -147,12 +147,13 @@ public class MapContoroller : MonoBehaviour
     {
         GameManager.Instance.PlayeraPos = _player.transform.position;
         _fade.AfterFunction += () => GameManager.Instance.ChangeScene("CardBattle");
-        _fade.StartAnimation();
+        _fade.FadeOut();
     }
 
     public void RestPoint()
     {
         GameManager.Instance.PlayeraPos = _player.transform.position;
+        GameManager.Instance.PlayerHp = 100;
         _restPointMessage.Activate();
         _isMoving = false;
     }

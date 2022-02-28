@@ -1,12 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
-public class MonsterShop : DeckManagerBase
+public class DeckManager : DeckManagerBase
 {
-    [SerializeField] GameObject _confirmWindow;
-
     /// <summary>
     /// 起動処理
     /// </summary>
@@ -33,10 +30,18 @@ public class MonsterShop : DeckManagerBase
             part.BasePos = _subSlotPosition[i].transform.position;
             part.Monster = GameManager.Instance.MonsterList[i];
             part.DisplayUpdate();
-            part.Release = ReleaseFromParty;
             part.SetMonsterSlot = SetMonsterSlot;
+            part.Release = ReleaseFromParty;
             _parts[i] = part;
             part.Id = i;
+
+            //パーティーに参加済みのモンスターはあらかじめパーティースロットにセットしておく
+            if (part.Monster.InParty == true && partyCount < _partySlotPosition.Length)
+            {
+                part.transform.position = _partySlotPosition[partyCount].transform.position;
+                SetMonsterSlot(part.Monster, partyCount + 1, part);
+                partyCount++;
+            }
 
         }
 
@@ -80,21 +85,14 @@ public class MonsterShop : DeckManagerBase
         {
             case 1:
 
-                Debug.Log($"スロット1に{monster.MonsterName}をセットしました");
+                Debug.Log($"{monster.MonsterName}をセットしました");
                 break;
 
-            case 2:
-                Debug.Log($"スロット2に{monster.MonsterName}をセットしました");
-                break;
-
-            case 3:
-                Debug.Log($"スロット3に{monster.MonsterName}をセットしました");
-                break;
 
             default:
                 break;
         }
-        //_parts[slotId - 1].Monster.InParty = true;
+        _parts[slotId - 1].Monster.InParty = true;
         StartCoroutine(SetMonsterAnimation(monster, slotId));
 
     }
@@ -138,38 +136,6 @@ public class MonsterShop : DeckManagerBase
         }
     }
 
-    /// <summary>
-    /// カードを回転させながら中身を更新する
-    /// </summary>
-    /// <param name="obj">対象カードオブジェクト</param>
-    /// <param name="data">更新するカードデータ<param>
-    /// <returns></returns>
-    public override IEnumerator CardSpin(CardObject obj, CardData data)
-    {
-        while (true)
-        {
-            obj.transform.localEulerAngles += new Vector3(0, _spinSpeed * Time.deltaTime, 0);
-            if (obj.transform.localEulerAngles.y >= 90)
-            {
-                obj.transform.localEulerAngles = new Vector3(0, 90, 0);
-                break;
-            }
-
-            yield return null;
-        }
-        obj.Data = data;
-        obj.UpdateText();
-        while (true)
-        {
-            obj.transform.localEulerAngles -= new Vector3(0, _spinSpeed * Time.deltaTime, 0);
-            if (obj.transform.localEulerAngles.y >= 180)
-            {
-                obj.transform.localEulerAngles = Vector3.zero;
-                break;
-            }
-            yield return null;
-        }
-    }
 
     /// <summary>
     /// デッキ編成の決定
@@ -185,6 +151,7 @@ public class MonsterShop : DeckManagerBase
             }
             else
             {
+                Debug.Log("モンスターが3体セットされていません");
                 break;
             }
 
@@ -205,50 +172,10 @@ public class MonsterShop : DeckManagerBase
         {
             if (SetParts[i] == part)
             {
+                part.Monster.InParty = false;
                 SetParts[i] = null;
             }
         }
     }
-
-    /// <summary>
-    /// モンスターを所持モンスターリストから外す処理
-    /// </summary>
-    public void ReleaseFromMonsterList()
-    {
-        MonsterBase[] tempList = GameManager.Instance.MonsterList.ToArray();
-        for (int i = 0; i < SetParts.Length; i++)
-        {
-            if (SetParts[i] == null)
-            {
-                continue;
-            }
-            int id = SetParts[i].Id;
-            Destroy(SetParts[i].gameObject);
-            tempList[id] = null;
-        }
-        GameManager.Instance.MonsterList = tempList.ToList();
-        GameManager.Instance.MonsterList.RemoveAll(item => item == null);
-
-        for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
-        {
-            Debug.Log(GameManager.Instance.MonsterList[i].NickName);
-        }
-        CloseConfirmWindow();
-        Deactivate();
-        Activate();
-    }
-
-    /// <summary>
-    /// 確認画面の表示
-    /// </summary>
-    public void DisplayConfirmWindow()
-    {
-        _confirmWindow.SetActive(true);
-    }
-
-    public void CloseConfirmWindow()
-    {
-        _confirmWindow.SetActive(false);
-    }
-
 }
+

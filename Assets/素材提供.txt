@@ -1,11 +1,8 @@
 素材提供
 ------------------------------------
-
-◆スクリプト
-・FadeCamera2
-
-
-
+◆フォント
+・Rippen Bold
+http://www.illllli.com/font/sanserif/rippen-bold/
 
 
 ◆ウインドウ画像

@@ -47,7 +47,9 @@ MonoBehaviour:
   _text: {fileID: 2772696437097983219}
   _canvas: {fileID: 8673411190213248953}
   _useCamera: {fileID: 0}
+  _moveXRange: 0.5
   _tweenTime: 0.3
+  _jumpPower: 0.5
 --- !u!1 &4359837658416797470
 GameObject:
   m_ObjectHideFlags: 0

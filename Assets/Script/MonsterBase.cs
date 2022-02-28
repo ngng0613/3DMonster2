@@ -28,6 +28,8 @@ public class MonsterBase : MonoBehaviour
     //倒したときにもらえるお金
     [SerializeField] int _money;
 
+    [SerializeField] MonsterBase _evolutionyMonster;
+
 
     [SerializeField] List<StatusEffectBase> _statusEffectList = new List<StatusEffectBase>();
 
@@ -48,6 +50,15 @@ public class MonsterBase : MonoBehaviour
 
     bool _inParty = false;
 
+    [Header("アニメーションのパラメーター名")]
+    [SerializeField] string _actionParameterName;
+    [SerializeField] string _actionNameIdle = "Idle";
+    [SerializeField] int _actionNumberIdle = 0;
+    [SerializeField] string _actionNameAttack = "Attack01";
+    [SerializeField] int _actionNumberAttack = 10;
+    [SerializeField] string _actionNameTakeDamage = "TakeDamage";
+    [SerializeField] int _actionNumberTakeDamage = 50;
+
     public int Id { get => _id; set => _id = value; }
     public float IndividualID { get => _individualID; set => _individualID = value; }
     public string MonsterName { get => _monsterName; set => _monsterName = value; }
@@ -63,8 +74,7 @@ public class MonsterBase : MonoBehaviour
     public int GetExp { get => _getExp; set => _getExp = value; }
     public int Money { get => _money; set => _money = value; }
     public bool InParty { get => _inParty; set => _inParty = value; }
-
-
+    public MonsterBase EvolutionyMonster { get => _evolutionyMonster; set => _evolutionyMonster = value; }
 
 
     /// <summary>
@@ -79,10 +89,10 @@ public class MonsterBase : MonoBehaviour
     /// <param name="spAttack"></param>
     /// <param name="spDefence"></param>
     /// <param name="speed"></param>
-    public MonsterBase(string monsterName, int level,
-        int maxHp, int maxMp, int attack, int defence, int spAttack, int spDefence, int speed)
+    public MonsterBase(string monsterName, int maxHp, int maxMp)
     {
         this.MonsterName = monsterName;
+        this.NickName = monsterName;
         this.MaxHp = maxHp;
         this.MaxMp = maxMp;
     }
@@ -111,7 +121,10 @@ public class MonsterBase : MonoBehaviour
                     MotionIdle();
 
                     Debug.Log("アニメーション済み");
-                    AfterAction.Invoke();
+                    if (AfterAction != null)
+                    {
+                        AfterAction.Invoke();
+                    }
                 }
             }
         }
@@ -146,44 +159,25 @@ public class MonsterBase : MonoBehaviour
 
     public void MotionIdle()
     {
-        _animator.SetInteger("BattleMode", 0);
-        this.ActionName = "IdleNormal";
-    }
-
-    public void MotionMove()
-    {
-        _checkTheEndOfAnimation = true;
-        _animator.SetInteger("BattleMode", 2);
-        this.ActionName = "WalkFWD";
+        _animator.SetInteger(_actionParameterName, _actionNumberIdle);
+        this.ActionName = _actionNameIdle;
     }
 
     public void MotionAttack()
     {
         _checkTheEndOfAnimation = true;
-        _animator.SetInteger("BattleMode", 10);
-        this.ActionName = "Attack01";
+        _animator.SetInteger(_actionParameterName, _actionNumberAttack);
+        this.ActionName = _actionNameAttack;
     }
 
     public void MotionTakeDamege()
     {
         _checkTheEndOfAnimation = true;
-        _animator.SetInteger("BattleMode", 50);
-        this.ActionName = "TakeDamage";
+        _animator.SetInteger(_actionParameterName, _actionNumberTakeDamage);
+        this.ActionName = _actionNameTakeDamage;
     }
 
-    public void MotionVictory()
-    {
-        _checkTheEndOfAnimation = true;
-        _animator.SetInteger("BattleMode", 1000);
-        this.ActionName = "Victory";
-    }
 
-    public void MotionDead()
-    {
-        _checkTheEndOfAnimation = true;
-        _animator.SetInteger("BattleMode", 999);
-        this.ActionName = "Die";
-    }
     public void CheckEndOfDeadAnimation()
     {
         _checkTheEndOfDeadAnimation = true;

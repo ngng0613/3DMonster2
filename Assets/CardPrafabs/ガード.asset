@@ -16,14 +16,9 @@ MonoBehaviour:
   _mainImage: {fileID: 21300000, guid: edc2d415515a4cb4fa4a2dab71103396, type: 3}
   _cost: 1
   _flavourText: "\uFF13\u30AC\u30FC\u30C9\u3092\u5F97\u308B"
-  _spellBase:
-    Type: 0
-    Target: 0
-    EffectValue: 0
-    Status: {fileID: 0}
   _cardSpellBases:
   - Type: 2
     Target: 1
-    EffectValue: 10
+    EffectValue: 3
     Status: {fileID: 5518358524292302049, guid: 321dba7970bede94d8ffd4b638d6c0be,
       type: 3}

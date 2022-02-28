@@ -19,20 +19,30 @@ public class Fade : MonoBehaviour
 
     public void Start()
     {
-        //DontDestroyOnLoad(this.gameObject);
         Color color = _mainImage.color;
-        color.a = 0;
+        //color.a = 0;
         _mainImage.color = color;
     }
 
-    public void StartAnimation()
+    public void FadeOut()
     {
+        Color color = _mainImage.color;
+        color.a = 0;
         _parentObject.SetActive(true);
         _hexImage.color = _hexFadeColor;
-        StartCoroutine(FadeAnimation());
+        StartCoroutine(FadeInAnimation());
     }
 
-    IEnumerator FadeAnimation()
+    public void FadeIn()
+    {
+        Color color = _mainImage.color;
+        color.a = 1;
+        _parentObject.SetActive(true);
+        _hexImage.color = _hexFadeColor;
+        StartCoroutine(FadeOutAnimation());
+    }
+
+    IEnumerator FadeInAnimation()
     {
         while (true)
         {
@@ -51,5 +61,30 @@ public class Fade : MonoBehaviour
             yield return null;
         }
         AfterFunction.Invoke();
+    }
+
+    IEnumerator FadeOutAnimation()
+    {
+        while (true)
+        {
+            Color color = _mainImage.color;
+            color.a -= 1f * _fadeSpeed * Time.deltaTime;
+            _mainImage.color = color;
+            if (_hexMaterial.HasProperty("_FadeFloat"))
+            {
+                _hexMaterial.SetFloat("_FadeFloat", color.a);
+            }
+            if (color.a <= 0)
+            {
+                _hexImage.gameObject.SetActive(false);
+                break;
+            }
+            yield return null;
+        }
+        if (AfterFunction != null)
+        {
+            AfterFunction.Invoke();
+        }
+
     }
 }

@@ -10,6 +10,10 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 {
     int _id;
     public MonsterBase Monster;
+    [SerializeField] GameObject _statusView;
+    [SerializeField] TextMeshProUGUI _nameText;
+    [SerializeField] TextMeshProUGUI _mpText;
+    [SerializeField] float _displaySpeed = 0.5f;
     [SerializeField] string _slotTagName1 = "";
     [SerializeField] string _slotTagName2 = "";
     [SerializeField] string _slotTagName3 = "";
@@ -23,7 +27,9 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
     public delegate void ReleaseDelegate(PartOfMonsterList part);
     public ReleaseDelegate Release;
     bool _isSet = false;
-
+    [SerializeField] Canvas _canvas;
+    int _defaultSortOrder = default;
+    bool _isDisplay = false;
     Sequence _sequence;
 
     public int Id { get => _id; set => _id = value; }
@@ -31,6 +37,10 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
     private void Start()
     {
         _sequence = DOTween.Sequence();
+        if (_canvas != null)
+        {
+            _defaultSortOrder = _canvas.sortingOrder;
+        }
     }
 
 
@@ -42,12 +52,19 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
     public void DisplayUpdate()
     {
         _image.sprite = Monster.Image;
+        _nameText.text = Monster.MonsterName;
+        _mpText.text = $"MP : {Monster.MaxMp.ToString()}" ;
+
     }
 
-    public void OnClick()
+    public void OnPointerEnter()
     {
-        _sequence.Pause();
-        _sequence.Kill();
+        _statusView.transform.DOScaleX(1.0f, _displaySpeed * Time.deltaTime);
+    }
+
+    public void OnPointerExit()
+    {
+        _statusView.transform.DOScaleX(0.0f, _displaySpeed * Time.deltaTime);
     }
 
     public void OnDrag()
@@ -57,15 +74,25 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
             Release(this);
         }
         this.gameObject.transform.position = Input.mousePosition;
+        if (_canvas != null)
+        {
+            _canvas.sortingOrder = _defaultSortOrder + 1;
+
+        }
     }
 
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
     {
+        if (_canvas != null)
+        {
+            _canvas.sortingOrder = _defaultSortOrder;
+        }
         var raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raycastResults);
         _isSet = false;
         foreach (var hit in raycastResults)
         {
+            Debug.Log(hit.gameObject.name);
             if (hit.gameObject.tag != null)
             {
                 if (hit.gameObject.CompareTag(_slotTagName1))
@@ -100,6 +127,7 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
         {
             BackToBasePos();
         }
+
     }
 
     public void BackToBasePos()

@@ -11,10 +11,15 @@ public class DamageView : MonoBehaviour
     [SerializeField] TextMeshProUGUI _text;
     [SerializeField] Canvas _canvas;
     [SerializeField] Camera _useCamera;
+    [SerializeField] float _moveXRange;
     int _damageValue = 0;
     int _displayValue = 0;
     [SerializeField] float _tweenTime = 0.3f;
     string _damageMessage = "";
+
+    Vector3 _randomPos;
+    [SerializeField] float _jumpPower = 1.0f;
+    Sequence _sequence;
 
     public bool IsActive { get; set; } = false;
 
@@ -31,9 +36,7 @@ public class DamageView : MonoBehaviour
             DOTween.To(() => _displayValue, (x) => { _displayValue = x; Debug.Log(x); }, _damageValue, _tweenTime).SetEase(Ease.InSine);
             if (_damageMessage != "")
             {
-                
                 _text.text = _damageMessage + "\n" + damageString;
-
             }
             else
             {
@@ -45,11 +48,15 @@ public class DamageView : MonoBehaviour
 
     public void Setup(int damageValue, string damageMessage, Color textColor, Camera camera)
     {
-
+        _sequence = DOTween.Sequence();
+        UnityEngine.Random.InitState(System.DateTime.Now.Millisecond);
+        _randomPos = this.gameObject.transform.position;
+        Debug.Log("Pos" + _randomPos);
+        _randomPos.x += UnityEngine.Random.Range(-1 * _moveXRange, _moveXRange);
         _useCamera = camera;
         _canvas.worldCamera = _useCamera;
         this._damageValue = damageValue;
-        
+
         if (damageMessage != "")
         {
             this._damageMessage = damageMessage;
@@ -59,7 +66,7 @@ public class DamageView : MonoBehaviour
         else
         {
             damageMessage = "";
- 
+
             _text.color = textColor;
         }
         _text.transform.localScale = Vector3.one;
@@ -68,26 +75,37 @@ public class DamageView : MonoBehaviour
 
     public void Activate()
     {
+
+        _sequence.Append(
         DOTween.To(() => _displayValue, (x) =>
+            {
+                _displayValue = x;
+                string damageString = "";
+                if (_displayValue > 0)
+                {
+                    damageString = _displayValue.ToString();
+                }
+                if (_damageMessage != "")
+                {
+                    _text.text = _damageMessage + "\n" + damageString;
+
+                }
+                else
+                {
+                    _text.text = damageString;
+                }
+
+
+            }, _damageValue, _tweenTime).SetEase(Ease.InSine)
+        );
+
+        if (_damageValue > 0)
         {
-            _displayValue = x;
-            string damageString = "";
-            if (_displayValue > 0)
-            {
-                damageString = _displayValue.ToString();
-            }
-            if (_damageMessage != "")
-            {
-                _text.text = _damageMessage + "\n" + damageString;
-
-            }
-            else
-            {
-                _text.text = damageString;
-            }
+            _sequence.Join(
+             this.gameObject.transform.DOJump(_randomPos, _jumpPower, 1, _tweenTime));
+        };
 
 
-        }, _damageValue, _tweenTime).SetEase(Ease.InSine);
 
         StartCoroutine(WaitForSeconds(1));
     }

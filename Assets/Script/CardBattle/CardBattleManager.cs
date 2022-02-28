@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,8 @@ public class CardBattleManager : MonoBehaviour
 
     public enum Phase
     {
-        start = 0,
+        Start,
+        Player,
         Preparation,
         Command,
         ChooseSkill,
@@ -39,7 +41,7 @@ public class CardBattleManager : MonoBehaviour
 
     [SerializeField] List<MonsterBase> _debugMonsters;
 
-    [SerializeField] Phase _phase = Phase.start;
+    [SerializeField] Phase _phase = Phase.Start;
     public bool KeyReception { get; set; } = false;
 
     float _cameraMovementTime = 1.0f;
@@ -110,10 +112,20 @@ public class CardBattleManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         //初期化
-        MonsterBase _playerMonster = _playerMonsterBaseList[0];
-        _playerHpGauge.Setup(_playerMonster, _cameraComponent, null);
+
+        MonsterBase playerMonster = GameManager.Instance.PlayerMonster;
+        playerMonster.CurrentHp = GameManager.Instance.PlayerHp;
+        if (GameManager.Instance.MonsterParty.Count == 0)
+        {
+            GameManager.Instance.MonsterParty = _debugMonsters;
+        }
+        List<MonsterBase> monsterList = GameManager.Instance.MonsterParty;
+        playerMonster.MaxMp = monsterList.Sum(x => x.MaxMp);
+        _playerMonsterBaseList[0] = playerMonster;
+        _playerHpGauge.Setup(playerMonster, _cameraComponent, null);
         _playerStatusIconView.Monster = _playerMonsterBaseList[0];
         _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
+        _resultManager.BackToMap = this.BackToMap;
 
         //ステージデータ読み込み
         _stageData = GameManager.Instance.NextBattleStage;
@@ -121,7 +133,6 @@ public class CardBattleManager : MonoBehaviour
         {
             _enemyMonsterBaseList[0] = _stageData.EnemyMonster;
             SetEnemyMonsterBase(_enemyMonsterObjectsList[0], 0, _enemyMonsterPositionList[0], _enemyMonsterBaseList[0]);
-
         }
         else
         {
@@ -137,15 +148,12 @@ public class CardBattleManager : MonoBehaviour
                 }
             }
         }
-        if (GameManager.Instance.MonsterParty.Count == 0)
-        {
-            GameManager.Instance.MonsterParty = _debugMonsters;
-        }
+
 
 
         //一度ゲームオブジェクトのデッキをつくる
-        
-        List<MonsterBase> monsterList = GameManager.Instance.MonsterParty;
+
+        monsterList = GameManager.Instance.MonsterParty;
 
         List<CardObject> playerObjectDeck = new List<CardObject>();
         for (int i = 0; i < monsterList.Count; i++)
@@ -187,7 +195,6 @@ public class CardBattleManager : MonoBehaviour
         //カード使用時の処理の追加
         _enemyAi.Hand.Setup(PlayCard, _enemyDeck.Trash);
 
-
         PhaseStart();
     }
 
@@ -211,28 +218,19 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator DrawCard()
     {
-
         CardObject card = _playerDeck.Draw();
         if (card != null)
         {
             _hand.AddHand(card);
         }
-
         yield return null;
     }
 
     void PhasePreparation()
     {
         _phase = Phase.Preparation;
-
         _soundManager.PlayBgm();
 
-
-        List<MonsterBase> allMonsterBaseList = new List<MonsterBase>();
-        allMonsterBaseList.AddRange(_playerMonsterBaseList);
-        allMonsterBaseList.AddRange(_enemyMonsterBaseList);
-
-        _phase = Phase.Wait;
         StartCoroutine(PhaseDraw());
     }
 
@@ -242,6 +240,7 @@ public class CardBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PhaseDraw()
     {
+        _phase = Phase.Player;
         _playerMonsterBaseList[0].CurrentMp = _playerMonsterBaseList[0].MaxMp;
         UpdateMana();
         List<StatusEffectBase> statusList = _playerMonsterBaseList[0].StatusEffectList;
@@ -273,7 +272,7 @@ public class CardBattleManager : MonoBehaviour
             yield return Wait(0.3f);
         }
     }
-    
+
     /// <summary>
     /// マナ表示の更新
     /// </summary>
@@ -282,7 +281,7 @@ public class CardBattleManager : MonoBehaviour
         _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
         if (_playerMonsterBaseList[0].CurrentMp <= 0)
         {
-;            _turnEndButton.SetActive(false);
+            _turnEndButton.SetActive(false);
         }
 
         _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0].CurrentMp);
@@ -302,7 +301,10 @@ public class CardBattleManager : MonoBehaviour
 
     public void PhaseEnemyStart()
     {
-        StartCoroutine(PhaseEnemyTurn());
+        if (_phase == Phase.Player)
+        {
+            StartCoroutine(PhaseEnemyTurn());
+        }
     }
 
     /// <summary>
@@ -311,6 +313,7 @@ public class CardBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PhaseEnemyTurn()
     {
+        _phase = Phase.Enemy;
         _turnEndButton.SetActive(true);
         _enemyMonsterBaseList[0].CurrentMp = _enemyMonsterBaseList[0].MaxMp;
         List<CardData> combo = _enemyAi.Think();
@@ -336,11 +339,11 @@ public class CardBattleManager : MonoBehaviour
                         _playerStatusIconView.IconPopup(_guardStatusEffect);
                         //ダメージ処理
                         DamageView damageView = Instantiate(_damageViewPrefab, _playerMonstersPositionList[0].transform.position, Quaternion.identity);
-                        damageView.Setup(damage, "", Color.white, _cameraComponent);
                         damageView.transform.position += new Vector3(0, 2, -3);
+                        damageView.Setup(damage, "", Color.white, _cameraComponent);
                         damageView.Activate();
                         _playerHpGauge.UpdateHp(_playerMonsterBaseList[0].CurrentHp);
-                        _playerHpGauge.gameObject.transform.DOShakePosition(0.5f, 0.5f,100);
+                        _playerHpGauge.gameObject.transform.DOShakePosition(0.5f, 0.5f, 100);
                         //_playerStatusIconView.UpdateView();
                         break;
                     case SpellType.Guard:
@@ -354,20 +357,44 @@ public class CardBattleManager : MonoBehaviour
                         status.Id = partOfSpell.Status.Id;
                         status.IconSprite = partOfSpell.Status.IconSprite;
                         bool alreadyHave = false;
-                        foreach (var tempStatus in _enemyMonsterBaseList[0].StatusEffectList)
+                        ///敵から見て、敵はプレイヤー
+                        if (partOfSpell.Target == SpellTarget.Enemy)
                         {
-                            if (status.Name == tempStatus.Name)
+                            foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
                             {
-                                tempStatus.Count += partOfSpell.EffectValue;
-                                alreadyHave = true;
-                                break;
+                                if (status.Name == tempStatus.Name)
+                                {
+                                    tempStatus.Count += partOfSpell.EffectValue;
+                                    alreadyHave = true;
+                                    break;
+                                }
                             }
+                            if (alreadyHave == false)
+                            {
+                                status.Count = partOfSpell.EffectValue;
+                                _playerMonsterBaseList[0].StatusEffectList.Add(status);
+                            }
+                            _playerStatusIconView.UpdateView();
                         }
-                        if (alreadyHave == false)
+                        else if (partOfSpell.Target == SpellTarget.Player)
                         {
-                            status.Count = partOfSpell.EffectValue;
-                            _enemyMonsterBaseList[0].StatusEffectList.Add(status);
+                            foreach (var tempStatus in _enemyMonsterBaseList[0].StatusEffectList)
+                            {
+                                if (status.Name == tempStatus.Name)
+                                {
+                                    tempStatus.Count += partOfSpell.EffectValue;
+                                    alreadyHave = true;
+                                    break;
+                                }
+                            }
+                            if (alreadyHave == false)
+                            {
+                                status.Count = partOfSpell.EffectValue;
+                                _enemyMonsterBaseList[0].StatusEffectList.Add(status);
+                            }
+                            _enemyStatusIconView.UpdateView();
                         }
+
                         break;
                     case SpellType.Debuff:
                         break;
@@ -463,8 +490,11 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     public void PlayCard(CardData card)
     {
-        StartCoroutine(PlayCardCorotine(card));
-        _playerStatusIconView.UpdateView();
+        if (_phase == Phase.Player)
+        {
+            StartCoroutine(PlayCardCorotine(card));
+            _playerStatusIconView.UpdateView();
+        }
     }
 
     /// <summary>
@@ -476,36 +506,58 @@ public class CardBattleManager : MonoBehaviour
     {
         for (int i = 0; i < card.CardSpellBases.Count; i++)
         {
-            CardSpellBase spell = card.CardSpellBases[i];
-            switch (spell.Type)
+            CardSpellBase partOfSpell = card.CardSpellBases[i];
+            switch (partOfSpell.Type)
             {
                 case SpellType.Attack:
-                    AttackCoroutine(spell);
+                    AttackCoroutine(partOfSpell);
                     break;
                 case SpellType.Guard:
 
                     break;
                 case SpellType.Buff:
-
-                    StatusEffectBase status = Instantiate(spell.Status);
-                    status.Name = spell.Status.Name;
-                    status.Id = spell.Status.Id;
-                    status.IconSprite = spell.Status.IconSprite;
+                    StatusEffectBase status = Instantiate(partOfSpell.Status);
+                    status.Name = partOfSpell.Status.Name;
+                    status.Id = partOfSpell.Status.Id;
+                    status.IconSprite = partOfSpell.Status.IconSprite;
                     bool alreadyHave = false;
-                    foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
+                    if (partOfSpell.Target == SpellTarget.Enemy)
                     {
-                        if (status.Name == tempStatus.Name)
+                        foreach (var tempStatus in _enemyMonsterBaseList[0].StatusEffectList)
                         {
-                            tempStatus.Count += spell.EffectValue;
-                            alreadyHave = true;
-                            break;
+                            if (status.Name == tempStatus.Name)
+                            {
+                                tempStatus.Count += partOfSpell.EffectValue;
+                                alreadyHave = true;
+                                break;
+                            }
                         }
+                        if (alreadyHave == false)
+                        {
+                            status.Count = partOfSpell.EffectValue;
+                            _enemyMonsterBaseList[0].StatusEffectList.Add(status);
+                        }
+                        _enemyStatusIconView.UpdateView();
                     }
-                    if (alreadyHave == false)
+                    else if (partOfSpell.Target == SpellTarget.Player)
                     {
-                        status.Count = spell.EffectValue;
-                        _playerMonsterBaseList[0].StatusEffectList.Add(status);
+                        foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
+                        {
+                            if (status.Name == tempStatus.Name)
+                            {
+                                tempStatus.Count += partOfSpell.EffectValue;
+                                alreadyHave = true;
+                                break;
+                            }
+                        }
+                        if (alreadyHave == false)
+                        {
+                            status.Count = partOfSpell.EffectValue;
+                            _playerMonsterBaseList[0].StatusEffectList.Add(status);
+                        }
+                        _playerStatusIconView.UpdateView();
                     }
+
 
                     break;
                 case SpellType.Debuff:
@@ -540,12 +592,13 @@ public class CardBattleManager : MonoBehaviour
 
         //アニメーションの再生
         _enemyMonsterBaseList[0].MotionTakeDamege();
-        _enemyHpGauge.gameObject.transform.DOShakePosition(0.5f,1.0f,100);
+        _enemyHpGauge.gameObject.transform.DOShakePosition(0.5f, 1.0f, 100);
 
         //ダメージ処理
+
         DamageView damageView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
+        damageView.transform.position += new Vector3(0, 2, -8);
         damageView.Setup(damage, "", Color.white, _cameraComponent);
-        damageView.transform.position += new Vector3(0, 1, -10);
         damageView.Activate();
 
     }
@@ -585,6 +638,7 @@ public class CardBattleManager : MonoBehaviour
 
     void BackToMap()
     {
+        GameManager.Instance.PlayerHp = _playerMonsterBaseList[0].CurrentHp;
         SceneManager.LoadScene("FieldMap");
     }
 }

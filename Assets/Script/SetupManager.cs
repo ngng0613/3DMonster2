@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class SetupManager : MonoBehaviour
 {
-    [SerializeField] int _monsterMaxCount= 6;
+    [SerializeField] Vector3 _firstPlayerPos;
+    [SerializeField] int _monsterMaxCount = 6;
     [SerializeField] List<MonsterBase> _monsterList;
     [SerializeField] ShopManager _shopManager;
     [SerializeField] StageData _stageDataDefault;
+    [SerializeField] Fade _fade;
 
     void Awake()
     {
+        if (GameManager.Instance.IsFirst == true)
+        {
+            GameManager.Instance.IsFirst = false;
+            GameManager.Instance.PlayeraPos = _firstPlayerPos;
+
+        }
         if (GameManager.Instance.MonsterList.Count <= 0)
         {
             GameManager.Instance.MonsterList = _monsterList;
@@ -46,5 +54,10 @@ public class SetupManager : MonoBehaviour
         {
             GameManager.Instance.NextBattleStage = _stageDataDefault;
         }
+    }
+
+    public void Start()
+    {
+        _fade.FadeIn();
     }
 }
