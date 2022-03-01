@@ -20,6 +20,7 @@ public class MapContoroller : MonoBehaviour
     bool _isMoving = false;
     [SerializeField] DeckManager _deckComposition;
     [SerializeField] ShopManager _shopManager;
+    [SerializeField] Evolution _evolution;
     [Header("移動可能距離")]
     [SerializeField] float _moveLength = 1.0f;
 
@@ -29,7 +30,7 @@ public class MapContoroller : MonoBehaviour
     [SerializeField] List<MapEvent> _nextMapEventList;
 
     [SerializeField] MessageUi _restPointMessage;
-
+    [SerializeField] string _battleScenenName;
 
     bool _dontMove = false;
 
@@ -50,7 +51,11 @@ public class MapContoroller : MonoBehaviour
             }
             else if (mapEvent.GetType() == typeof(MapEventRestPoint))
             {
-                mapEvent.EventAction += RestPoint; 
+                mapEvent.EventAction += RestPoint;
+            }
+            else if (mapEvent.GetType() == typeof(MapEventEvolve))
+            {
+                mapEvent.EventAction += EvolveEvent;
             }
         }
         _player.transform.position = GameManager.Instance.PlayeraPos;
@@ -137,16 +142,16 @@ public class MapContoroller : MonoBehaviour
             }
             yield return null;
         }
-
         _player.transform.position = new Vector3(_moveToPos.x, _moveToPos.y, startPos.z);
-
         StartEvent();
     }
 
     public void BattleStart()
     {
+        Scene scene = SceneManager.GetActiveScene();
+        GameManager.Instance.FieldMapName = scene.name;
         GameManager.Instance.PlayeraPos = _player.transform.position;
-        _fade.AfterFunction += () => GameManager.Instance.ChangeScene("CardBattle");
+        _fade.AfterFunction += () => GameManager.Instance.ChangeScene(_battleScenenName);
         _fade.FadeOut();
     }
 
@@ -156,6 +161,20 @@ public class MapContoroller : MonoBehaviour
         GameManager.Instance.PlayerHp = 100;
         _restPointMessage.Activate();
         _isMoving = false;
+        UpdateNextMap();
+    }
+
+    public void EvolveEvent()
+    {
+        GameManager.Instance.PlayeraPos = _player.transform.position;
+        _evolution.Activate();
+        _isMoving = false;
+        UpdateNextMap();
+    }
+    public void StageClear()
+    {
+
+
     }
 
     public void DeckCompositionActivate()
@@ -180,9 +199,13 @@ public class MapContoroller : MonoBehaviour
     public void UpdateNextMap()
     {
         List<GameObject> tempList = _playerObject.EventsAround;
-       
+
         for (int i = 0; i < tempList.Count; i++)
         {
+            if (tempList[i] == null)
+            {
+                continue;
+            }
             MapEvent mapEvent = tempList[i].GetComponent<MapEvent>();
             mapEvent.IsActive = true;
             _nextMapEventList.Add(mapEvent);

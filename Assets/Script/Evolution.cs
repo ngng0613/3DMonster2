@@ -15,7 +15,7 @@ public class Evolution : DeckManagerBase
     /// <summary>
     /// 進化演出後のWait時間
     /// </summary>
-    [SerializeField] float _evoEndTIme;
+    [SerializeField] float _evoEndTime;
     float _tempDirectionSpeed;
     
 
@@ -93,7 +93,7 @@ public class Evolution : DeckManagerBase
         _evoMonsterObjectInDirection.Monster = _evolvedMonster;
         _evoMonsterObjectInDirection.DisplayUpdate();
         GameManager.Instance.MonsterList[SetParts[0].Id] = _evolvedMonster;
-        yield return new WaitForSeconds(_evoEndTIme);
+        yield return new WaitForSeconds(_evoEndTime);
         Deactivate();
 
     }

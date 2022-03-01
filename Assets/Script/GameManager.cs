@@ -13,11 +13,12 @@ public class GameManager
     public List<MonsterBase> MonsterList = new List<MonsterBase>();
     public List<MonsterBase> MonsterParty = new List<MonsterBase>();
     public Vector2 PlayeraPos;
-    public MonsterBase PlayerMonster = new MonsterBase("Player", 100, 5);
-    public int PlayerHp = 100;
+    public MonsterBase PlayerMonster = new MonsterBase("Player", 50, 5);
+    public int PlayerHp = 50;
     public int MonsterMaxCount = 6;
 
     public StageData NextBattleStage;
+    public string FieldMapName;
 
     public void ChangeScene(string sceneName)
     {

@@ -19,5 +19,5 @@ MonoBehaviour:
   _cardSpellBases:
   - Type: 0
     Target: 0
-    EffectValue: 200
+    EffectValue: 10
     Status: {fileID: 0}

@@ -42,19 +42,11 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] List<MonsterBase> _debugMonsters;
 
     [SerializeField] Phase _phase = Phase.Start;
-    public bool KeyReception { get; set; } = false;
 
-    float _cameraMovementTime = 1.0f;
     [SerializeField] float _tweenSpeed = 1.0f;
 
-    MonsterBase _thisTurnActorMonsterBase;
-    MonsterBase _thisTurnTargetMonsterBase;
+    [SerializeField] bool _isPlayingCard = false;
 
-
-    /// <summary>
-    /// 攻撃待機しているキャラクター（同時に攻撃順が回った際に使う）
-    /// </summary>
-    List<MonsterBase> _attackWaitingList;
 
     //スキル
     [SerializeField] StatusEffectBase _guardStatusEffect;
@@ -301,7 +293,7 @@ public class CardBattleManager : MonoBehaviour
 
     public void PhaseEnemyStart()
     {
-        if (_phase == Phase.Player)
+        if (_phase == Phase.Player && _isPlayingCard == false)
         {
             StartCoroutine(PhaseEnemyTurn());
         }
@@ -506,6 +498,7 @@ public class CardBattleManager : MonoBehaviour
     {
         for (int i = 0; i < card.CardSpellBases.Count; i++)
         {
+            _isPlayingCard = true;
             CardSpellBase partOfSpell = card.CardSpellBases[i];
             switch (partOfSpell.Type)
             {
@@ -573,6 +566,7 @@ public class CardBattleManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             _enemyStatusIconView.UpdateView();
             CheckIfDead();
+            _isPlayingCard = false;
         }
 
 
@@ -639,7 +633,7 @@ public class CardBattleManager : MonoBehaviour
     void BackToMap()
     {
         GameManager.Instance.PlayerHp = _playerMonsterBaseList[0].CurrentHp;
-        SceneManager.LoadScene("FieldMap");
+        SceneManager.LoadScene(GameManager.Instance.FieldMapName);
     }
 }
 
