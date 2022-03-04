@@ -21,3 +21,4 @@ MonoBehaviour:
     Target: 0
     EffectValue: 5
     Status: {fileID: 0}
+    SpellSound: {fileID: 8300000, guid: bf0c7f36462d7744da7f36c7146c1510, type: 3}

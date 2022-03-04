@@ -99,44 +99,49 @@ public class MonsterBase : MonoBehaviour
 
     public void Update()
     {
-        //アニメーションが終了しているか確認する
-        if (_checkTheEndOfAnimation)
+        if (_animator != null)
         {
-            //アクションをしていないか確認
-            if (_animator.GetCurrentAnimatorStateInfo(0).IsName(ActionName))
+            //アニメーションが終了しているか確認する
+            if (_checkTheEndOfAnimation)
             {
-                //アクション中
-                _acted = true;
-                Debug.Log(_animator.GetCurrentAnimatorStateInfo(0));
-            }
-            else
-            {
-                //アクション済みなら
-                if (_acted)
-                {
-                    //アクションを既に行っていたなら、アクション終了して通知
-                    _checkTheEndOfAnimation = false;
-                    _acted = false;
-                    //アイドル状態に戻す
-                    MotionIdle();
 
-                    Debug.Log("アニメーション済み");
-                    if (AfterAction != null)
+                //アクションをしていないか確認
+                if (_animator.GetCurrentAnimatorStateInfo(0).IsName(ActionName))
+                {
+                    //アクション中
+                    _acted = true;
+                    Debug.Log(_animator.GetCurrentAnimatorStateInfo(0));
+                }
+                else
+                {
+                    //アクション済みなら
+                    if (_acted)
                     {
-                        AfterAction.Invoke();
+                        //アクションを既に行っていたなら、アクション終了して通知
+                        _checkTheEndOfAnimation = false;
+                        _acted = false;
+                        //アイドル状態に戻す
+                        MotionIdle();
+
+                        Debug.Log("アニメーション済み");
+                        if (AfterAction != null)
+                        {
+                            AfterAction.Invoke();
+                        }
                     }
                 }
             }
-        }
-        if (_checkTheEndOfDeadAnimation)
-        {
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            if (_checkTheEndOfDeadAnimation)
             {
-                _acted = false;
-                AfterDead.Invoke();
-                _checkTheEndOfDeadAnimation = false;
+                if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+                {
+                    _acted = false;
+                    AfterDead.Invoke();
+                    _checkTheEndOfDeadAnimation = false;
+                }
             }
         }
+
 
     }
 

@@ -8,7 +8,7 @@ using DG.Tweening;
 
 public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
 {
-    int _id;
+    [SerializeField] int _id;
     public MonsterBase Monster;
     [SerializeField] GameObject _statusView;
     [SerializeField] TextMeshProUGUI _nameText;
@@ -53,7 +53,7 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
     {
         _image.sprite = Monster.Image;
         _nameText.text = Monster.MonsterName;
-        _mpText.text = $"MP : {Monster.MaxMp.ToString()}" ;
+        _mpText.text = $"MP : {Monster.MaxMp.ToString()}";
 
     }
 

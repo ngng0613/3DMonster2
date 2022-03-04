@@ -20,19 +20,20 @@ public class DamageCalculator : MonoBehaviour
             }
             if (state.Name == Guard.Name)
             {
+                int decreaseValue = spell.EffectValue + effectValue;
                 effectValue += state.Count * -1;
                 if (state.Count > 0)
                 {
                     Debug.Log("ガードされている　ガード値：" + effectValue);
                     ///受けたダメージ分、ガード値を減らす
-                    state.Count -= spell.EffectValue + effectValue;
+                    state.Count -= decreaseValue;
                     if (state.Count < 0)
                     {
                         state.Count = 0;
                     }
                 }
             }
-      
+
         }
         int damage = spell.EffectValue;
 

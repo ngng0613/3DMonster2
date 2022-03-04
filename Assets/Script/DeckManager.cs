@@ -1,9 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DeckManager : DeckManagerBase
 {
+    bool _setCheck = false;
+    [SerializeField] MessageUi _saveMessage;
+    [SerializeField] MessageUi _dontSaveMessage;
+    /// <summary>
+    /// 保存可能な場合のボタン表示
+    /// </summary>
+    [SerializeField] TextMeshProUGUI _canSave;
+    /// <summary>
+    /// 保存不可能な場合のボタン表示
+    /// </summary>
+    [SerializeField] TextMeshProUGUI _dontSave;
+
     /// <summary>
     /// 起動処理
     /// </summary>
@@ -36,15 +49,28 @@ public class DeckManager : DeckManagerBase
             part.Id = i;
 
             //パーティーに参加済みのモンスターはあらかじめパーティースロットにセットしておく
-            if (part.Monster.InParty == true && partyCount < _partySlotPosition.Length)
-            {
-                part.transform.position = _partySlotPosition[partyCount].transform.position;
-                SetMonsterSlot(part.Monster, partyCount + 1, part);
-                partyCount++;
-            }
+            //if (part.Monster.InParty == true && partyCount < _partySlotPosition.Length)
+            //{
+            //    part.transform.position = _partySlotPosition[partyCount].transform.position;
+            //    SetMonsterSlot(part.Monster, partyCount + 1, part);
+            //    partyCount++;
+            //}
+
+
+            SetCheckFunction();
 
         }
-
+        for (int i = 0; i < GameManager.Instance.MonsterPartyIdList.Count; i++)
+        {
+            if (GameManager.Instance.MonsterPartyIdList[i] > _parts.Length)
+            {
+                continue;
+            }
+            PartOfMonsterList part = _parts[GameManager.Instance.MonsterPartyIdList[i]];
+            part.transform.position = _partySlotPosition[partyCount].transform.position;
+            SetMonsterSlot(part.Monster, partyCount + 1, part);
+            partyCount++;
+        }
     }
 
     /// <summary>
@@ -81,18 +107,6 @@ public class DeckManager : DeckManagerBase
             SetParts[slotId - 1].BackToBasePos();
         }
         SetParts[slotId - 1] = part;
-        switch (slotId)
-        {
-            case 1:
-
-                Debug.Log($"{monster.MonsterName}をセットしました");
-                break;
-
-
-            default:
-                break;
-        }
-        _parts[slotId - 1].Monster.InParty = true;
         StartCoroutine(SetMonsterAnimation(monster, slotId));
 
     }
@@ -152,13 +166,26 @@ public class DeckManager : DeckManagerBase
             else
             {
                 Debug.Log("モンスターが3体セットされていません");
+                _dontSaveMessage.Activate();
                 break;
             }
 
         }
+        for (int i = 0; i < GameManager.Instance.MonsterPartyIdList.Count; i++)
+        {
+        }
+        for (int i = 0; i < SetParts.Length; i++)
+        {
+            if (SetParts[i] != null)
+            {
+                GameManager.Instance.MonsterPartyIdList[i] = SetParts[i].Id;
+            }
+        }
         if (monsterList.Count >= 3)
         {
+
             GameManager.Instance.MonsterParty = monsterList;
+            _saveMessage.Activate();
         }
     }
 
@@ -170,12 +197,30 @@ public class DeckManager : DeckManagerBase
     {
         for (int i = 0; i < SetParts.Length; i++)
         {
-            if (SetParts[i] == part)
+            if (SetParts[i] != null)
             {
-                part.Monster.InParty = false;
-                SetParts[i] = null;
+                if (SetParts[i].Id == part.Id)
+                {
+                    Debug.Log("パーティ脱退");
+                    SetParts[i] = null;
+                }
+            }
+
+        }
+    }
+
+    bool SetCheckFunction()
+    {
+        _setCheck = true;
+        for (int i = 0; i < SetParts.Length; i++)
+        {
+            if (SetParts[i] == null)
+            {
+                _setCheck = false;
+                break;
             }
         }
+        return _setCheck;
     }
 }
 

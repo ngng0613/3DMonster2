@@ -28,21 +28,23 @@ public class Fade : MonoBehaviour
     {
         Color color = _mainImage.color;
         color.a = 0;
+        _mainImage.color = color;
         _parentObject.SetActive(true);
         _hexImage.color = _hexFadeColor;
-        StartCoroutine(FadeInAnimation());
+        StartCoroutine(FadeOutAnimation());
     }
 
     public void FadeIn()
     {
         Color color = _mainImage.color;
         color.a = 1;
+        _mainImage.color = color;
         _parentObject.SetActive(true);
         _hexImage.color = _hexFadeColor;
-        StartCoroutine(FadeOutAnimation());
+        StartCoroutine(FadeInAnimation());
     }
 
-    IEnumerator FadeInAnimation()
+    IEnumerator FadeOutAnimation()
     {
         while (true)
         {
@@ -63,7 +65,7 @@ public class Fade : MonoBehaviour
         AfterFunction.Invoke();
     }
 
-    IEnumerator FadeOutAnimation()
+    IEnumerator FadeInAnimation()
     {
         while (true)
         {

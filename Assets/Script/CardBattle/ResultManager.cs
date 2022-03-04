@@ -26,6 +26,7 @@ public class ResultManager : MonoBehaviour
     bool _captured = false;
 
     [SerializeField] string _mapSceneName;
+    [SerializeField] string _titleSceneName;
     public delegate void BackToMapDelegate();
     public BackToMapDelegate BackToMap;
 
@@ -67,11 +68,17 @@ public class ResultManager : MonoBehaviour
         Debug.Log($"{_enemyMonster.NickName}を捕獲");
         _capturedMessage.Activate();
         _captured = true;
+        GameManager.Instance.CaptureCount++;
     }
 
     public void BackToMapButton()
     {
         BackToMap.Invoke();
+    }
+
+    public void BackToTitle()
+    {
+        SceneManager.LoadScene(_titleSceneName);
     }
 
 }

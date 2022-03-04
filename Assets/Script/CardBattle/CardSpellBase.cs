@@ -27,5 +27,6 @@ public class CardSpellBase
     public SpellTarget Target;
     public int EffectValue = 0;
     public StatusEffectBase Status;
+    public AudioClip SpellSound;
     
 }

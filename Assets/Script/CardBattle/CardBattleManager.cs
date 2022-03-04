@@ -104,8 +104,10 @@ public class CardBattleManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         //初期化
+        GameManager.Instance.BattleCount++;
 
         MonsterBase playerMonster = GameManager.Instance.PlayerMonster;
+        playerMonster.StatusEffectList = new List<StatusEffectBase>();
         playerMonster.CurrentHp = GameManager.Instance.PlayerHp;
         if (GameManager.Instance.MonsterParty.Count == 0)
         {
@@ -311,16 +313,30 @@ public class CardBattleManager : MonoBehaviour
         List<CardData> combo = _enemyAi.Think();
         for (int i = 0; i < combo.Count; i++)
         {
-            Debug.Log("hey");
+            if (_playerMonsterBaseList[0].CurrentHp <= 0 || _enemyMonsterBaseList[0].CurrentHp <= 0)
+            {
+                yield break;
+            }
             DamageView spellNameView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
             spellNameView.Setup(0, combo[i].CardName, Color.white, _cameraComponent);
             spellNameView.transform.position += new Vector3(0, 2, -3);
             spellNameView.Activate();
             Debug.Log("敵コンボ数：" + combo.Count);
             Debug.Log($"敵は{combo[i].CardName}をプレイした");
+
             for (int k = 0; k < combo[i].CardSpellBases.Count; k++)
             {
+
                 CardSpellBase partOfSpell = combo[i].CardSpellBases[k];
+                if (partOfSpell.SpellSound != null)
+                {
+                    _soundManager.PlaySe(partOfSpell.SpellSound);
+                }
+                else
+                {
+                    Debug.Log("Not SE");
+                }
+
                 switch (partOfSpell.Type)
                 {
                     case SpellType.Attack:
@@ -402,7 +418,7 @@ public class CardBattleManager : MonoBehaviour
                 CheckIfDead();
                 yield return new WaitForSeconds(0.1f);
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
 
         yield return PhaseDraw();
@@ -498,8 +514,21 @@ public class CardBattleManager : MonoBehaviour
     {
         for (int i = 0; i < card.CardSpellBases.Count; i++)
         {
+            if (_playerMonsterBaseList[0].CurrentHp <= 0 || _enemyMonsterBaseList[0].CurrentHp <= 0)
+            {
+                yield break;
+            }
+
             _isPlayingCard = true;
             CardSpellBase partOfSpell = card.CardSpellBases[i];
+            if (partOfSpell.SpellSound != null)
+            {
+                _soundManager.PlaySe(partOfSpell.SpellSound);
+            }
+            else
+            {
+                Debug.Log("Not SE");
+            }
             switch (partOfSpell.Type)
             {
                 case SpellType.Attack:
@@ -563,7 +592,7 @@ public class CardBattleManager : MonoBehaviour
                     break;
             }
             _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             _enemyStatusIconView.UpdateView();
             CheckIfDead();
             _isPlayingCard = false;

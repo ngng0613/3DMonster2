@@ -21,6 +21,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip _cancel;
     [SerializeField] AudioClip _openMenu;
     [SerializeField] AudioClip _closeMenu;
+    [SerializeField] AudioClip _attack;
+    [SerializeField] AudioClip _defence;
+
 
     public enum SeList
     {
@@ -31,6 +34,8 @@ public class SoundManager : MonoBehaviour
         Cancel,
         OpenMenu,
         CloseMenu,
+        Attack,
+        Defence,
 
     }
 
@@ -69,6 +74,14 @@ public class SoundManager : MonoBehaviour
             case SeList.CloseMenu:
                 _audioSource.PlayOneShot(_closeMenu);
                 break;
+
+            case SeList.Attack:
+                _audioSource.PlayOneShot(_attack);
+                break;
+            case SeList.Defence:
+                _audioSource.PlayOneShot(_defence);
+                break;
+
             default:
                 break;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class SetupManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class SetupManager : MonoBehaviour
     [SerializeField] ShopManager _shopManager;
     [SerializeField] StageData _stageDataDefault;
     [SerializeField] Fade _fade;
+    [SerializeField] string _titleSceneName;
 
     void Awake()
     {
@@ -17,11 +19,14 @@ public class SetupManager : MonoBehaviour
         {
             GameManager.Instance.IsFirst = false;
             GameManager.Instance.PlayeraPos = _firstPlayerPos;
-
         }
         if (GameManager.Instance.MonsterList.Count <= 0)
         {
             GameManager.Instance.MonsterList = _monsterList;
+            foreach (var item in GameManager.Instance.MonsterList)
+            {
+                item.InParty = false;
+            }
             for (int i = 0; i < 3; i++)
             {
                 if (i >= _monsterList.Count)
@@ -34,16 +39,12 @@ public class SetupManager : MonoBehaviour
             GameManager.Instance.MonsterParty.Add(_monsterList[1]);
             GameManager.Instance.MonsterParty.Add(_monsterList[2]);
             GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
-
+            GameManager.Instance.TitleName = _titleSceneName;
             Debug.LogWarning("モンスターリストを初期化しました");
 
         }
         else
         {
-            foreach (var item in GameManager.Instance.MonsterList)
-            {
-                Debug.Log(item.NickName);
-            }
             _monsterList = GameManager.Instance.MonsterList;
         }
         if (_shopManager != null)
@@ -58,6 +59,10 @@ public class SetupManager : MonoBehaviour
 
     public void Start()
     {
-        _fade.FadeIn();
+        if (_fade != null)
+        {
+            _fade.FadeIn();
+        }
+
     }
 }

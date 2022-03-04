@@ -6,12 +6,16 @@ using System.Linq;
 public class MonsterShop : DeckManagerBase
 {
     [SerializeField] GameObject _confirmWindow;
+    [SerializeField] MessageUi _dontSet;
+    int _beforeMonsterCount = 0;
+    int _afterMonsterCount = 0;
 
     /// <summary>
     /// 起動処理
     /// </summary>
     public override void Activate()
     {
+        int _beforeMonsterCount = GameManager.Instance.MonsterList.Count;
         _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
@@ -71,6 +75,15 @@ public class MonsterShop : DeckManagerBase
     /// <param name="part">セットされたモンスターリスト内のオブジェクト</param>
     public override void SetMonsterSlot(MonsterBase monster, int slotId, PartOfMonsterList part)
     {
+        for (int i = 0; i < GameManager.Instance.MonsterPartyIdList.Count; i++)
+        {
+            if (part.Id == GameManager.Instance.MonsterPartyIdList[i])
+            {
+                part.BackToBasePos();
+                _dontSet.Activate();
+                return;
+            }
+        }
         if (SetParts[slotId - 1] != null)
         {
             SetParts[slotId - 1].BackToBasePos();
@@ -176,12 +189,15 @@ public class MonsterShop : DeckManagerBase
     /// </summary>
     public void Decide()
     {
+   
         List<MonsterBase> monsterList = new List<MonsterBase>();
         for (int i = 0; i < SetParts.Length; i++)
         {
             if (SetParts[i] != null)
             {
                 monsterList.Add(SetParts[i].Monster);
+
+      
             }
             else
             {
@@ -189,10 +205,13 @@ public class MonsterShop : DeckManagerBase
             }
 
         }
+
         if (monsterList.Count >= 3)
         {
             GameManager.Instance.MonsterParty = monsterList;
+
         }
+        
     }
 
     /// <summary>
@@ -223,6 +242,20 @@ public class MonsterShop : DeckManagerBase
                 continue;
             }
             int id = SetParts[i].Id;
+
+            for (int k = 0; k < GameManager.Instance.MonsterPartyIdList.Count; k++)
+            {
+                if (id < GameManager.Instance.MonsterPartyIdList[k])
+                {
+                    Debug.Log(100);
+                    GameManager.Instance.MonsterPartyIdList[k] -= 1;
+                }
+                else
+                {
+                    Debug.Log(10);
+                }
+            }
+
             Destroy(SetParts[i].gameObject);
             tempList[id] = null;
         }

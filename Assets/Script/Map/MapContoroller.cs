@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 
 public class MapContoroller : MonoBehaviour
 {
+    [SerializeField] bool IsDebug;
     [SerializeField] PlayerObject _playerObject;
     [SerializeField] CameraPlus _cameraPlus;
     [SerializeField] float _zoom = 1.0f;
@@ -31,6 +32,14 @@ public class MapContoroller : MonoBehaviour
 
     [SerializeField] MessageUi _restPointMessage;
     [SerializeField] string _battleScenenName;
+    [SerializeField] ConfirmationScreen _confirmEvolve;
+
+    [Header("ゲームクリア画面関連")]
+    [SerializeField] GameResultCanvas _gameResultCanvas;
+    [SerializeField] GameObject _gameOverObject;
+    [SerializeField] GameObject _gameOverLogo;
+    [Header("ゲームクリア表示速度")]
+    [SerializeField] float _gameOverLogoChangeScaleSpeed;
 
     bool _dontMove = false;
 
@@ -57,6 +66,10 @@ public class MapContoroller : MonoBehaviour
             {
                 mapEvent.EventAction += EvolveEvent;
             }
+            else if (mapEvent.GetType() == typeof(MapEventGoal))
+            {
+                mapEvent.EventAction += StageClear;
+            }
         }
         _player.transform.position = GameManager.Instance.PlayeraPos;
 
@@ -67,12 +80,23 @@ public class MapContoroller : MonoBehaviour
 
     IEnumerator SetupCoroutine()
     {
-        yield return null;
+        yield return new WaitForSeconds(0.03f);
         UpdateNextMap();
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (IsDebug == true)
+            {
+                IsDebug = false;
+            }
+            else
+            {
+                IsDebug = true;
+            }
+        }
         if (Input.mouseScrollDelta != new Vector2(0.0f, 0.0f))
         {
             if (Input.mouseScrollDelta.y == 1.0f)
@@ -103,6 +127,8 @@ public class MapContoroller : MonoBehaviour
     {
         Debug.Log(_mapEventArray[1].transform.position + "    " + _player.transform.position);
         MapEvent mapEvent = _mapEventArray.Where(mEvent => (mEvent.transform.position.x == _player.transform.position.x) && (mEvent.transform.position.y == _player.transform.position.y)).FirstOrDefault();
+
+
         if (mapEvent != null)
         {
             mapEvent.StartEvent();
@@ -111,6 +137,7 @@ public class MapContoroller : MonoBehaviour
 
     public void MovePlayer(Vector3 pos)
     {
+
         if (_dontMove)
         {
             return;
@@ -119,7 +146,14 @@ public class MapContoroller : MonoBehaviour
         {
             return;
         }
-        _playerObject.ListClear();
+
+
+        for (int i = 0; i < _mapEventArray.Length; i++)
+        {
+            _mapEventArray[i].IsActive = false;
+        }
+
+
         _isMoving = true;
         _moveToPos = pos;
         StartCoroutine(MovePlayerCoroutine());
@@ -127,12 +161,23 @@ public class MapContoroller : MonoBehaviour
 
     public IEnumerator MovePlayerCoroutine()
     {
+        _playerObject.ListClear();
+        for (int i = 0; i < _mapEventArray.Length; i++)
+        {
+            _mapEventArray[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < _mapEventArray.Length; i++)
+        {
+            _mapEventArray[i].gameObject.SetActive(true);
+        }
+
         Vector3 startPos = _player.transform.position;
         float distance = Vector3.Distance(_player.transform.position, _moveToPos);
         float startTime = Time.time;
 
         while (true)
         {
+
             float t = (Time.time - startTime) / distance * _playerMoveSpeed;
             Vector3 movePos = Vector3.Lerp(startPos, _moveToPos, t);
             _player.transform.position = new Vector3(movePos.x, movePos.y, Mathf.Cos(t) * -1 + 0.3f);
@@ -143,7 +188,18 @@ public class MapContoroller : MonoBehaviour
             yield return null;
         }
         _player.transform.position = new Vector3(_moveToPos.x, _moveToPos.y, startPos.z);
-        StartEvent();
+        yield return new WaitForSeconds(0.01f);
+        Debug.Log("hmm");
+        if (IsDebug == true)
+        {
+            _isMoving = false;
+            CanMoving();
+            UpdateNextMap();
+        }
+        else
+        {
+            StartEvent();
+        }
     }
 
     public void BattleStart()
@@ -158,7 +214,7 @@ public class MapContoroller : MonoBehaviour
     public void RestPoint()
     {
         GameManager.Instance.PlayeraPos = _player.transform.position;
-        GameManager.Instance.PlayerHp = 100;
+        GameManager.Instance.PlayerHp = GameManager.Instance.PlayerMonster.MaxHp;
         _restPointMessage.Activate();
         _isMoving = false;
         UpdateNextMap();
@@ -167,15 +223,74 @@ public class MapContoroller : MonoBehaviour
     public void EvolveEvent()
     {
         GameManager.Instance.PlayeraPos = _player.transform.position;
-        _evolution.Activate();
+        _confirmEvolve.Activate();
         _isMoving = false;
         UpdateNextMap();
     }
     public void StageClear()
     {
+        _gameOverObject.SetActive(true);
+        //StartCoroutine(StageClearCoroutine());
+        _gameResultCanvas.DisplayUpdate();
+        _gameResultCanvas.gameObject.SetActive(true);
+        _gameResultCanvas.AnimationStart();
+    }
 
+    public IEnumerator StageClearCoroutine()
+    {
+        Vector3 firstScale = _gameOverLogo.transform.localScale;
+
+        while (true)
+        {
+            Vector2 tempScale = _gameOverLogo.transform.localScale;
+
+            if (tempScale.x > 1 && firstScale.x > 1)
+            {
+                tempScale.x -= 1.0f * Time.deltaTime * _gameOverLogoChangeScaleSpeed;
+                if (tempScale.x < 1)
+                {
+                    tempScale.x = 1;
+                }
+            }
+            else if (tempScale.x < 1 && firstScale.x < 1)
+            {
+                tempScale.x += 1.0f * Time.deltaTime * _gameOverLogoChangeScaleSpeed;
+                if (tempScale.x > 1)
+                {
+                    tempScale.x = 1;
+                }
+            }
+
+            if (tempScale.y > 1 && firstScale.y > 1)
+            {
+                tempScale.y -= 1.0f * Time.deltaTime * _gameOverLogoChangeScaleSpeed;
+                if (tempScale.y < 1)
+                {
+                    tempScale.y = 1;
+                }
+            }
+            else if (tempScale.y < 1 && firstScale.y < 1)
+            {
+                tempScale.y += 1.0f * Time.deltaTime * _gameOverLogoChangeScaleSpeed;
+                if (tempScale.y > 1)
+                {
+                    tempScale.y = 1;
+                }
+            }
+
+            _gameOverLogo.transform.localScale = tempScale;
+            if (tempScale == Vector2.one)
+            {
+                break;
+            }
+            yield return null;
+        }
+        _gameResultCanvas.DisplayUpdate();
+        _gameResultCanvas.gameObject.SetActive(true);
+        _gameResultCanvas.AnimationStart();
 
     }
+
 
     public void DeckCompositionActivate()
     {
@@ -198,8 +313,15 @@ public class MapContoroller : MonoBehaviour
 
     public void UpdateNextMap()
     {
-        List<GameObject> tempList = _playerObject.EventsAround;
+        StartCoroutine(UpdateNextMapCoroutine());
+    }
 
+    IEnumerator UpdateNextMapCoroutine()
+    {
+        yield return null;
+        List<GameObject> tempList;
+        tempList = _playerObject.EventsAround;
+        Debug.Log($"tempList : {tempList.Count}");
         for (int i = 0; i < tempList.Count; i++)
         {
             if (tempList[i] == null)
@@ -211,5 +333,11 @@ public class MapContoroller : MonoBehaviour
             _nextMapEventList.Add(mapEvent);
             Debug.Log(tempList[i].gameObject.name + "の状態をアクティブにしました");
         }
+        yield return null;
+    }
+
+    public void BackToTitle()
+    {
+        SceneManager.LoadScene(GameManager.Instance.TitleName);
     }
 }

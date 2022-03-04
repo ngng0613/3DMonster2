@@ -189,6 +189,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: test
       objectReference: {fileID: 0}
+    - target: {fileID: 7682027077128245755, guid: 45c91303b4dfb70408a172f9bdf984b9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45c91303b4dfb70408a172f9bdf984b9, type: 3}
 --- !u!1 &59453638
@@ -3559,7 +3564,8 @@ MonoBehaviour:
   _resultPanel: {fileID: 773099482}
   _titlePos: {x: -960, y: 0}
   _displaySpeed: 0.3
-  _resultMoneyText: {fileID: 0}
+  _resultBattleCount: {fileID: 690185107}
+  _resultCaptureCount: {fileID: 1180359910}
   _monsterImageArray:
   - {fileID: 2039908918}
   - {fileID: 2070450566}
@@ -4812,7 +4818,7 @@ GameObject:
   - component: {fileID: 690185108}
   - component: {fileID: 690185107}
   m_Layer: 5
-  m_Name: MoneyValue
+  m_Name: BttleCountValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12529,6 +12535,7 @@ MonoBehaviour:
   _releaseMessage: {fileID: 1928304397}
   _capturedMessage: {fileID: 933266874}
   _mapSceneName: FieldMap
+  _titleSceneName: 
 --- !u!1001 &1393937479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14310,6 +14317,8 @@ MonoBehaviour:
   _cancel: {fileID: 0}
   _openMenu: {fileID: 0}
   _closeMenu: {fileID: 0}
+  _attack: {fileID: 8300000, guid: bf0c7f36462d7744da7f36c7146c1510, type: 3}
+  _defence: {fileID: 8300000, guid: 48339d8c34d3b2346921d36d775b0507, type: 3}
 --- !u!4 &1564234114
 Transform:
   m_ObjectHideFlags: 0
@@ -14449,7 +14458,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591912990
 GameObject:
@@ -15628,7 +15637,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1390314750}
-        m_MethodName: BackToMap
+        m_MethodName: BackToTitle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19118,12 +19127,12 @@ MonoBehaviour:
   - {fileID: 8123614903208238781, guid: 21b97a55e9e1b51429544a3c81c75970, type: 3}
   - {fileID: 2960563755048309327, guid: 573f4548ad14c4147bf9a5f499ad53c1, type: 3}
   - {fileID: 3416666886794786684, guid: dbf14a2672658084c970b2831c7a2336, type: 3}
+  - {fileID: 6963810589358610154, guid: 3b4f4f9d89f2e1a49b719197dfd53797, type: 3}
   - {fileID: 3321287734641828794, guid: 3da933ae13dfbe446bdbd85b8c940e88, type: 3}
+  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
+  - {fileID: 5900899175728794046, guid: 291f037205cf2a64eb159177505771ee, type: 3}
   - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
-  - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
-  - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
-  - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
-  - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
+  - {fileID: 1599401785191904853, guid: f007a0fd1eabc134eb0ce2d26f1b97e5, type: 3}
   - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
   - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
   - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
@@ -20193,7 +20202,7 @@ Transform:
   - {fileID: 2015057880}
   - {fileID: 1012331102}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2096563916
 GameObject:
@@ -22520,6 +22529,7 @@ MonoBehaviour:
   _stageDataDefault: {fileID: 3510035117288238923, guid: d20df6cde9c250b45a28da60526938b0,
     type: 3}
   _fade: {fileID: 1934534359}
+  _titleSceneName: 
 --- !u!4 &2136379376
 Transform:
   m_ObjectHideFlags: 0
@@ -22532,7 +22542,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &262742405334759470
 RectTransform:
