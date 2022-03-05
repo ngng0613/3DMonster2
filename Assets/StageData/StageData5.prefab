@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470be72e7972f3a4b8b6f3f68da90b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyMonster: {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1,
+  EnemyMonster: {fileID: 5443945167323890852, guid: 140fa7aa9d130c14588cab2bee9aeec7,
     type: 3}
   StageName: 
 --- !u!1 &5983126943253672854

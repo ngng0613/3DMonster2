@@ -12535,7 +12535,7 @@ MonoBehaviour:
   _releaseMessage: {fileID: 1928304397}
   _capturedMessage: {fileID: 933266874}
   _mapSceneName: FieldMap
-  _titleSceneName: 
+  _titleSceneName: Title
 --- !u!1001 &1393937479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19129,8 +19129,8 @@ MonoBehaviour:
   - {fileID: 3416666886794786684, guid: dbf14a2672658084c970b2831c7a2336, type: 3}
   - {fileID: 6963810589358610154, guid: 3b4f4f9d89f2e1a49b719197dfd53797, type: 3}
   - {fileID: 3321287734641828794, guid: 3da933ae13dfbe446bdbd85b8c940e88, type: 3}
-  - {fileID: 5443945167323890852, guid: 11b19754dfb921c439315de83a9b45c1, type: 3}
-  - {fileID: 5900899175728794046, guid: 291f037205cf2a64eb159177505771ee, type: 3}
+  - {fileID: 5443945167323890852, guid: 140fa7aa9d130c14588cab2bee9aeec7, type: 3}
+  - {fileID: 5900899175728794046, guid: ec2587b699d75d84faa4ee351f8391df, type: 3}
   - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
   - {fileID: 1599401785191904853, guid: f007a0fd1eabc134eb0ce2d26f1b97e5, type: 3}
   - {fileID: 3299733013539964850, guid: 4f5e74412dea6bb4ebfb742a86554f1c, type: 3}
