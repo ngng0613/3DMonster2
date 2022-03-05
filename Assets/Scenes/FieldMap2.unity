@@ -6806,8 +6806,8 @@ MonoBehaviour:
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   - {fileID: 1599401785191904853, guid: f007a0fd1eabc134eb0ce2d26f1b97e5, type: 3}
   - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
-  - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
-  - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
+  - {fileID: 6963810589358610154, guid: 3b4f4f9d89f2e1a49b719197dfd53797, type: 3}
+  - {fileID: 2960563755048309327, guid: 573f4548ad14c4147bf9a5f499ad53c1, type: 3}
   _shopManager: {fileID: 692982010}
   _stageDataDefault: {fileID: 0}
   _fade: {fileID: 536718450}
@@ -10555,7 +10555,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &536718449
 RectTransform:
