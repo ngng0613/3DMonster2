@@ -16,18 +16,15 @@ MonoBehaviour:
   _mainImage: {fileID: 21300000, guid: f3bedd8852f6c20408e8901383ef5343, type: 3}
   _cost: 3
   _flavourText: "\uFF13\u30AC\u30FC\u30C9\u3092\u5F97\u305F\u5F8C\u3001\u76F8\u624B\u306B\uFF15\u30C0\u30E1\u30FC\u30B8"
-  _spellBase:
-    Type: 0
-    Target: 0
-    EffectValue: 0
-    Status: {fileID: 0}
   _cardSpellBases:
   - Type: 2
     Target: 1
     EffectValue: 3
     Status: {fileID: 5518358524292302049, guid: 321dba7970bede94d8ffd4b638d6c0be,
       type: 3}
+    SpellSound: {fileID: 8300000, guid: 48339d8c34d3b2346921d36d775b0507, type: 3}
   - Type: 0
     Target: 0
     EffectValue: 5
     Status: {fileID: 0}
+    SpellSound: {fileID: 8300000, guid: bf0c7f36462d7744da7f36c7146c1510, type: 3}

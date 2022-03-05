@@ -139,7 +139,6 @@ public class DeckComposition : MonoBehaviour
                 for (int i = 0; i < _cardList1.Length; i++)
                 {
                     yield return CardSpin(_cardList1[i], monster.CardDatas[i]);
-
                 }
                 break;
 
@@ -147,7 +146,6 @@ public class DeckComposition : MonoBehaviour
                 for (int i = 0; i < _cardList1.Length; i++)
                 {
                     yield return CardSpin(_cardList2[i], monster.CardDatas[i]);
-
                 }
                 break;
 
@@ -155,7 +153,6 @@ public class DeckComposition : MonoBehaviour
                 for (int i = 0; i < _cardList1.Length; i++)
                 {
                     yield return CardSpin(_cardList3[i], monster.CardDatas[i]);
-
                 }
                 break;
 
