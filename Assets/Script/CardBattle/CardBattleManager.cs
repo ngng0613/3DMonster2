@@ -273,7 +273,7 @@ public class CardBattleManager : MonoBehaviour
     void UpdateMana()
     {
         _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
-        if (_playerMonsterBaseList[0].CurrentMp <= 0)
+        if (_playerMonsterBaseList[0].CurrentMp <= 0 && _phase == Phase.Player)
         {
             _turnEndButton.SetActive(false);
         }
@@ -295,6 +295,7 @@ public class CardBattleManager : MonoBehaviour
 
     public void PhaseEnemyStart()
     {
+        _turnEndButton.SetActive(true);
         if (_phase == Phase.Player && _isPlayingCard == false)
         {
             StartCoroutine(PhaseEnemyTurn());
@@ -308,7 +309,6 @@ public class CardBattleManager : MonoBehaviour
     IEnumerator PhaseEnemyTurn()
     {
         _phase = Phase.Enemy;
-        _turnEndButton.SetActive(true);
         _enemyMonsterBaseList[0].CurrentMp = _enemyMonsterBaseList[0].MaxMp;
         List<CardData> combo = _enemyAi.Think();
         for (int i = 0; i < combo.Count; i++)

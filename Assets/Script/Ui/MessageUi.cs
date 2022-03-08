@@ -12,7 +12,13 @@ public class MessageUi : MonoBehaviour
 
     private void Start()
     {
+        Setup();
+    }
+
+    public void Setup()
+    {
         _defaultPos = this.gameObject.transform.position;
+        _canvasGroup.alpha = 0;
     }
 
     public void Activate()

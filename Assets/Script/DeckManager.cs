@@ -25,6 +25,8 @@ public class DeckManager : DeckManagerBase
         _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
+        _saveMessage.Setup();
+        _dontSaveMessage.Setup();
 
         int partyCount = 0;
 

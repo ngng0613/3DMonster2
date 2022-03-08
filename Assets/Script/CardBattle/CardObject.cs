@@ -69,14 +69,13 @@ public class CardObject : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                if (Check.Invoke(Data) == false)
-                {
-                    Debug.LogWarning("マナが不足しています");
-                    break;
-                }
-                Debug.Log("解除");
                 if (Input.mousePosition.y >= 600)
                 {
+                    if (Check.Invoke(Data) == false)
+                    {
+                        Debug.LogWarning("マナが不足しています");
+                        break;
+                    }
                     Debug.Log($"{this.Data.CardName}をプレイした");
                     if (_playedActionDelegate != null)
                     {
@@ -101,7 +100,7 @@ public class CardObject : MonoBehaviour
         {
             this.gameObject.transform.DOLocalMoveY(156, 0.2f);
             this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
-            _canvas.sortingOrder = 100;
+            _canvas.sortingOrder = 50;
         }
     }
     public void OnPointerExit()

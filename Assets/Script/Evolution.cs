@@ -10,15 +10,13 @@ public class Evolution : DeckManagerBase
     [SerializeField] GameObject _evoErrorObject;
     [SerializeField] GameObject _evoCanvas;
     [SerializeField] PartOfMonsterList _evoMonsterObjectInDirection;
-    [SerializeField] MessageUi _warning2;
+    [SerializeField] MessageUi _warning;
     [SerializeField] float _directionSpeed = 100;
     /// <summary>
     /// 進化演出後のWait時間
     /// </summary>
     [SerializeField] float _evoEndTime;
     float _tempDirectionSpeed;
-    
-
 
     MonsterBase _evolvedMonster;
 
@@ -30,6 +28,7 @@ public class Evolution : DeckManagerBase
         _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
+        _warning.Setup();
 
         for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
         {
@@ -105,7 +104,7 @@ public class Evolution : DeckManagerBase
     {
         if (_evoMonsterObject.isActiveAndEnabled == false)
         {
-            _warning2.Activate();
+            _warning.Activate();
             return;
         }
         _confirmWindow.SetActive(true);

@@ -19,6 +19,7 @@ public class MonsterShop : DeckManagerBase
         _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
+        _dontSet.Setup();
 
         int partyCount = 0;
 
