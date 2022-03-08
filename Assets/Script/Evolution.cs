@@ -30,8 +30,6 @@ public class Evolution : DeckManagerBase
         _parts = new PartOfMonsterList[6];
 
         this.gameObject.SetActive(true);
-        _evoCanvas.SetActive(false);
-        _evoMonsterObject.gameObject.SetActive(false);
 
         for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
         {

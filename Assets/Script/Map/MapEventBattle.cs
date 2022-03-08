@@ -8,6 +8,14 @@ public class MapEventBattle : MapEvent
 {
     [SerializeField] StageData _stage;
 
+    private void OnValidate()
+    {
+        if (_mainSprite != null && _stage != null)
+        {
+            _mainSprite.sprite = _stage.EnemyMonster.Image;
+        }
+    }
+
     private void Start()
     {
         if (_mainSprite != null && _stage != null)

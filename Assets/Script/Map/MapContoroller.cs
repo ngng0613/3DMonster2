@@ -76,6 +76,8 @@ public class MapContoroller : MonoBehaviour
         //プレイヤーが次に移動可能なマスを調べる
         StartCoroutine(SetupCoroutine());
 
+        
+
     }
 
     IEnumerator SetupCoroutine()
