@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a5a4ded2df01c498a3beb9222ad72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 0
   Monster: {fileID: 0}
   _statusView: {fileID: 4264042170176040404}
   _nameText: {fileID: 7136522940591332652}
@@ -760,6 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a5a4ded2df01c498a3beb9222ad72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 0
   Monster: {fileID: 0}
   _statusView: {fileID: 0}
   _nameText: {fileID: 0}

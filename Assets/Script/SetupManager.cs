@@ -40,6 +40,12 @@ public class SetupManager : MonoBehaviour
             GameManager.Instance.MonsterParty.Add(_monsterList[2]);
             GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
             GameManager.Instance.TitleName = _titleSceneName;
+            int mp = 0;
+            for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
+            {
+                mp += GameManager.Instance.MonsterList[i].MaxMp;
+            }
+            GameManager.Instance.PlayerMonster.MaxMp = mp;
             Debug.LogWarning("モンスターリストを初期化しました");
 
         }

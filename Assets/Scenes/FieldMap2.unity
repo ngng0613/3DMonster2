@@ -9773,7 +9773,7 @@ MonoBehaviour:
   _evoErrorObject: {fileID: 1328452996}
   _evoCanvas: {fileID: 1845848689}
   _evoMonsterObjectInDirection: {fileID: 1070079657}
-  _warning2: {fileID: 1654040746}
+  _warning: {fileID: 0}
   _directionSpeed: 200
   _evoEndTime: 3
 --- !u!114 &436749059
@@ -14312,6 +14312,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d572761530d154a93b2d6c780e17cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &664140670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8449092077647236179, guid: f4f02d4c4bdf8cf4ebac2fefba5dcfdc,
+    type: 3}
+  m_PrefabInstance: {fileID: 664140668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &664140671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664140670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &665079339
 GameObject:
   m_ObjectHideFlags: 0
