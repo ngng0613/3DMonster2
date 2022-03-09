@@ -113,8 +113,8 @@ public class CardBattleManager : MonoBehaviour
         {
             GameManager.Instance.MonsterParty = _debugMonsters;
         }
-        List<MonsterBase> monsterList = GameManager.Instance.MonsterParty;
-        playerMonster.MaxMp = monsterList.Sum(x => x.MaxMp);
+        List<MonsterBase> monsterParty = GameManager.Instance.MonsterParty;
+        playerMonster.MaxMp = monsterParty.Sum(x => x.MaxMp);
         _playerMonsterBaseList[0] = playerMonster;
         _playerHpGauge.Setup(playerMonster, _cameraComponent, null);
         _playerStatusIconView.Monster = _playerMonsterBaseList[0];
@@ -147,16 +147,16 @@ public class CardBattleManager : MonoBehaviour
 
         //一度ゲームオブジェクトのデッキをつくる
 
-        monsterList = GameManager.Instance.MonsterParty;
+        monsterParty = GameManager.Instance.MonsterParty;
 
         List<CardObject> playerObjectDeck = new List<CardObject>();
-        for (int i = 0; i < monsterList.Count; i++)
+        for (int i = 0; i < monsterParty.Count; i++)
         {
-            for (int k = 0; k < monsterList[i].CardDatas.Count; k++)
+            for (int k = 0; k < monsterParty[i].CardDatas.Count; k++)
             {
                 CardObject tempCard = Instantiate(_cardObjectPrefab);
                 tempCard.InBattle = true;
-                tempCard.Data = monsterList[i].CardDatas[k];
+                tempCard.Data = monsterParty[i].CardDatas[k];
                 tempCard.Check = CheckIfCanUseCardPlayerSide;
                 //画面外で保存
                 tempCard.transform.position = new Vector3(-200, -500, -1000);

@@ -6,7 +6,7 @@ using System.Linq;
 public class SetupManager : MonoBehaviour
 {
     [SerializeField] Vector3 _firstPlayerPos;
-    [SerializeField] int _monsterMaxCount = 6;
+    [SerializeField] int _monsterMaxCount;
     [SerializeField] List<MonsterBase> _monsterList;
     [SerializeField] ShopManager _shopManager;
     [SerializeField] StageData _stageDataDefault;

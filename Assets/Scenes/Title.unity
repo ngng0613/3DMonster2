@@ -353,7 +353,7 @@ MonoBehaviour:
   - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
   _shopManager: {fileID: 0}
   _stageDataDefault: {fileID: 0}
-  _fade: {fileID: 0}
+  _fade: {fileID: 41134778}
   _titleSceneName: Title
 --- !u!4 &244421437
 Transform:

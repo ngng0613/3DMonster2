@@ -22,26 +22,30 @@ public class TitleManager : MonoBehaviour
 
     public void ChangeScene()
     {
-        GameManager.Instance.MonsterList = _monsterList;
-        foreach (var item in GameManager.Instance.MonsterList)
+        if (GameManager.Instance.MonsterList.Count <= 0)
         {
-            item.InParty = false;
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            if (i >= _monsterList.Count)
+            GameManager.Instance.MonsterList = _monsterList;
+            foreach (var item in GameManager.Instance.MonsterList)
             {
-                continue;
+                item.InParty = false;
             }
-            _monsterList[i].InParty = true;
-        }
-        GameManager.Instance.MonsterParty.Add(_monsterList[0]);
-        GameManager.Instance.MonsterParty.Add(_monsterList[1]);
-        GameManager.Instance.MonsterParty.Add(_monsterList[2]);
-        GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
-        GameManager.Instance.MonsterPartyIdList = new List<int>() { 0, 1, 2 };
-        Debug.LogWarning("モンスターリストを初期化しました");
+            for (int i = 0; i < 3; i++)
+            {
+                if (i >= _monsterList.Count)
+                {
+                    continue;
+                }
+                _monsterList[i].InParty = true;
+            }
+            GameManager.Instance.MonsterParty.Add(_monsterList[0]);
+            GameManager.Instance.MonsterParty.Add(_monsterList[1]);
+            GameManager.Instance.MonsterParty.Add(_monsterList[2]);
+            GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
+            GameManager.Instance.MonsterPartyIdList = new List<int>() { 0, 1, 2 };
+            Debug.LogWarning("モンスターリストを初期化しました");
 
+
+        }
 
         _fade.AfterFunction = GoToField;
         _fade.FadeOut();
