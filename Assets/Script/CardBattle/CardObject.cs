@@ -74,6 +74,7 @@ public class CardObject : MonoBehaviour
                     if (Check.Invoke(Data) == false)
                     {
                         Debug.LogWarning("マナが不足しています");
+                        _handUpdateDelegate.Invoke();
                         break;
                     }
                     Debug.Log($"{this.Data.CardName}をプレイした");
