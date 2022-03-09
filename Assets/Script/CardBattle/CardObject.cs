@@ -16,6 +16,7 @@ public class CardObject : MonoBehaviour
     [SerializeField] TextMeshProUGUI _costText;
     [SerializeField] TextMeshProUGUI _flavourtText;
     [SerializeField] Image _image;
+    [SerializeField] float _playArea;
 
     int _sortingOrder = 0;
     Vector3 _relativePos;
@@ -69,7 +70,8 @@ public class CardObject : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                if (Input.mousePosition.y >= 600)
+               
+                if (Input.mousePosition.y >= _playArea)
                 {
                     if (Check.Invoke(Data) == false)
                     {
@@ -130,6 +132,7 @@ public class CardObject : MonoBehaviour
         if (Input.GetMouseButton(0) && InBattle)
         {
             this.gameObject.transform.position = _relativePos + Input.mousePosition - _firstMousePos;
+            Debug.Log(Input.mousePosition.y);
         }
     }
 

@@ -1081,6 +1081,7 @@ MonoBehaviour:
   _costText: {fileID: 1899734177298100841}
   _flavourtText: {fileID: 7261388184778099133}
   _image: {fileID: 5110926521528774760}
+  _playArea: 300
   InHand: 1
   InBattle: 0
 --- !u!114 &4137941573912464888
