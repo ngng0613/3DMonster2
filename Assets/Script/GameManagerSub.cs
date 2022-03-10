@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManagerSub : MonoBehaviour
 {
+    [SerializeField] List<MonsterBase> _monsterList;
     [SerializeField] List<MonsterBase> _monsterParty;
     [SerializeField] List<int> _monsterInParty;
 
@@ -15,6 +16,7 @@ public class GameManagerSub : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _monsterList = GameManager.Instance.MonsterList;
         _monsterParty = GameManager.Instance.MonsterParty;
         _monsterInParty = GameManager.Instance.MonsterPartyIdList;
     }

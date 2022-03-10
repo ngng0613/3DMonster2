@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class TitleManager : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class TitleManager : MonoBehaviour
     public void Start()
     {
         GameManager.Instance.PlayeraPos = _firstPlayerPos;
+        if (GameManager.Instance.IsFirst == false)
+        {
+            GameManager.Instance.FriendCount = 0;
+            GameManager.Instance.CaptureCount = 0;
+            GameManager.Instance.BattleCount = 0;
+            GameManager.Instance.MonsterPartyIdList = new List<int>() { 0, 1, 2 };
+        }
     }
 
     public void ChangeScene()
@@ -42,6 +50,7 @@ public class TitleManager : MonoBehaviour
             GameManager.Instance.MonsterParty.Add(_monsterList[2]);
             GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
             GameManager.Instance.MonsterPartyIdList = new List<int>() { 0, 1, 2 };
+            GameManager.Instance.PlayerMonster.MaxMp = GameManager.Instance.MonsterParty.Sum(x => x.MaxMp);
             Debug.LogWarning("モンスターリストを初期化しました");
 
 

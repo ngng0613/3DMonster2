@@ -19,7 +19,9 @@ public class SetupManager : MonoBehaviour
         {
             GameManager.Instance.IsFirst = false;
             GameManager.Instance.PlayeraPos = _firstPlayerPos;
+            GameManager.Instance.MonsterList = new List<MonsterBase>();
         }
+        Debug.Log(GameManager.Instance.MonsterList.Count);
         if (GameManager.Instance.MonsterList.Count <= 0)
         {
             GameManager.Instance.MonsterList = _monsterList;
@@ -41,17 +43,13 @@ public class SetupManager : MonoBehaviour
             GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
             GameManager.Instance.TitleName = _titleSceneName;
             int mp = 0;
-            for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
+            for (int i = 0; i < GameManager.Instance.MonsterParty.Count; i++)
             {
-                mp += GameManager.Instance.MonsterList[i].MaxMp;
+                mp += GameManager.Instance.MonsterParty[i].MaxMp;
             }
             GameManager.Instance.PlayerMonster.MaxMp = mp;
             Debug.LogWarning("モンスターリストを初期化しました");
 
-        }
-        else
-        {
-            _monsterList = GameManager.Instance.MonsterList;
         }
         if (_shopManager != null)
         {
@@ -74,9 +72,5 @@ public class SetupManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-
-        }
     }
 }

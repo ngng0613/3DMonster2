@@ -115,6 +115,7 @@ public class CardBattleManager : MonoBehaviour
         }
         List<MonsterBase> monsterParty = GameManager.Instance.MonsterParty;
         playerMonster.MaxMp = monsterParty.Sum(x => x.MaxMp);
+        Debug.Log("MaxMp = " + playerMonster.MaxMp);
         _playerMonsterBaseList[0] = playerMonster;
         _playerHpGauge.Setup(playerMonster, _cameraComponent, null);
         _playerStatusIconView.Monster = _playerMonsterBaseList[0];

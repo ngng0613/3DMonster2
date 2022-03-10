@@ -37,8 +37,6 @@ public class DeckManagerBase : MonoBehaviour
 
         this.gameObject.SetActive(true);
 
-        int partyCount = 0;
-
         for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
         {
             if (i >= _subSlotPosition.Length)
