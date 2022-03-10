@@ -143,10 +143,7 @@ public class CardBattleManager : MonoBehaviour
             }
         }
 
-
-
         //一度ゲームオブジェクトのデッキをつくる
-
         monsterParty = GameManager.Instance.MonsterParty;
 
         List<CardObject> playerObjectDeck = new List<CardObject>();
@@ -588,6 +585,17 @@ public class CardBattleManager : MonoBehaviour
                     break;
                 case SpellType.DisCard:
                     break;
+                case SpellType.Heal:
+
+                    _playerMonsterBaseList[0].CurrentHp += partOfSpell.EffectValue;
+                    if (_playerMonsterBaseList[0].CurrentHp > _playerMonsterBaseList[0].MaxHp )
+                    {
+                        _playerMonsterBaseList[0].CurrentHp = _playerMonsterBaseList[0].MaxHp;
+                    }
+                    _playerHpGauge.UpdateHp(_playerMonsterBaseList[0].CurrentHp);
+
+                    break;
+
                 default:
                     break;
             }

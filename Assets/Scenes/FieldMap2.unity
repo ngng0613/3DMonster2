@@ -9773,7 +9773,7 @@ MonoBehaviour:
   _evoErrorObject: {fileID: 1328452996}
   _evoCanvas: {fileID: 1845848689}
   _evoMonsterObjectInDirection: {fileID: 1070079657}
-  _warning: {fileID: 0}
+  _warning: {fileID: 1654040746}
   _directionSpeed: 200
   _evoEndTime: 3
 --- !u!114 &436749059
@@ -37754,8 +37754,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.8
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Radius: 1.25
+  m_Center: {x: 0, y: 0, z: -0.7}
 --- !u!54 &2013951330
 Rigidbody:
   m_ObjectHideFlags: 0

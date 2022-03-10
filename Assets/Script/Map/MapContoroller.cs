@@ -179,7 +179,6 @@ public class MapContoroller : MonoBehaviour
 
         while (true)
         {
-
             float t = (Time.time - startTime) / distance * _playerMoveSpeed;
             Vector3 movePos = Vector3.Lerp(startPos, _moveToPos, t);
             _player.transform.position = new Vector3(movePos.x, movePos.y, Mathf.Cos(t) * -1 + 0.3f);

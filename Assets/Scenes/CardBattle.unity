@@ -4452,6 +4452,11 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 7701538834048687216, guid: 318fed3647a9bbc439af41824303560b,
+        type: 3}
+      propertyPath: m_OverrideSorting
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8235532437944582908, guid: 318fed3647a9bbc439af41824303560b,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -10334,6 +10339,11 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 7701538834048687216, guid: 318fed3647a9bbc439af41824303560b,
+        type: 3}
+      propertyPath: m_OverrideSorting
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8235532437944582908, guid: 318fed3647a9bbc439af41824303560b,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -12377,7 +12387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1356696980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12863,6 +12873,11 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 7701538834048687216, guid: 318fed3647a9bbc439af41824303560b,
+        type: 3}
+      propertyPath: m_OverrideSorting
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8235532437944582908, guid: 318fed3647a9bbc439af41824303560b,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -13333,6 +13348,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingOrder
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7701538834048687216, guid: 318fed3647a9bbc439af41824303560b,
+        type: 3}
+      propertyPath: m_OverrideSorting
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8235532437944582908, guid: 318fed3647a9bbc439af41824303560b,
         type: 3}
@@ -16407,6 +16427,11 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 7701538834048687216, guid: 318fed3647a9bbc439af41824303560b,
+        type: 3}
+      propertyPath: m_OverrideSorting
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8235532437944582908, guid: 318fed3647a9bbc439af41824303560b,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -16699,7 +16724,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 65
   m_TargetDisplay: 0
 --- !u!114 &1928304394
 MonoBehaviour:
@@ -17112,7 +17137,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 90
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!224 &1972212890
 RectTransform:
@@ -22764,7 +22789,7 @@ MonoBehaviour:
   _stageDataDefault: {fileID: 3510035117288238923, guid: d20df6cde9c250b45a28da60526938b0,
     type: 3}
   _fade: {fileID: 1934534359}
-  _titleSceneName: 
+  _titleSceneName: Title
 --- !u!4 &2136379376
 Transform:
   m_ObjectHideFlags: 0
