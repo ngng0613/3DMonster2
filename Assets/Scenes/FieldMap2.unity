@@ -4008,7 +4008,7 @@ MonoBehaviour:
   _spriteUnselected: {fileID: 21300000, guid: 912298484232d1344afe6bc4634c2b09, type: 3}
   _backgroundSprite: {fileID: 1793349200}
   _mainSprite: {fileID: 673380261}
-  _stage: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae, type: 3}
+  _stage: {fileID: 7619503526395115513, guid: d53d4f14b31e3544f9e4dc6366be9e08, type: 3}
 --- !u!212 &199314525
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6266,7 +6266,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9775ce66407fe7e4d94a5909edb5de6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c69a04f53b4bce43a123aa66b5fc920, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -14637,7 +14637,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9775ce66407fe7e4d94a5909edb5de6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d1c5bc76457052a40861865f467dd487, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -20642,7 +20642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30AA\u30D7\u30B7\u30E7\u30F3\n"
+  m_text: "\u9032\u5316"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: abc29f66190ae3d46864d38afdd6c973, type: 2}
   m_sharedMaterial: {fileID: -6295462911554822156, guid: abc29f66190ae3d46864d38afdd6c973,
@@ -20712,9 +20712,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1100880724}
-    characterCount: 6
+    characterCount: 2
     spriteCount: 0
-    spaceCount: 1
+    spaceCount: 0
     wordCount: 1
     linkCount: 0
     lineCount: 1
@@ -23676,7 +23676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1279556348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23739,7 +23739,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1279556350}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 436749058}
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1279556350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34889,7 +34900,7 @@ MonoBehaviour:
   _spriteUnselected: {fileID: 21300000, guid: 912298484232d1344afe6bc4634c2b09, type: 3}
   _backgroundSprite: {fileID: 1542107941}
   _mainSprite: {fileID: 316387204}
-  _stage: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae, type: 3}
+  _stage: {fileID: 8296573696393473144, guid: f7fa61487cad4974aa6eaeffa6720667, type: 3}
 --- !u!212 &1820361416
 SpriteRenderer:
   m_ObjectHideFlags: 0
