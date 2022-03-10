@@ -189,6 +189,14 @@ public class CardBattleManager : MonoBehaviour
         PhaseStart();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            PhaseWin();
+        }
+    }
+
     void PhaseStart()
     {
         sequence = DOTween.Sequence();
@@ -452,7 +460,6 @@ public class CardBattleManager : MonoBehaviour
         _resultManager.Setup(_enemyMonsterBaseList[0]);
         _resultCanvas.gameObject.SetActive(true);
         _resultManager.AnimationStart();
-
     }
 
     public void PhaseLose()

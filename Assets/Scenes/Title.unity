@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -348,9 +348,9 @@ MonoBehaviour:
   _firstPlayerPos: {x: 0, y: -1.56, z: 0}
   _monsterMaxCount: 6
   _monsterList:
-  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
-  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
-  - {fileID: 7467240195894655875, guid: f6a6c592d16563449ae630320a5167f8, type: 3}
+  - {fileID: 2960563755048309327, guid: 573f4548ad14c4147bf9a5f499ad53c1, type: 3}
+  - {fileID: 6963810589358610154, guid: 3b4f4f9d89f2e1a49b719197dfd53797, type: 3}
+  - {fileID: 3146220264010519621, guid: d441ecc483e01a042af87330c456e828, type: 3}
   _shopManager: {fileID: 0}
   _stageDataDefault: {fileID: 0}
   _fade: {fileID: 41134778}
