@@ -11,6 +11,8 @@ public class StateIcon : MonoBehaviour
     public Image IconImage;
     public TextMeshProUGUI Text;
     int _count = 0;
+    [SerializeField] GameObject _iconTextParent;
+    [SerializeField] TextMeshProUGUI _iconText;
     [SerializeField] float _tweenSpeed = 1.0f;
     public int Count
     {

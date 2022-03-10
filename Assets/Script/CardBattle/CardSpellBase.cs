@@ -12,7 +12,8 @@ public enum SpellType
     Debuff,
     Draw,
     DisCard,
-    Heal
+    Heal,
+    MpHeal,
 }
 
 public enum SpellTarget

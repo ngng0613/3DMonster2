@@ -8,6 +8,7 @@ public class StatusEffectBase : MonoBehaviour
     public int Id;
     public string Name = default;
     int count = 0;
+    public string IconProfileText;
 
     public Sprite IconSprite;
 

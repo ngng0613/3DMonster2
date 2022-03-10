@@ -407,6 +407,17 @@ public class CardBattleManager : MonoBehaviour
                         break;
                     case SpellType.DisCard:
                         break;
+                    case SpellType.Heal:
+
+                        _enemyMonsterBaseList[0].CurrentHp += partOfSpell.EffectValue;
+                        if (_enemyMonsterBaseList[0].CurrentHp > _enemyMonsterBaseList[0].MaxHp)
+                        {
+                            _enemyMonsterBaseList[0].CurrentHp = _enemyMonsterBaseList[0].MaxHp;
+                        }
+                        _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
+
+                        break;
+
                     default:
                         break;
                 }
@@ -588,7 +599,7 @@ public class CardBattleManager : MonoBehaviour
                 case SpellType.Heal:
 
                     _playerMonsterBaseList[0].CurrentHp += partOfSpell.EffectValue;
-                    if (_playerMonsterBaseList[0].CurrentHp > _playerMonsterBaseList[0].MaxHp )
+                    if (_playerMonsterBaseList[0].CurrentHp > _playerMonsterBaseList[0].MaxHp)
                     {
                         _playerMonsterBaseList[0].CurrentHp = _playerMonsterBaseList[0].MaxHp;
                     }
