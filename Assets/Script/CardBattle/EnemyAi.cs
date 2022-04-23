@@ -36,8 +36,6 @@ public class EnemyAi : MonoBehaviour
                 _hand.AddHand(card);
             }
         }
-
-
     }
 
     /// <summary>
@@ -84,37 +82,38 @@ public class EnemyAi : MonoBehaviour
                 {
                     continue;
                 }
-                if (firstCard == comboDictionary[k].OrderOfCards[0])
+                if (!firstCard == comboDictionary[k].OrderOfCards[0])
                 {
-                    //コンボ可能かどうかを示す変数
-                    bool canDo = false;
-                    List<CardData> comboCardList = comboDictionary[k].OrderOfCards;
-                    //コンボに必要なカードがあるか検索
-                    for (int m = 1; m < comboCardList.Count; m++)
+                    continue;
+                }
+                //コンボ可能かどうかを示す変数
+                bool canDo = false;
+                List<CardData> comboCardList = comboDictionary[k].OrderOfCards;
+                //コンボに必要なカードがあるか検索
+                for (int m = 1; m < comboCardList.Count; m++)
+                {
+                    canDo = false;
+                    for (int n = 0; n < handList.Count; n++)
                     {
-                        canDo = false;
-                        for (int n = 0; n < handList.Count; n++)
+                        //対象が使用済みカードの場合飛ばす
+                        if (useCard[n] == true)
                         {
-                            //対象が使用済みカードの場合飛ばす
-                            if (useCard[n] == true)
-                            {
-                                continue;
-                            }
-                            if (comboCardList[m] == handList[n])
-                            {
-                                //コンボに必要なカード(m)と等しいコンボ要因(n)が見つかったら
-                                canDo = true;
-                            }
+                            continue;
                         }
-                        if (canDo == false)
+                        if (comboCardList[m] == handList[n])
                         {
-                            break;
+                            //コンボに必要なカード(m)と等しいコンボ要因(n)が見つかったら
+                            canDo = true;
                         }
                     }
-                    if (canDo == true)
+                    if (canDo == false)
                     {
-                        compareComboList.Add(comboDictionary[k]);
+                        break;
                     }
+                }
+                if (canDo == true)
+                {
+                    compareComboList.Add(comboDictionary[k]);
                 }
             }
             //ソートする
