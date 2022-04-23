@@ -63,7 +63,7 @@ public class EnemyAi : MonoBehaviour
         {
             Debug.Log(handList[i]);
             CardData firstCard = handList[i];
-            ///コンボを思考するうえでコンボで既に使用したカードをチェックするため、boolで管理する
+            //コンボを思考するうえでコンボで既に使用したカードをチェックするため、boolで管理する
             bool[] useCard = new bool[handList.Count];
             useCard[i] = true;
             for (int k = 0; k < comboDictionary.Count; k++)
@@ -95,7 +95,7 @@ public class EnemyAi : MonoBehaviour
                         canDo = false;
                         for (int n = 0; n < handList.Count; n++)
                         {
-                            ///対象が使用済みカードの場合飛ばす
+                            //対象が使用済みカードの場合飛ばす
                             if (useCard[n] == true)
                             {
                                 continue;
@@ -147,7 +147,6 @@ public class EnemyAi : MonoBehaviour
                     useCardList.Add(handList[i]);
                     tempMp -= handList[i].Cost;
                     _hand.RemoveCard(handList[i]);
-
                 }
 
                 i++;
