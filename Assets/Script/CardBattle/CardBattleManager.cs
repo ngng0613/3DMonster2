@@ -9,6 +9,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+//プレイヤーのどちら側か
 public enum Side
 {
     Player,
@@ -17,10 +18,15 @@ public enum Side
 
 public class CardBattleManager : MonoBehaviour
 {
+    //Dotween用のシークエンス
     Sequence sequence;
+    //戦闘で参照するステージデータ
     StageData _stageData;
+    //_stageDataがnullだった場合に使用するデバッグ用ステージデータ
     [SerializeField] StageData _stageDataForDebug;
+    //ゲームのプレイヤー側のデッキクラス
     [SerializeField] Deck _playerDeck;
+    //Enemy側のデッキクラス
     [SerializeField] Deck _enemyDeck;
 
     public enum Phase
@@ -39,48 +45,60 @@ public class CardBattleManager : MonoBehaviour
         Lose,
     }
 
+    //デバッグ用のモンスタークラスのリスト
     [SerializeField] List<MonsterBase> _debugMonsters;
-
+    //現在がどの段階かを示す変数
     [SerializeField] Phase _phase = Phase.Start;
-
+    //アニメーションの表示速度
     [SerializeField] float _tweenSpeed = 1.0f;
-
+    //今処理中のカード処理が存在するかどうか
     [SerializeField] bool _isPlayingCard = false;
-
-
     //スキル
     [SerializeField] StatusEffectBase _guardStatusEffect;
 
     /*
      * マネージャー
      */
+    //音関連の処理を行うクラス
     [SerializeField] SoundManager _soundManager;
+    //モンスターの処理を行うクラス
     [SerializeField] MonsterManager monsterManager;
+    //手札クラス
     [SerializeField] Hand _hand;
+    //体力表示のゲージのクラス
     [SerializeField] HpGauge _enemyStatusPrefab;
+    //戦闘ダメージ計算のクラス
     [SerializeField] DamageCalculator _damageCalculator;
+    //プレイヤーに付与されている状態表示のクラス
     [SerializeField] StatusIconView _playerStatusIconView;
+    //敵に付与されている状態表示を管理するクラス
     [SerializeField] StatusIconView _enemyStatusIconView;
+    //戦闘結果表示を管理するクラス
     [SerializeField] ResultManager _resultManager;
+    //ゲームオーバー画面表示のクラス
     [SerializeField] GameResultCanvas _gameResultManager;
 
     /*
      * オブジェクト
      */
+    //カードオブジェクトのプレハブ
     [SerializeField] CardObject _cardObjectPrefab;
-    [SerializeField] List<GameObject> _playerMonsterObjectsList = new List<GameObject>();
+    //実体化した敵のオブジェクトのリスト
     [SerializeField] List<GameObject> _enemyMonsterObjectsList = new List<GameObject>();
+    //味方モンスターの表示位置
     [SerializeField] List<Transform> _playerMonstersPositionList = new List<Transform>();
+    //敵モンスターの表示位置
     [SerializeField] List<Transform> _enemyMonsterPositionList = new List<Transform>();
+    //味方モンスターデータのリスト
     [SerializeField] List<MonsterBase> _playerMonsterBaseList = new List<MonsterBase>();
+    //敵モンスターデータのリスト
     [SerializeField] List<MonsterBase> _enemyMonsterBaseList = new List<MonsterBase>();
-    [SerializeField] List<Transform> _playerMonsterLookPositionList = new List<Transform>();
-    [SerializeField] List<Transform> _enemyMonsterLookPositionList = new List<Transform>();
-    DamageView _damageView;
+
+    //被ダメージ表示のプレハブ
     [SerializeField] DamageView _damageViewPrefab;
+    //カメラクラス
     Camera _cameraComponent;
-    [SerializeField] Color _damageWeakColor;
-    [SerializeField] Color _damageResistColor;
+    //フェード機能のクラス
     [SerializeField] Fade _fade;
     [SerializeField] GameObject _gameVictoryObjects;
     [SerializeField] GameObject _gameLoseObjects;
@@ -105,9 +123,9 @@ public class CardBattleManager : MonoBehaviour
         Application.targetFrameRate = 60;
         //初期化
         GameManager.Instance.BattleCount++;
-
+        //ゲームマネージャーから一旦プレイヤーの情報を得る
         MonsterBase playerMonster = GameManager.Instance.PlayerMonster;
-        playerMonster.StatusEffectList = new List<StatusEffectBase>();
+        //playerMonster.StatusEffectList = new List<StatusEffectBase>();
         playerMonster.CurrentHp = GameManager.Instance.PlayerHp;
         if (GameManager.Instance.MonsterParty.Count == 0)
         {
