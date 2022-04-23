@@ -326,8 +326,6 @@ public class CardBattleManager : MonoBehaviour
         yield return new WaitForSeconds(waitForSeconds);
     }
 
-
-
     public void PhaseEnemyStart()
     {
         _turnEndButton.SetActive(true);
@@ -390,7 +388,6 @@ public class CardBattleManager : MonoBehaviour
                         //_playerStatusIconView.UpdateView();
                         break;
                     case SpellType.Guard:
-
 
                         break;
                     case SpellType.Buff:
@@ -455,7 +452,6 @@ public class CardBattleManager : MonoBehaviour
                         _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
 
                         break;
-
                     default:
                         break;
                 }
@@ -466,12 +462,10 @@ public class CardBattleManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.5f);
         }
-
         yield return PhaseDraw();
     }
     public void CheckIfDead()
     {
-
         if (_playerMonsterBaseList[0].CurrentHp <= 0)
         {
             PhaseLose();
@@ -561,7 +555,6 @@ public class CardBattleManager : MonoBehaviour
             {
                 yield break;
             }
-
             _isPlayingCard = true;
             CardSpellBase partOfSpell = card.CardSpellBases[i];
             if (partOfSpell.SpellSound != null)
@@ -578,7 +571,6 @@ public class CardBattleManager : MonoBehaviour
                     AttackCoroutine(partOfSpell);
                     break;
                 case SpellType.Guard:
-
                     break;
                 case SpellType.Buff:
                     StatusEffectBase status = Instantiate(partOfSpell.Status);
@@ -623,7 +615,6 @@ public class CardBattleManager : MonoBehaviour
                         _playerStatusIconView.UpdateView();
                     }
 
-
                     break;
                 case SpellType.Debuff:
                     break;
@@ -651,8 +642,6 @@ public class CardBattleManager : MonoBehaviour
             CheckIfDead();
             _isPlayingCard = false;
         }
-
-
     }
 
     /// <summary>
@@ -672,12 +661,10 @@ public class CardBattleManager : MonoBehaviour
         _enemyHpGauge.gameObject.transform.DOShakePosition(0.5f, 1.0f, 100);
 
         //ダメージ処理
-
         DamageView damageView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
         damageView.transform.position += new Vector3(0, 2, -8);
         damageView.Setup(damage, "", Color.white, _cameraComponent);
         damageView.Activate();
-
     }
 
 
@@ -711,7 +698,6 @@ public class CardBattleManager : MonoBehaviour
     {
         _lackOfMana.Activate();
     }
-
 
     void BackToMap()
     {
