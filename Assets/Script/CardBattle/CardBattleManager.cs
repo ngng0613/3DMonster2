@@ -65,7 +65,7 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] MonsterManager monsterManager;
     //手札クラス
     [SerializeField] Hand _hand;
-    //体力表示のゲージのクラス
+    //体力表示のゲージのプレハブ
     [SerializeField] HpGauge _enemyStatusPrefab;
     //戦闘ダメージ計算のクラス
     [SerializeField] DamageCalculator _damageCalculator;
@@ -100,16 +100,27 @@ public class CardBattleManager : MonoBehaviour
     Camera _cameraComponent;
     //フェード機能のクラス
     [SerializeField] Fade _fade;
+    //勝利時に表示するオブジェクト
     [SerializeField] GameObject _gameVictoryObjects;
+    //敗北時に表示するオブジェクト
     [SerializeField] GameObject _gameLoseObjects;
+    //次へ進むボタン
     [SerializeField] GameObject _nextButton;
+    //戦闘開始時のアニメーションのキャンバスグループ　透過の調整で使う
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
+    //プレイヤーの体力ゲージ
     [SerializeField] HpGauge _playerHpGauge;
+    //敵の体力ゲージ
     [SerializeField] HpGauge _enemyHpGauge;
+    //敵のAI
     [SerializeField] EnemyAi _enemyAi;
+    //戦闘結果キャンバス
     [SerializeField] Canvas _resultCanvas;
+    //ゲーム結果キャンバス
     [SerializeField] Canvas _gameResultCanvas;
+    //ターン終了ボタン
     [SerializeField] GameObject _turnEndButton;
+    //マナが足りない表示オブジェクト
     [SerializeField] MessageUi _lackOfMana;
 
     UnityEngine.Random _random = new UnityEngine.Random();
@@ -117,11 +128,11 @@ public class CardBattleManager : MonoBehaviour
 
     public TrashDelegate Trash;
 
-
     void Start()
     {
         Application.targetFrameRate = 60;
         //初期化
+        //戦闘開始回数を増やす
         GameManager.Instance.BattleCount++;
         //ゲームマネージャーから一旦プレイヤーの情報を得る
         MonsterBase playerMonster = GameManager.Instance.PlayerMonster;
@@ -458,8 +469,6 @@ public class CardBattleManager : MonoBehaviour
 
         yield return PhaseDraw();
     }
-
-
     public void CheckIfDead()
     {
 
