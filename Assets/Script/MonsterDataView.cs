@@ -10,65 +10,42 @@ using DG.Tweening;
 /// </summary>
 public class MonsterDataView : MonoBehaviour
 {
-    [SerializeField] GameObject statusView;
-    [SerializeField] GameObject passiveSkillView;
+    [SerializeField] GameObject _statusView;
+    [SerializeField] GameObject _passiveSkillView;
 
-    [SerializeField] Image viewImage;
-    [SerializeField] TextMeshProUGUI viewNameText;
-    [SerializeField] Image viewIcon;
+    [SerializeField] Image _viewImage;
+    [SerializeField] TextMeshProUGUI _viewNameText;
+    [SerializeField] Image _viewIcon;
 
-    [SerializeField] int statusMaxValue = 200;
-    [SerializeField] TextMeshProUGUI hpValue;
-    [SerializeField] Image hpGraph;
-    [SerializeField] TextMeshProUGUI attackValue;
-    [SerializeField] Image attackGraph;
-    [SerializeField] TextMeshProUGUI defenceValue;
-    [SerializeField] Image defenceGraph;
-    [SerializeField] TextMeshProUGUI speedValue;
-    [SerializeField] Image speedGraph;
-    [SerializeField] TextMeshProUGUI spAttackValue;
-    [SerializeField] Image spAttackGraph;
-    [SerializeField] TextMeshProUGUI spDefenceValue;
-    [SerializeField] Image spDefenceGraph;
+    [SerializeField] int _statusMaxValue = 200;
+    [SerializeField] TextMeshProUGUI _hpValue;
+    [SerializeField] Image _hpGraph;
+    [SerializeField] TextMeshProUGUI _attackValue;
+    [SerializeField] Image _attackGraph;
+    [SerializeField] TextMeshProUGUI _defenceValue;
+    [SerializeField] Image _defenceGraph;
+    [SerializeField] TextMeshProUGUI _speedValue;
+    [SerializeField] Image _speedGraph;
+    [SerializeField] TextMeshProUGUI _spAttackValue;
+    [SerializeField] Image _spAttackGraph;
+    [SerializeField] TextMeshProUGUI _spDefenceValue;
+    [SerializeField] Image _spDefenceGraph;
 
-    [SerializeField] TextMeshProUGUI passiveSkillName;
-    [SerializeField] TextMeshProUGUI passiveSkillHelpText;
+    [SerializeField] TextMeshProUGUI _passiveSkillName;
+    [SerializeField] TextMeshProUGUI _passiveSkillHelpText;
 
-    public IconManager iconManager;
+    public IconManager IconManager;
 
-    public void DisPlayStatusView(MonsterBase monster)
-    {
-        statusView.SetActive(true);
-        passiveSkillView.SetActive(false);
-
-
-        viewNameText.text = monster.GetNickname();
-        viewImage.sprite = monster.GetImage();
-        viewIcon.sprite = iconManager.GetIconImage(monster.GetElement());
-        hpValue.text = monster.GetMaxHPValue().ToString();
-        hpGraph.transform.localScale = new Vector3((float)monster.GetMaxHPValue() / (statusMaxValue * 2), 1, 1);
-        attackValue.text = monster.GetAttackValue().ToString();
-        attackGraph.transform.localScale = new Vector3((float)monster.GetAttackValue() / statusMaxValue, 1, 1);
-        defenceValue.text = monster.GetDefenceValue().ToString();
-        defenceGraph.transform.localScale = new Vector3((float)monster.GetDefenceValue() / statusMaxValue, 1, 1);
-        speedValue.text = monster.GetSpeedValue().ToString();
-        speedGraph.transform.localScale = new Vector3((float)monster.GetSpeedValue() / statusMaxValue, 1, 1);
-        spAttackValue.text = monster.GetSpAttackValue().ToString();
-        spAttackGraph.transform.localScale = new Vector3((float)monster.GetSpAttackValue() / statusMaxValue, 1, 1);
-        spDefenceValue.text = monster.GetSpDefenceValue().ToString();
-        spDefenceGraph.transform.localScale = new Vector3((float)monster.GetSpDefenceValue() / statusMaxValue, 1, 1);
-    }
 
     public void DisplayPasiveSkill(MonsterBase monster)
     {
-        viewNameText.text = monster.GetNickname();
-        viewImage.sprite = monster.GetImage();
-        viewIcon.sprite = iconManager.GetIconImage(monster.GetElement());
-        statusView.SetActive(false);
-        passiveSkillView.SetActive(true);
+        _viewNameText.text = monster.GetNickname();
+        _viewImage.sprite = monster.Image;
+        _statusView.SetActive(false);
+        _passiveSkillView.SetActive(true);
         PassiveSkillBase pSkill = monster.GetPassiveSkill();
-        passiveSkillName.text = pSkill.pSkillName;
-        passiveSkillHelpText.text = pSkill.GetPSkillHelp();
+        _passiveSkillName.text = pSkill.pSkillName;
+        _passiveSkillHelpText.text = pSkill.GetPSkillHelp();
 
     }
 }

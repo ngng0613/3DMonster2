@@ -6,29 +6,29 @@ using UnityEngine.UI;
 public class SkillBase : MonoBehaviour
 {
     //スキルID
-    [SerializeReference] int skillID;
+    [SerializeReference] int _skillID;
     //スキル名
-    [SerializeField] string skillName;
+    [SerializeField] string _skillName;
     //スキルの威力
-    [SerializeField] int damage;
+    [SerializeField] int _damage;
 
     //スキルの説明
-    [SerializeField][TextArea] string skillHelpText;
+    [SerializeField][TextArea] string _skillHelpText;
 
     //スキルのエフェクト
-    [SerializeField] GameObject effect;
+    [SerializeField] GameObject _effect;
 
     //スキル効果音
-    [SerializeField] AudioClip effectSound;
+    [SerializeField] AudioClip _effectSound;
 
     //スキル説明文
-    [SerializeField] Text skillDescription;
+    [SerializeField] Text _skillDescription;
 
     //使用時の消費MP
-    [SerializeField] int usedMp = 0;
+    [SerializeField] int _usedMp = 0;
 
     //使用時の反動（クールタイム）
-    [SerializeField] int addedCoolTime = 100;
+    [SerializeField] int _addedCoolTime = 100;
 
     //スキルタイプ
     public enum SkillType
@@ -43,69 +43,69 @@ public class SkillBase : MonoBehaviour
 
 
     }
-    [SerializeField] SkillType skillType;
-    [SerializeField] Element.BattleElement skillElement;
+    [SerializeField] SkillType _skillType;
+    [SerializeField] Element.BattleElement _skillElement;
 
     public SkillBase(string name, GameObject effect)
     {
-        this.skillName = name;
-        this.effect = effect;
+        this._skillName = name;
+        this._effect = effect;
     }
 
     public void SetOption(string name, GameObject effect)
     {
-        this.skillName = name;
-        this.effect = effect;
+        this._skillName = name;
+        this._effect = effect;
 
     }
 
     public string GetName()
     {
-        return skillName;
+        return _skillName;
     }
 
     public int GetDamage()
     {
-        return damage;
+        return _damage;
     }
 
     public string GetHelptext()
     {
-        return skillHelpText;
+        return _skillHelpText;
     }
 
     public SkillType GetSkillType()
     {
-        return skillType;
+        return _skillType;
     }
 
     public GameObject GetEffect()
     {
-        return effect;
+        return _effect;
 
     }
 
     public int GetCoolTime()
     {
-        return addedCoolTime;
+        return _addedCoolTime;
     }
     public string GetDescription()
     {
-        skillDescription = gameObject.GetComponent<Text>();
+        _skillDescription = gameObject.GetComponent<Text>();
 
-        return skillDescription.text;
+        return _skillDescription.text;
 
     }
     public int GetUsedMp()
     {
-        return usedMp;
+        return _usedMp;
     }
     public AudioClip GetEffectSE()
     {
-        return effectSound;
+        return _effectSound;
     }
     public Element.BattleElement GetElement()
     {
-        return skillElement;
+        return _skillElement;
     }
 }

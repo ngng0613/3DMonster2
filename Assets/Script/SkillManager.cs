@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
-    [SerializeField] List<SkillBase> skillList = new List<SkillBase>();
+    [SerializeField] List<SkillBase> _skillList = new List<SkillBase>();
 
-    [SerializeField] List<GameObject> effectList = new List<GameObject>();
+    [SerializeField] List<GameObject> _effectList = new List<GameObject>();
 
-    [SerializeField] SkillBase skillTemp;
-    [SerializeField] GameObject effectTemp;
+    [SerializeField] SkillBase _skillTemp;
+    [SerializeField] GameObject _effectTemp;
 
     enum Skill
     {
@@ -22,14 +22,14 @@ public class SkillManager : MonoBehaviour
     private void Start()
     {
 
-        effectList.Add(effectTemp);
+        _effectList.Add(_effectTemp);
 
 
     }
 
     public SkillBase GetDefaultSkill()
     {
-        return skillTemp;
+        return _skillTemp;
     }
     /// <summary>
     /// 引数のIDをもとに、スキルリストから該当するスキルベースを探します。
@@ -38,7 +38,7 @@ public class SkillManager : MonoBehaviour
     /// <returns>該当スキルベース</returns>
     public SkillBase SkillSearch(int id)
     {
-        return skillList[id];
+        return _skillList[id];
 
     }
 }

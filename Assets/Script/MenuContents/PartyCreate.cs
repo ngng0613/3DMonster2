@@ -53,9 +53,7 @@ public class PartyCreate : MenuContents
         PhaseChoicePosition();
         InputManager.setupCompleted = true;
         allMonsterList = monsterManager.GetAllMonsterList();
-        monsterPartyList = monsterManager.GetPossessionMonsterList().GetRange(0, GameManager2.progress + 3);
         UpdateParty();
-        monsterDataView.DisPlayStatusView(allMonsterList[chooseIndex]);
 
     }
 
@@ -65,7 +63,7 @@ public class PartyCreate : MenuContents
     {
         partyCreateObjects.SetActive(true);
         soundManager.PlaySe(SoundManager.SeList.OpenMenu);
-        Player.canMove = false;
+        Player.CanMove = false;
     }
 
     public void Inactivate()
@@ -166,7 +164,6 @@ public class PartyCreate : MenuContents
         }
         if (viewMode == ViewMode.StatusView)
         {
-            monsterDataView.DisPlayStatusView(allMonsterList[chooseIndex]);
         }
         else if(viewMode == ViewMode.PassiveSkillView)
         {
@@ -180,9 +177,8 @@ public class PartyCreate : MenuContents
 
         for (int i = 0; i < monsterPartyList.Count; i++)
         {
-            partyMonsterImageList[i].sprite = monsterPartyList[i].GetImage();
-            partyMonsterNameList[i].text = monsterPartyList[i].GetNickname();
-            elementIconList[i].sprite = iconManager.GetIconImage(monsterPartyList[i].GetElement());
+            partyMonsterImageList[i].sprite = monsterPartyList[i].Image;
+            partyMonsterNameList[i].text = monsterPartyList[i].MonsterName;
         }
         monsterManager.SetPossessionMonsterList(monsterPartyList);
     }
@@ -197,7 +193,6 @@ public class PartyCreate : MenuContents
                 break;
 
             case ViewMode.PassiveSkillView:
-                monsterDataView.DisPlayStatusView(allMonsterList[chooseIndex]);
                 viewMode = ViewMode.StatusView;
 
                 break;

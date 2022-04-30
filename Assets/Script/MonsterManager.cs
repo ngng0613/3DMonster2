@@ -12,112 +12,77 @@ public class MonsterManager : MonoBehaviour
     /// <summary>
     /// 全種類のモンスターリスト
     /// </summary>
-    [SerializeField] List<MonsterBase> allMonsterList;
+    [SerializeField] List<MonsterBase> _allMonsterList;
 
     /// <summary>
     /// 所持しているモンスターのリスト
     /// </summary>
-    [SerializeField] List<MonsterBase> possessionMonsterList = new List<MonsterBase>();
+    [SerializeField] List<MonsterBase> _possessionMonsterList = new List<MonsterBase>();
 
-    public static List<MonsterBase> partyMonsterList;
+    public static List<MonsterBase> PartyMonsterList;
 
-    public int numberOfPossessionMonster = 1;
-    public MonsterBase monsterNullData;
+    public int NumberOfPossessionMonster = 1;
+    public MonsterBase MonsterNullData;
 
 
     /// <summary>
     /// 現在存在している
     /// </summary>
-    [SerializeField] List<float> individual_IDList = new List<float>();
+    [SerializeField] List<float> _individualIDList = new List<float>();
 
 
     [System.Serializable]
-    public class Monster_SaveData
+    public class MonsterSaveData
     {
-        //ID
-        public int id;
+        public int Id;
 
-        //個別ID
-        public float individual_ID;
+        public string MonsterName;
 
-        //名前
-        public string monsterName;
-        //ニックネーム
-        public string nickName;
+        public string NickName;
 
-        //イメージ
-        public Sprite image;
+        public Sprite Image;
 
-        //属性
-        public string elements;
+        public int MaxHp;
+        public int CurrentHp;
+        public int MaxMp;
+        public int CurrentMp;
 
-        //最大HP
-        public int maxHp;
-        //現在のHP
-        public int currentHp;
-        //最大MP
-        public int maxMp;
-        //現在のMP
-        public int currentMp;
+        public GameObject MyPrefab;
 
-        //攻撃力
-        public int attack;
-        //防御力
-        public int defence;
-        //特殊攻撃力
-        public int spAttack;
-        //特殊防御力
-        public int spDefence;
-        //素早さ
-        public int speed;
-        //運
-        public int luck;
-        //命中率
-        public int hit;
-        //回避率
-        public int avoidance;
+        public int Level;
+        public int Exp;
 
-        //ベースのPrefab
-        public GameObject myPrefab;
-
-
-        //レベル
-        public int level;
-        //経験値
-        public int exp;
-
-        //次のレベルまでの経験値
-        public int expToNextLevel;
-
-        public List<SkillBase> skillList;
+        public int ExpToNextLevel;
 
     }
 
-    [SerializeField] bool isFirst = false;
+    [SerializeField] bool _isFirst = false;
 
 
     private void Start()
     {
-        if (isFirst)
+        if (_isFirst)
         {
-            MonsterManager.partyMonsterList = possessionMonsterList;
+            MonsterManager.PartyMonsterList = _possessionMonsterList;
         }
+    }
 
-  
-        //gameManager = GetComponent<GameManager>();
+    public void SetDebugParty()
+    {
+        GameManager.Instance.MonsterParty = _possessionMonsterList;
     }
 
     public void Setup()
     {
-        numberOfPossessionMonster = 0;
-        foreach (var item in possessionMonsterList)
+        NumberOfPossessionMonster = 0;
+        foreach (var item in _possessionMonsterList)
         {
             if (item != null)
             {
-                numberOfPossessionMonster++;
+                NumberOfPossessionMonster++;
             }
         }
-        partyMonsterList = possessionMonsterList;
+        PartyMonsterList = _possessionMonsterList;
 
     }
 
@@ -125,17 +90,12 @@ public class MonsterManager : MonoBehaviour
 
     public void RemoveMonster(int i)
     {
-        possessionMonsterList.RemoveAt(i);
-        numberOfPossessionMonster--;
+        _possessionMonsterList.RemoveAt(i);
+        NumberOfPossessionMonster--;
     }
     int saveNumber = 0;
     string savedWord = "SAVEDATA:";
 
-    /// <summary>
-    /// 指定された番号のプレイヤー所持モンスターの情報を返す
-    /// ※使用不可
-    /// </summary>
-    /// <returns></returns>
     public int GetPossessionMonsterID(int number)
     {
         int id = 0;
@@ -152,116 +112,9 @@ public class MonsterManager : MonoBehaviour
     /// <returns>モンスターのオブジェクト</returns>
     public GameObject GetMonsterPrefab(int id)
     {
-        return allMonsterList[id].gameObject;
-    }
-    /// <summary>
-    /// モンスター情報を仮セーブ
-    /// </summary>
-    public void TemporarilyPlayerMonstersSave()
-    {
-        for (int i = 0; i < possessionMonsterList.Count; i++)
-        {
-            if (possessionMonsterList[i] == null)
-            {
-                return;
-            }
-
-
-            Monster_SaveData saveData = new Monster_SaveData();
-
-            saveData.id = possessionMonsterList[i].GetId();
-            saveData.nickName = possessionMonsterList[i].GetNickname();
-            saveData.maxHp = possessionMonsterList[i].GetMaxHPValue();
-            saveData.maxMp = possessionMonsterList[i].GetMaxMPValue();
-            saveData.currentHp = possessionMonsterList[i].GetCurrentHPValue();
-            saveData.currentMp = possessionMonsterList[i].GetCurrentMPValue();
-            saveData.attack = possessionMonsterList[i].GetAttackValue();
-            saveData.defence = possessionMonsterList[i].GetDefenceValue();
-            saveData.spAttack = possessionMonsterList[i].GetSpAttackValue();
-            saveData.spDefence = possessionMonsterList[i].GetSpDefenceValue();
-            saveData.speed = possessionMonsterList[i].GetSpeedValue();
-            saveData.exp = possessionMonsterList[i].GetEXPValue();
-            saveData.level = possessionMonsterList[i].GetLevelValue();
-            saveData.expToNextLevel = possessionMonsterList[i].GetEXPToNextLevel();
-
-            saveData.skillList = possessionMonsterList[i].GetSkillList();
-
-
-
-
-            saveMonsterData_temp(saveData, i);
-
-        }
-
+        return _allMonsterList[id].gameObject;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public void TemporarilyPlayerMonstersLoad()
-    {
-        for (int i = 0; i < possessionMonsterList.Count; i++)
-        {
-            if (possessionMonsterList[i] == null)
-            {
-                return;
-            }
-            Monster_SaveData savedata = loadMonsterData_temp(i);
-
-            possessionMonsterList[i].SetNickName(savedata.nickName);
-            possessionMonsterList[i].SetID(savedata.id);
-            possessionMonsterList[i].SetMaxHPValue(savedata.maxHp);
-            possessionMonsterList[i].SetMaxMPValue(savedata.maxMp);
-            possessionMonsterList[i].SetCurrentHPValue(savedata.currentHp);
-            possessionMonsterList[i].SetCurrentMPValue(savedata.currentMp);
-            possessionMonsterList[i].SetAttackValue(savedata.attack);
-            possessionMonsterList[i].SetDefenceValue(savedata.defence);
-            possessionMonsterList[i].SetSPAttackValue(savedata.spAttack);
-            possessionMonsterList[i].SetSPDefenceValue(savedata.spDefence);
-            possessionMonsterList[i].SetSpeedValue(savedata.speed);
-
-            possessionMonsterList[i].SetLevelValue(savedata.level);
-            possessionMonsterList[i].SetEXPValue(savedata.exp);
-            possessionMonsterList[i].SetEXPToNextLevel(savedata.expToNextLevel);
-
-            possessionMonsterList[i].SetSkillList(savedata.skillList);
-
-
-        }
-    }
-
-    /// <summary>
-    /// 仮保存されているMonsterBaseを呼び出し、ゲームオブジェクト内のMonsterBaseを上書きする
-    /// </summary>
-    /// <param name="friend">　上書きするモンスター（GameObject）</param>
-    /// <param name="i"> パーティ内の読み込みたいモンスターの先頭からの番号</param>
-    public void TemporarilyPlayerMonstersLoad(GameObject friend, int i)
-    {
-        Monster_SaveData savedata = loadMonsterData_temp(i);
-
-        friend.GetComponent<MonsterBase>().SetNickName(savedata.nickName);
-        friend.GetComponent<MonsterBase>().SetID(savedata.id);
-        friend.GetComponent<MonsterBase>().SetMaxHPValue(savedata.maxHp);
-        friend.GetComponent<MonsterBase>().SetMaxMPValue(savedata.maxMp);
-
-        friend.GetComponent<MonsterBase>().SetCurrentHPValue(savedata.maxHp);
-        friend.GetComponent<MonsterBase>().SetCurrentMPValue(savedata.maxMp);
-
-        friend.GetComponent<MonsterBase>().SetAttackValue(savedata.attack);
-        friend.GetComponent<MonsterBase>().SetDefenceValue(savedata.defence);
-        friend.GetComponent<MonsterBase>().SetSPAttackValue(savedata.spAttack);
-        friend.GetComponent<MonsterBase>().SetSPDefenceValue(savedata.spDefence);
-        friend.GetComponent<MonsterBase>().SetSpeedValue(savedata.speed);
-
-        friend.GetComponent<MonsterBase>().SetLevelValue(savedata.level);
-        friend.GetComponent<MonsterBase>().SetEXPValue(savedata.exp);
-        friend.GetComponent<MonsterBase>().SetEXPToNextLevel(savedata.expToNextLevel);
-
-        possessionMonsterList[i].SetSkillList(savedata.skillList);
-
-
-
-    }
     /// <summary>
     /// 指定したリストの位置に指定したモンスターを設定
     /// </summary>
@@ -269,22 +122,22 @@ public class MonsterManager : MonoBehaviour
     /// <param name="monster">モンスター</param>
     public void SetPossessionMonsterList(int number, GameObject monster)
     {
-        possessionMonsterList[number] = monster.GetComponent<MonsterBase>();
+        _possessionMonsterList[number] = monster.GetComponent<MonsterBase>();
     }
 
     public void SetPossessionMonsterList(List<MonsterBase> monsterList)
     {
-        possessionMonsterList = monsterList;
+        _possessionMonsterList = monsterList;
         SetPartyMonsterList();
     }
     public void SetPartyMonsterList()
     {
-        partyMonsterList = possessionMonsterList;
+        PartyMonsterList = _possessionMonsterList;
     }
 
     public List<MonsterBase> GetPossessionMonsterList()
     {
-        return possessionMonsterList;
+        return _possessionMonsterList;
     }
 
     public string GetSavedWord()
@@ -294,12 +147,12 @@ public class MonsterManager : MonoBehaviour
 
     public void Reset_individual_IDList()
     {
-        individual_IDList = new List<float>();
+        _individualIDList = new List<float>();
     }
 
     public bool AddIndividualIDList(float individual_ID)
     {
-        foreach (var item in individual_IDList)
+        foreach (var item in _individualIDList)
         {
             if (item == individual_ID)
             {
@@ -315,7 +168,7 @@ public class MonsterManager : MonoBehaviour
     /// </summary>
     /// <param name="monster"></param>
     /// <param name="monster_Id"></param>
-    public void saveMonsterData_temp(Monster_SaveData monster, int monster_Id)
+    public void saveMonsterData_temp(MonsterSaveData monster, int monster_Id)
     {
         StreamWriter writer;
 
@@ -327,7 +180,7 @@ public class MonsterManager : MonoBehaviour
         writer.Close();
     }
 
-    public Monster_SaveData loadMonsterData_temp(int monster_Id)
+    public MonsterSaveData loadMonsterData_temp(int monster_Id)
     {
         string datastr = "";
         StreamReader reader;
@@ -336,7 +189,7 @@ public class MonsterManager : MonoBehaviour
         datastr = reader.ReadToEnd();
         reader.Close();
 
-        return JsonUtility.FromJson<Monster_SaveData>(datastr);
+        return JsonUtility.FromJson<MonsterSaveData>(datastr);
     }
 
 
@@ -347,7 +200,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="saveID">セーブ番号</param>
     /// <param name="monster"></param>
     /// <param name="monster_Id"></param>
-    public void saveMonsterData(int saveID, Monster_SaveData monster, int monster_Id)
+    public void saveMonsterData(int saveID, MonsterSaveData monster, int monster_Id)
     {
         StreamWriter writer;
 
@@ -365,7 +218,7 @@ public class MonsterManager : MonoBehaviour
     /// <param name="loadID">ロード番号</param>
     /// <param name="monster_Id"></param>
     /// <returns></returns>
-    public Monster_SaveData loadMonsterData(int loadID, int monster_Id)
+    public MonsterSaveData loadMonsterData(int loadID, int monster_Id)
     {
         string datastr = "";
         StreamReader reader;
@@ -383,93 +236,12 @@ public class MonsterManager : MonoBehaviour
         {
             return null;
         }
-        return JsonUtility.FromJson<Monster_SaveData>(datastr);
-    }
-
-
-    /// <summary>
-    /// 本格的なセーブ
-    /// </summary>
-    /// <param name="id"></param>
-    public void PlayerMonstersSave(int id)
-    {
-        for (int i = 0; i < possessionMonsterList.Count; i++)
-        {
-            if (possessionMonsterList[i] == null)
-            {
-                return;
-            }
-
-
-            Monster_SaveData saveData = new Monster_SaveData();
-
-            saveData.id = possessionMonsterList[i].GetId();
-            saveData.nickName = possessionMonsterList[i].GetNickname();
-            saveData.maxHp = possessionMonsterList[i].GetMaxHPValue();
-            saveData.maxMp = possessionMonsterList[i].GetMaxMPValue();
-            saveData.currentHp = possessionMonsterList[i].GetCurrentHPValue();
-            saveData.currentMp = possessionMonsterList[i].GetCurrentMPValue();
-            saveData.attack = possessionMonsterList[i].GetAttackValue();
-            saveData.defence = possessionMonsterList[i].GetDefenceValue();
-            saveData.spAttack = possessionMonsterList[i].GetSpAttackValue();
-            saveData.spDefence = possessionMonsterList[i].GetSpDefenceValue();
-            saveData.speed = possessionMonsterList[i].GetSpeedValue();
-            saveData.exp = possessionMonsterList[i].GetEXPValue();
-            saveData.level = possessionMonsterList[i].GetLevelValue();
-            saveData.expToNextLevel = possessionMonsterList[i].GetEXPToNextLevel();
-
-            saveData.skillList = possessionMonsterList[i].GetSkillList();
-
-
-
-
-            saveMonsterData(id, saveData, i);
-
-        }
-
-    }
-
-    /// <summary>
-    /// 本格的なロード
-    /// </summary>
-    /// <param name="id"></param>
-    public void PlayerMonstersLoad(int id)
-    {
-        for (int i = 0; i < possessionMonsterList.Count; i++)
-        {
-            Monster_SaveData savedata = loadMonsterData(id, i);
-            if (savedata == null)
-            {
-                return;
-            }
-
-            possessionMonsterList[i] = monsterNullData;
-
-            possessionMonsterList[i].SetNickName(savedata.nickName);
-            possessionMonsterList[i].SetID(savedata.id);
-            possessionMonsterList[i].SetMaxHPValue(savedata.maxHp);
-            possessionMonsterList[i].SetMaxMPValue(savedata.maxMp);
-            possessionMonsterList[i].SetCurrentHPValue(savedata.currentHp);
-            possessionMonsterList[i].SetCurrentMPValue(savedata.currentMp);
-            possessionMonsterList[i].SetAttackValue(savedata.attack);
-            possessionMonsterList[i].SetDefenceValue(savedata.defence);
-            possessionMonsterList[i].SetSPAttackValue(savedata.spAttack);
-            possessionMonsterList[i].SetSPDefenceValue(savedata.spDefence);
-            possessionMonsterList[i].SetSpeedValue(savedata.speed);
-
-            possessionMonsterList[i].SetLevelValue(savedata.level);
-            possessionMonsterList[i].SetEXPValue(savedata.exp);
-            possessionMonsterList[i].SetEXPToNextLevel(savedata.expToNextLevel);
-
-            possessionMonsterList[i].SetSkillList(savedata.skillList);
-
-
-        }
+        return JsonUtility.FromJson<MonsterSaveData>(datastr);
     }
 
     public List<MonsterBase> GetAllMonsterList()
     {
-        return allMonsterList;
+        return _allMonsterList;
     }
 }
 

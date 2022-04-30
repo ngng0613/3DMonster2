@@ -8,19 +8,22 @@ using DG.Tweening;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] float fadeTime = 0.3f;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] float _fadeTime = 0.3f;
 
     ///
     /// SE一覧
     ///
-    [SerializeField] AudioClip gameStart;
-    [SerializeField] AudioClip battleStart;
-    [SerializeField] AudioClip select;
-    [SerializeField] AudioClip decided;
-    [SerializeField] AudioClip cancel;
-    [SerializeField] AudioClip openMenu;
-    [SerializeField] AudioClip closeMenu;
+    [SerializeField] AudioClip _gameStart;
+    [SerializeField] AudioClip _battleStart;
+    [SerializeField] AudioClip _select;
+    [SerializeField] AudioClip _decided;
+    [SerializeField] AudioClip _cancel;
+    [SerializeField] AudioClip _openMenu;
+    [SerializeField] AudioClip _closeMenu;
+    [SerializeField] AudioClip _attack;
+    [SerializeField] AudioClip _defence;
+
 
     public enum SeList
     {
@@ -31,17 +34,19 @@ public class SoundManager : MonoBehaviour
         Cancel,
         OpenMenu,
         CloseMenu,
+        Attack,
+        Defence,
 
     }
 
     public void PlayBgm()
     {
-        audioSource.Play();
+        _audioSource.Play();
     }
 
     public void StopBgm()
     {
-        audioSource.DOFade(0.0f, fadeTime);
+        _audioSource.DOFade(0.0f, _fadeTime);
     }
 
     public void PlaySe(SeList seList)
@@ -49,26 +54,34 @@ public class SoundManager : MonoBehaviour
         switch (seList)
         {
             case SeList.GameStart:
-                audioSource.PlayOneShot(gameStart);
+                _audioSource.PlayOneShot(_gameStart);
                 break;
             case SeList.BattleStart:
-                audioSource.PlayOneShot(battleStart);
+                _audioSource.PlayOneShot(_battleStart);
                 break;
             case SeList.Select:
-                audioSource.PlayOneShot(select);
+                _audioSource.PlayOneShot(_select);
                 break;
             case SeList.Decided:
-                audioSource.PlayOneShot(decided);
+                _audioSource.PlayOneShot(_decided);
                 break;
             case SeList.Cancel:
-                audioSource.PlayOneShot(cancel);
+                _audioSource.PlayOneShot(_cancel);
                 break;
             case SeList.OpenMenu:
-                audioSource.PlayOneShot(openMenu);
+                _audioSource.PlayOneShot(_openMenu);
                 break;
             case SeList.CloseMenu:
-                audioSource.PlayOneShot(closeMenu);
+                _audioSource.PlayOneShot(_closeMenu);
                 break;
+
+            case SeList.Attack:
+                _audioSource.PlayOneShot(_attack);
+                break;
+            case SeList.Defence:
+                _audioSource.PlayOneShot(_defence);
+                break;
+
             default:
                 break;
         }
@@ -77,7 +90,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySe(AudioClip clip)
     {
-        audioSource.PlayOneShot(clip);
+        _audioSource.PlayOneShot(clip);
     }
 
 }

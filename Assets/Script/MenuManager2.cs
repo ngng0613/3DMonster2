@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class MenuManager2 : MonoBehaviour
 {
-    bool menuIsActive = false;
-    [SerializeField] GameObject objectsParent;
-    [SerializeField] GameObject header;
-    [SerializeField] GameObject footer;
-    [SerializeField] GameObject mainContents;
-    RectTransform rectTransform;
+    bool _menuIsActive = false;
+    [SerializeField] GameObject _objectsParent;
+    [SerializeField] GameObject _header;
+    [SerializeField] GameObject _footer;
+    [SerializeField] GameObject _mainContents;
+    RectTransform _rectTransform;
 
-    [SerializeField] List<SelectionObject> selectionObjects;
-    [SerializeField] List<MenuContents> menuContentsList;
+    [SerializeField] List<SelectionObject> _selectionObjects;
+    [SerializeField] List<MenuContents> _menuContentsList;
 
-    [SerializeField] int selectedContentsIndex = 0;
-    int maxMenuLength;
+    [SerializeField] int _selectedContentsIndex = 0;
+    int _maxMenuLength;
 
     public delegate void Func();
-    Func AfterClosed;
+    Func _afterClosed;
 
     public enum Direction
     {
@@ -30,14 +30,14 @@ public class MenuManager2 : MonoBehaviour
 
     private void Start()
     {
-        rectTransform = mainContents.GetComponent<RectTransform>();
+        _rectTransform = _mainContents.GetComponent<RectTransform>();
     }
 
 
     public void Setup(Func AfterClosed)
     {
         SetInput();
-        this.AfterClosed = AfterClosed;
+        this._afterClosed = AfterClosed;
     }
 
     void SetInput()
@@ -49,7 +49,7 @@ public class MenuManager2 : MonoBehaviour
     public void Activate()
     {
         OpenMenu();
-        Player.canMove = false;
+        Player.CanMove = false;
     }
 
 
@@ -59,8 +59,8 @@ public class MenuManager2 : MonoBehaviour
         //float scale = mainContents.transform.localScale.y;
 
         
-        objectsParent.SetActive(true);
-        menuIsActive = true;
+        _objectsParent.SetActive(true);
+        _menuIsActive = true;
         
 
 
@@ -68,11 +68,11 @@ public class MenuManager2 : MonoBehaviour
 
     void CloseMenu()
     {
-        objectsParent.SetActive(false);
-        menuIsActive = false;
+        _objectsParent.SetActive(false);
+        _menuIsActive = false;
         InputManager.ResetInputSettings();
-        Player.canMove = true;
-        AfterClosed.Invoke();
+        Player.CanMove = true;
+        _afterClosed.Invoke();
 
     }
 
@@ -82,25 +82,25 @@ public class MenuManager2 : MonoBehaviour
         {
             case Direction.Up:
 
-                if (selectedContentsIndex > 0)
+                if (_selectedContentsIndex > 0)
                 {
-                    selectedContentsIndex--;
+                    _selectedContentsIndex--;
                 }
                 else
                 {
-                    selectedContentsIndex = maxMenuLength - 1;
+                    _selectedContentsIndex = _maxMenuLength - 1;
                 }
 
                 break;
             case Direction.Down:
 
-                if(selectedContentsIndex < maxMenuLength)
+                if(_selectedContentsIndex < _maxMenuLength)
                 {
-                    selectedContentsIndex++;
+                    _selectedContentsIndex++;
                 }
                 else
                 {
-                    selectedContentsIndex = 0;
+                    _selectedContentsIndex = 0;
                 }
 
                 break;
@@ -118,8 +118,8 @@ public class MenuManager2 : MonoBehaviour
 
     void SelectContents()
     {
-        menuContentsList[selectedContentsIndex].Setup(CloseMenu);
-        menuContentsList[selectedContentsIndex].Activate();
+        _menuContentsList[_selectedContentsIndex].Setup(CloseMenu);
+        _menuContentsList[_selectedContentsIndex].Activate();
 
 
     }

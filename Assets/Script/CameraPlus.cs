@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraPlus : MonoBehaviour
 {
     [SerializeField] GameObject player; 
-    [SerializeField] Vector3 offset;
+    public Vector3 offset;
 
     [SerializeField] bool talkMode = false;
     [SerializeField] bool talkNow = false;
@@ -21,10 +21,6 @@ public class CameraPlus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-
-
         if (talkMode)
         {
             if (phase == 1)

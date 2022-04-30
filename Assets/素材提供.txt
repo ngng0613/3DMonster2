@@ -1,11 +1,8 @@
 素材提供
 ------------------------------------
-
-◆スクリプト
-・FadeCamera2
-
-
-
+◆フォント
+・Rippen Bold
+http://www.illllli.com/font/sanserif/rippen-bold/
 
 
 ◆ウインドウ画像
@@ -49,6 +46,10 @@ https://fukidesign.com/
 ・DOVA-SYNDROME  Shaun the Sloth
 
 https://dova-s.jp/_contents/author/profile125.html
+
+・DOVA-SYNDROME　FLASH☆BEAT
+
+・DOVA-SYNDROME　かずち
 
 ・PeriTune
 

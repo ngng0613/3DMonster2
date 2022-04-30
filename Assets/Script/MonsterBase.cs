@@ -1,138 +1,80 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class MonsterBase : MonoBehaviour
 {
     //ID
-    [SerializeField] int id;
-
+    [SerializeField] int _id;
     //個別ID
-    [SerializeField] float individual_ID;
-
+    [SerializeField] float _individualID;
     //名前
-    [SerializeField] string monsterName;
+    [SerializeField] string _monsterName;
     //ニックネーム
-    [SerializeField] string nickName;
-
+    [SerializeField] string _nickName;
     //イメージ
-    [SerializeField] Sprite image;
-
-    //属性
-    [SerializeField] Element.BattleElement element;
-
-    //パッシブスキル
-    [SerializeField] PassiveSkillBase pSkill;
-
+    [SerializeField] Sprite _image;
     //最大HP
-    [SerializeField] int maxHp;
+    [SerializeField] int _maxHp;
     //現在のHP
-    [SerializeField] int currentHp;
+    [SerializeField] int _currentHp;
     //最大MP
-    [SerializeField] int maxMp;
+    [SerializeField] int _maxMp;
     //現在のMP
-    [SerializeField] int currentMp;
-
-    //攻撃力
-    [SerializeField] int attack;
-    //防御力
-    [SerializeField] int defence;
-    //特殊攻撃力
-    [SerializeField] int spAttack;
-    //特殊防御力
-    [SerializeField] int spDefence;
-    //素早さ
-    [SerializeField] int speed;
-    //運
-    [SerializeField] int luck;
-    //命中率
-    [SerializeField] int hit;
-    //回避率
-    [SerializeField] int avoidance;
-
-    //LVUP時上昇最大HP
-    [SerializeField] int maxHpLevelUp;
-    //LVUP時上昇最大MP
-    [SerializeField] int maxMpLevelUp;
-
-    //LVUP時上昇攻撃力
-    [SerializeField] int attackLevelUp;
-    //LVUP時上昇防御力
-    [SerializeField] int defenceLevelUp;
-    //LVUP時上昇特殊攻撃力
-    [SerializeField] int spAttackLevelUp;
-    //LVUP時上昇特殊防御力
-    [SerializeField] int spDefenceLevelUp;
-    //LVUP時上昇素早さ
-    [SerializeField] int speedLevelUp;
-    //LVUP時上昇運
-    [SerializeField] int luckLevelUp;
-    //攻撃時ディレイ
-    public float attackDelay = 1;
-
+    [SerializeField] int _currentMp;
     //ベースのPrefab
-    [SerializeField] GameObject myPrefab;
-
-    //実体化したオブジェクト
-    public GameObject realObject;
-
-    //レベル
-    [SerializeField] int level;
-    //経験値
-    [SerializeField] int exp;
-
-    //次のレベルまでの経験値
-    [SerializeField] int expToNextLevel;
-
+    [SerializeField] GameObject _myPrefab;
     //倒したときのもらえる経験値
-    [SerializeField] int getExp;
+    [SerializeField] int _getExp;
     //倒したときにもらえるお金
-    [SerializeField] int money;
+    [SerializeField] int _money;
 
-    public enum MonsterState
-    {
-        Normal,
-        Guard,
-        Charge,
+    [SerializeField] MonsterBase _evolutionyMonster;
 
 
+    [SerializeField] List<StatusEffectBase> _statusEffectList = new List<StatusEffectBase>();
 
-    }
+    public delegate void Delegate();
+    public Delegate AfterAction;
+    public Delegate AfterDead;
 
-    public MonsterState status = MonsterState.Normal;
+    [SerializeField] bool _checkTheEndOfAnimation = false;
 
+    [SerializeField] Animator _animator;
 
-    //所持アイテム ※あとで
-    //Item item;
+    bool _acted = false;
+    public string ActionName;
 
-    //イベント当たり判定
-    [SerializeField] bool isBattle = false;
-    [SerializeField] int eventCollision;
+    [SerializeField] bool _checkTheEndOfDeadAnimation = false;
 
-    //戦闘時のキャラ番号
-    public BattleMonsterTag.CharactorTag charactorTag;
-    //タイムライン戦闘の際に使うクールタイム
-    public float coolTime = 0;
-    //戦闘の時のAI
-    public CommandAI commandAi;
+    [SerializeField] List<CardData> _cardDatas;
 
-    public delegate void D();
-    public D AfterAction;
-    public D AfterDead;
+    bool _inParty = false;
 
-    [SerializeField] bool checkTheEndOfAnimation = false;
+    [Header("アニメーションのパラメーター名")]
+    [SerializeField] string _actionParameterName;
+    [SerializeField] string _actionNameIdle = "Idle";
+    [SerializeField] int _actionNumberIdle = 0;
+    [SerializeField] string _actionNameAttack = "Attack01";
+    [SerializeField] int _actionNumberAttack = 10;
+    [SerializeField] string _actionNameTakeDamage = "TakeDamage";
+    [SerializeField] int _actionNumberTakeDamage = 50;
 
-    [SerializeField] Animator animator;
-
-    bool acted = false;
-    public string actionName;
-
-    [SerializeField] bool checkTheEndOfDeadAnimation = false;
-
-    [SerializeField] MonsterManager monsterManager;
-
-    [SerializeField] List<SkillBase> skillList;
+    public int Id { get => _id; set => _id = value; }
+    public float IndividualID { get => _individualID; set => _individualID = value; }
+    public string MonsterName { get => _monsterName; set => _monsterName = value; }
+    public string NickName { get => _nickName; set => _nickName = value; }
+    public Sprite Image { get => _image; set => _image = value; }
+    public int MaxHp { get => _maxHp; set => _maxHp = value; }
+    public int CurrentHp { get => _currentHp; set => _currentHp = value; }
+    public int MaxMp { get => _maxMp; set => _maxMp = value; }
+    public int CurrentMp { get => _currentMp; set => _currentMp = value; }
+    public GameObject MyPrefab { get => _myPrefab; set => _myPrefab = value; }
+    public List<StatusEffectBase> StatusEffectList { get => _statusEffectList; set => _statusEffectList = value; }
+    public List<CardData> CardDatas { get => _cardDatas; set => _cardDatas = value; }
+    public int GetExp { get => _getExp; set => _getExp = value; }
+    public int Money { get => _money; set => _money = value; }
+    public bool InParty { get => _inParty; set => _inParty = value; }
+    public MonsterBase EvolutionyMonster { get => _evolutionyMonster; set => _evolutionyMonster = value; }
 
 
     /// <summary>
@@ -147,94 +89,59 @@ public class MonsterBase : MonoBehaviour
     /// <param name="spAttack"></param>
     /// <param name="spDefence"></param>
     /// <param name="speed"></param>
-    public MonsterBase(string monsterName, int level,
-        int maxHp, int maxMp, int attack, int defence, int spAttack, int spDefence, int speed)
+    public MonsterBase(string monsterName, int maxHp, int maxMp)
     {
-        this.monsterName = monsterName;
-        this.level = level;
-        this.maxHp = maxHp;
-        this.maxMp = maxMp;
-        this.attack = attack;
-        this.defence = defence;
-        this.spAttack = spAttack;
-        this.spDefence = spDefence;
-        this.speed = speed;
+        this.MonsterName = monsterName;
+        this.NickName = monsterName;
+        this.MaxHp = maxHp;
+        this.MaxMp = maxMp;
     }
-
-    public void Start()
-    {
-        commandAi = new CommandAI();
-    }
-
-
 
     public void Update()
     {
-        //アニメーションが終了しているか確認する
-        if (checkTheEndOfAnimation)
+        if (_animator != null)
         {
-            //アクションをしていないか確認
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName(actionName))
+            //アニメーションが終了しているか確認する
+            if (_checkTheEndOfAnimation)
             {
-                //アクション済みなら
-                if (acted)
+
+                //アクションをしていないか確認
+                if (_animator.GetCurrentAnimatorStateInfo(0).IsName(ActionName))
                 {
-                    //アクションを既に行っていたなら、アクション終了して通知
-                    checkTheEndOfAnimation = false;
-                    acted = false;
-                    //アイドル状態に戻す
-                    MotionIdle();
-                
-                    Debug.Log("アニメーション済み");
-                    AfterAction.Invoke();
+                    //アクション中
+                    _acted = true;
+                    Debug.Log(_animator.GetCurrentAnimatorStateInfo(0));
+                }
+                else
+                {
+                    //アクション済みなら
+                    if (_acted)
+                    {
+                        //アクションを既に行っていたなら、アクション終了して通知
+                        _checkTheEndOfAnimation = false;
+                        _acted = false;
+                        //アイドル状態に戻す
+                        MotionIdle();
+
+                        Debug.Log("アニメーション済み");
+                        if (AfterAction != null)
+                        {
+                            AfterAction.Invoke();
+                        }
+                    }
                 }
             }
-            else
+            if (_checkTheEndOfDeadAnimation)
             {
-                //アクション中
-                acted = true;
-            }
-
-        }
-        if (checkTheEndOfDeadAnimation)
-        {
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-            {
-
-                acted = false;
-                AfterDead.Invoke();
-                checkTheEndOfDeadAnimation = false;
+                if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+                {
+                    _acted = false;
+                    AfterDead.Invoke();
+                    _checkTheEndOfDeadAnimation = false;
+                }
             }
         }
 
-    }
-
-    public SkillBase ThinkOfASkill()
-    {
-        if (commandAi)
-        {
-            Debug.Log("hey");
-        }
-        return commandAi.ChoiceSkill(skillList);
-    }
-
-    /// <summary>
-    /// IDを取得する
-    /// </summary>
-    /// <returns>ID</returns>
-    public int GetId()
-    {
-        return id;
-    }
-
-    public void SetId(int id)
-    {
-        this.id = id;
-    }
-
-    public float GetIndividualID()
-    {
-        return individual_ID;
 
     }
 
@@ -244,339 +151,51 @@ public class MonsterBase : MonoBehaviour
     /// <returns></returns>
     public string GetNickname()
     {
-        if (nickName != "")
+        if (NickName != "")
         {
-            return nickName;
+            return NickName;
         }
         else
         {
-            return monsterName;
+            return MonsterName;
         }
     }
-
-    /// <summary>
-    /// ニックネームを付ける
-    /// </summary>
-    /// <param name="nickName">新たなニックネーム</param>
-    public void SetNickName(string nickName)
-    {
-        this.nickName = nickName;
-    }
-
-    public void SetID(int id)
-    {
-        this.id = id;
-    }
-
 
 
     public void MotionIdle()
     {
-        animator.SetInteger("BattleMode", 0);
-        this.actionName = "IdleNormal";
-    }
-
-    public void MotionMove()
-    {
-        animator.SetInteger("BattleMode", 2);
-        this.actionName = "WalkFWD";
+        _animator.SetInteger(_actionParameterName, _actionNumberIdle);
+        this.ActionName = _actionNameIdle;
     }
 
     public void MotionAttack()
     {
-        animator.SetInteger("BattleMode", 10);
-        this.actionName = "Attack01";
+        _checkTheEndOfAnimation = true;
+        _animator.SetInteger(_actionParameterName, _actionNumberAttack);
+        this.ActionName = _actionNameAttack;
     }
 
     public void MotionTakeDamege()
     {
-        animator.SetInteger("BattleMode", 50);
-        this.actionName = "TakeDamage";
+        _checkTheEndOfAnimation = true;
+        _animator.SetInteger(_actionParameterName, _actionNumberTakeDamage);
+        this.ActionName = _actionNameTakeDamage;
     }
 
-    public void MotionVictory()
-    {
-        animator.SetInteger("BattleMode", 1000);
-        this.actionName = "Victory";
-    }
-
-    public void MotionDead()
-    {
-        animator.SetInteger("BattleMode", 999);
-        this.actionName = "Die";
-    }
-
-    public void CheckEndOfAnimation()
-    {
-        checkTheEndOfAnimation = true;
-    }
-
-    public void CheckEndOfAnimation(string actionName)
-    {
-        checkTheEndOfAnimation = true;
-        this.actionName = actionName;
-
-    }
 
     public void CheckEndOfDeadAnimation()
     {
-        checkTheEndOfDeadAnimation = true;
-    }
-
-    public PassiveSkillBase GetPassiveSkill()
-    {
-        return pSkill;
-    }
-
-    public int Getlevel()
-    {
-        return level;
-    }
-
-    public void Setlevel(int level)
-    {
-        this.level = level;
-    }
-
-    public Sprite GetImage()
-    {
-        return image;
-    }
-
-    public void SetImage(Sprite image)
-    {
-        this.image = image;
-    }
-
-    public int GetAttackValue()
-    {
-        return attack;
-    }
-    public void SetAttackValue(int value)
-    {
-        attack = value;
-    }
-
-    public int GetDefenceValue()
-    {
-        return defence;
-    }
-    public void SetDefenceValue(int value)
-    {
-        defence = value;
-    }
-
-    public int GetSpAttackValue()
-    {
-        return spAttack;
-    }
-    public void SetSPAttackValue(int value)
-    {
-        spAttack = value;
-    }
-
-    public int GetSpDefenceValue()
-    {
-        return spDefence;
-    }
-    public void SetSPDefenceValue(int value)
-    {
-        spDefence = value;
-    }
-
-    public int GetSpeedValue()
-    {
-        return speed;
-    }
-    public void SetSpeedValue(int value)
-    {
-        speed = value;
-    }
-
-    public int GetMaxHPValue()
-    {
-        return maxHp;
-    }
-    public void SetMaxHPValue(int value)
-    {
-
-        maxHp = value;
-    }
-    public int GetMaxMPValue()
-    {
-        return maxMp;
-    }
-    public void SetMaxMPValue(int value)
-    {
-        maxMp = value;
-    }
-
-    public int GetCurrentHPValue()
-    {
-        return currentHp;
-    }
-    public void SetCurrentHPValue(int value)
-    {
-
-        currentHp = value;
-    }
-
-    public int GetCurrentMPValue()
-    {
-        return currentMp;
-    }
-    public void SetCurrentMPValue(int value)
-    {
-        currentMp = value;
-    }
-
-    public void SetLevelValue(int level)
-    {
-        this.level = level;
-    }
-
-    public int GetLevelValue()
-    {
-        return level;
-    }
-
-    public void SetEXPValue(int exp)
-    {
-        this.exp = exp;
-    }
-
-    public int GetEXPValue()
-    {
-        return exp;
-    }
-
-    public void SetEXPToNextLevel(int exp_To_NextLevel)
-    {
-        this.expToNextLevel = exp_To_NextLevel;
-    }
-
-    public int GetEXPToNextLevel()
-    {
-        return expToNextLevel;
-    }
-
-    public void SetSkillList(List<SkillBase> list)
-    {
-        skillList = list;
+        _checkTheEndOfDeadAnimation = true;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHp -= damage;
-        if (currentHp < 0)
+        CurrentHp -= damage;
+        if (CurrentHp < 0)
         {
-            currentHp = 0;
+            CurrentHp = 0;
         }
     }
 
-    public List<SkillBase> GetSkillList()
-    {
-        return skillList;
-    }
-
-    public SkillBase GetRandomSkill()
-    {
-        int random;
-        SkillBase usedSkill;
-        while (true)
-        {
-            random = Random.Range(0, skillList.Count);
-            usedSkill = this.skillList[random];
-            if (usedSkill.GetUsedMp() <= currentMp)
-            {
-                break;
-            }
-        }
-
-
-        //Debug.Log(usedSkill.GetName() + "をランダムに選択しました");
-
-        return usedSkill;
-    }
-
-    public void SkillAcquisition(SkillBase skill)
-    {
-        skillList.Add(skill);
-    }
-    /// <summary>
-    /// 経験値アップ
-    /// </summary>
-    /// <param name="plusExp">追加経験値</param>
-    /// <returns>レベルアップしたかどうかを返す</returns>
-    public bool EXPUp(int plusExp)
-    {
-        bool result = false;
-        while (true)
-        {
-            if ((exp + plusExp) >= expToNextLevel)
-            {
-                int nextExp = exp + plusExp - expToNextLevel;
-                LevelUp(nextExp);
-
-                float expToNextLevelFloat = expToNextLevel * 1.2f;
-                expToNextLevel = (int)expToNextLevelFloat;
-
-                result = true;
-            }
-            else
-            {
-                exp += plusExp;
-                break;
-            }
-        }
-        return result;
-
-    }
-
-    public void LevelUp(int exp)
-    {
-        this.exp = exp;
-        level++;
-        maxHp += maxHpLevelUp;
-        maxMp += maxMpLevelUp;
-        currentHp = maxHp;
-        currentMp = maxMp;
-        attack += attackLevelUp;
-        defence += defenceLevelUp;
-        spAttack += spAttackLevelUp;
-        spDefence += spDefenceLevelUp;
-        speed += speedLevelUp;
-
-
-    }
-
-    public int GetExp_WhenKilled()
-    {
-        return getExp;
-    }
-
-    public int GetMoney_WhenKilled()
-    {
-        return money;
-    }
-
-    public void UseMp(int point)
-    {
-        currentMp -= point;
-    }
-
-    public void SetPrefab(GameObject prefab)
-    {
-        myPrefab = prefab;
-    }
-    public GameObject GetPrefab()
-    {
-        return myPrefab;
-    }
-
-    public Element.BattleElement GetElement()
-    {
-        return element;
-    }
 
 }

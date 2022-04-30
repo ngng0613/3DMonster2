@@ -4,40 +4,40 @@ using UnityEngine;
 
 public class FloorEffectGenerator : MonoBehaviour
 {
-    [SerializeField] FloorEffect[] floorEffect;
-    [SerializeField] Canvas generateCanvas;
-    [SerializeField] float generateSpeed = 3f;
-    float timeCount = 0;
-    Transform generatePos;
-    int generateCount = 0;
+    [SerializeField] FloorEffect[] _floorEffect;
+    [SerializeField] Canvas _generateCanvas;
+    [SerializeField] float _generateSpeed = 3f;
+    float _timeCount = 0;
+    Transform _generatePos;
+    int _generateCount = 0;
 
     private void Start()
     {
-        generateCanvas = GameObject.FindWithTag("FloorCanvas").GetComponent<Canvas>();
+        _generateCanvas = GameObject.FindWithTag("FloorCanvas").GetComponent<Canvas>();
     }
 
     public void OnUpdate(Transform generateTransform)
     {
-        generatePos = generateTransform;
-        timeCount += Time.deltaTime;
-        if (timeCount >= 1.0f / generateSpeed)
+        _generatePos = generateTransform;
+        _timeCount += Time.deltaTime;
+        if (_timeCount >= 1.0f / _generateSpeed)
         {
-            timeCount = 0;
-            Generate(this.generatePos.position);
+            _timeCount = 0;
+            Generate(this._generatePos.position);
         }
     }
 
     // Update is called once per frame
     void Generate(Vector3 generatePos)
     {
-        FloorEffect newEffect = Instantiate(floorEffect[generateCount]);
+        FloorEffect newEffect = Instantiate(_floorEffect[_generateCount]);
         newEffect.transform.position = generatePos;
         newEffect.transform.position += new Vector3(0, 0.15f, 0);
-        newEffect.transform.SetParent(generateCanvas.transform);
-        generateCount++;
-        if (floorEffect.Length <= generateCount)
+        newEffect.transform.SetParent(_generateCanvas.transform);
+        _generateCount++;
+        if (_floorEffect.Length <= _generateCount)
         {
-            generateCount = 0;
+            _generateCount = 0;
         }
 
     }
