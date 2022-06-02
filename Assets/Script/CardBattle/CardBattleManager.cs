@@ -18,16 +18,39 @@ public enum Side
 
 public class CardBattleManager : MonoBehaviour
 {
-    //Dotween用のシークエンス
+    /// <summary>
+    /// Dotween用のシークエンス
+    /// </summary>
     Sequence sequence;
-    //戦闘で参照するステージデータ
+    /// <summary>
+    /// 戦闘で参照するステージデータ
+    /// </summary>
     StageData _stageData;
-    //_stageDataがnullだった場合に使用するデバッグ用ステージデータ
+    /// <summary>
+    /// _stageDataがnullだった場合に使用するデバッグ用ステージデータ
+    /// </summary>
     [SerializeField] StageData _stageDataForDebug;
-    //ゲームのプレイヤー側のデッキクラス
+    /// <summary>
+    /// ゲームのプレイヤー側のデッキクラス
+    /// </summary>
     [SerializeField] Deck _playerDeck;
-    //Enemy側のデッキクラス
+    /// <summary>
+    /// Enemy側のデッキクラス
+    /// </summary>
     [SerializeField] Deck _enemyDeck;
+
+    [SerializeField] int _numberOfDrawCard;
+
+
+
+    /// <summary>
+    ///  デッキを画面外に置く際のポジション
+    /// </summary>
+    [SerializeField] Vector3 _deckPos;
+    /// <summary>
+    /// ダメージ表示の高さ
+    /// </summary>
+    [SerializeField] Vector3 _damageViewPos;
 
     public enum Phase
     {
@@ -45,82 +68,150 @@ public class CardBattleManager : MonoBehaviour
         Lose,
     }
 
-    //デバッグ用のモンスタークラスのリスト
+    /// <summary>
+    /// デバッグ用のモンスタークラスのリスト
+    /// </summary>
     [SerializeField] List<MonsterBase> _debugMonsters;
-    //現在がどの段階かを示す変数
+    /// <summary>
+    /// 現在がどの段階かを示す変数
+    /// </summary>
     [SerializeField] Phase _phase = Phase.Start;
-    //アニメーションの表示速度
+    /// <summary>
+    /// アニメーションの表示速度
+    /// </summary>
     [SerializeField] float _tweenSpeed = 1.0f;
-    //今処理中のカード処理が存在するかどうか
+    /// <summary>
+    /// 今処理中のカード処理が存在するかどうか
+    /// </summary>
     [SerializeField] bool _isPlayingCard = false;
-    //スキル
+    /// <summary>
+    /// スキル
+    /// </summary>
     [SerializeField] StatusEffectBase _guardStatusEffect;
 
     /*
      * マネージャー
      */
-    //音関連の処理を行うクラス
+    /// <summary>
+    /// 音関連の処理を行うクラス
+    /// </summary>
     [SerializeField] SoundManager _soundManager;
-    //モンスターの処理を行うクラス
+    /// <summary>
+    /// モンスターの処理を行うクラス
+    /// </summary>
     [SerializeField] MonsterManager monsterManager;
-    //手札クラス
+    /// <summary>
+    /// 手札クラス
+    /// </summary>
     [SerializeField] Hand _hand;
-    //体力表示のゲージのプレハブ
+    /// <summary>
+    /// 体力表示のゲージのプレハブ
+    /// </summary>
     [SerializeField] HpGauge _enemyStatusPrefab;
-    //戦闘ダメージ計算のクラス
+    /// <summary>
+    /// 戦闘ダメージ計算のクラス
+    /// </summary>
     [SerializeField] DamageCalculator _damageCalculator;
-    //プレイヤーに付与されている状態表示のクラス
+    /// <summary>
+    /// プレイヤーに付与されている状態表示のクラス
+    /// </summary>
     [SerializeField] StatusIconView _playerStatusIconView;
-    //敵に付与されている状態表示を管理するクラス
+    /// <summary>
+    /// 敵に付与されている状態表示を管理するクラス
+    /// </summary>
     [SerializeField] StatusIconView _enemyStatusIconView;
-    //戦闘結果表示を管理するクラス
+    /// <summary>
+    /// 戦闘結果表示を管理するクラス
+    /// </summary>
     [SerializeField] ResultManager _resultManager;
-    //ゲームオーバー画面表示のクラス
+    /// <summary>
+    /// ゲームオーバー画面表示のクラス
+    /// </summary>
     [SerializeField] GameResultCanvas _gameResultManager;
 
     /*
      * オブジェクト
      */
-    //カードオブジェクトのプレハブ
+    /// <summary>
+    /// カードオブジェクトのプレハブ
+    /// </summary>
     [SerializeField] CardObject _cardObjectPrefab;
-    //実体化した敵のオブジェクトのリスト
+    /// <summary>
+    /// 実体化した敵のオブジェクトのリスト
+    /// </summary>
     [SerializeField] List<GameObject> _enemyMonsterObjectsList = new List<GameObject>();
-    //味方モンスターの表示位置
+    /// <summary>
+    /// 味方モンスターの表示位置
+    /// </summary>
     [SerializeField] List<Transform> _playerMonstersPositionList = new List<Transform>();
-    //敵モンスターの表示位置
+    /// <summary>
+    /// 敵モンスターの表示位置
+    /// </summary>
     [SerializeField] List<Transform> _enemyMonsterPositionList = new List<Transform>();
-    //味方モンスターデータのリスト
+    /// <summary>
+    /// 味方モンスターデータのリスト
+    /// </summary>
     [SerializeField] List<MonsterBase> _playerMonsterBaseList = new List<MonsterBase>();
-    //敵モンスターデータのリスト
+    /// <summary>
+    /// 敵モンスターデータのリスト
+    /// </summary>
     [SerializeField] List<MonsterBase> _enemyMonsterBaseList = new List<MonsterBase>();
 
-    //被ダメージ表示のプレハブ
+    /// <summary>
+    /// 被ダメージ表示のプレハブ
+    /// </summary>
     [SerializeField] DamageView _damageViewPrefab;
-    //カメラクラス
+    /// <summary>
+    /// カメラクラス
+    /// </summary>
     Camera _cameraComponent;
-    //フェード機能のクラス
+    /// <summary>
+    /// フェード機能のクラス
+    /// </summary>
     [SerializeField] Fade _fade;
-    //勝利時に表示するオブジェクト
+    /// <summary>
+    /// 勝利時に表示するオブジェクト
+    /// </summary>
     [SerializeField] GameObject _gameVictoryObjects;
-    //敗北時に表示するオブジェクト
+    /// <summary>
+    /// 敗北時に表示するオブジェクト
+    /// </summary>
     [SerializeField] GameObject _gameLoseObjects;
-    //次へ進むボタン
+    /// <summary>
+    /// 次へ進むボタン
+    /// </summary>
     [SerializeField] GameObject _nextButton;
-    //戦闘開始時のアニメーションのキャンバスグループ　透過の調整で使う
+    /// <summary>
+    /// 戦闘開始時のアニメーションのキャンバスグループ　透過の調整で使う
+    /// </summary>
     [SerializeField] CanvasGroup _startAnimationCanvasGroup;
-    //プレイヤーの体力ゲージ
+    /// <summary>
+    /// プレイヤーの体力ゲージ
+    /// </summary>
     [SerializeField] HpGauge _playerHpGauge;
-    //敵の体力ゲージ
+    /// <summary>
+    /// 敵の体力ゲージ
+    /// </summary>
     [SerializeField] HpGauge _enemyHpGauge;
-    //敵のAI
+    /// <summary>
+    /// 敵のAI
+    /// </summary>
     [SerializeField] EnemyAi _enemyAi;
-    //戦闘結果キャンバス
+    /// <summary>
+    /// 戦闘結果キャンバス
+    /// </summary>
     [SerializeField] Canvas _resultCanvas;
-    //ゲーム結果キャンバス
+    /// <summary>
+    /// ゲーム結果キャンバス
+    /// </summary>
     [SerializeField] Canvas _gameResultCanvas;
-    //ターン終了ボタン
+    /// <summary>
+    /// ターン終了ボタン
+    /// </summary>
     [SerializeField] GameObject _turnEndButton;
-    //マナが足りない表示オブジェクト
+    /// <summary>
+    /// マナが足りない表示オブジェクト
+    /// </summary>
     [SerializeField] MessageUi _lackOfMana;
 
     UnityEngine.Random _random = new UnityEngine.Random();
@@ -186,7 +277,7 @@ public class CardBattleManager : MonoBehaviour
                 tempCard.Data = monsterParty[i].CardDatas[k];
                 tempCard.Check = CheckIfCanUseCardPlayerSide;
                 //画面外で保存
-                tempCard.transform.position = new Vector3(-200, -500, -1000);
+                tempCard.transform.position = _deckPos;
                 tempCard.gameObject.transform.SetParent(_playerDeck.transform);
                 playerObjectDeck.Add(tempCard);
             }
@@ -207,7 +298,7 @@ public class CardBattleManager : MonoBehaviour
             tempCard.Data = _enemyMonsterBaseList[0].CardDatas[i];
             tempCard.Check = CheckIfCanUseCardEnemySide;
             //画面外で保存
-            tempCard.transform.position = new Vector3(200, -500, -1000);
+            tempCard.transform.position = _deckPos;
             tempCard.gameObject.transform.SetParent(_enemyDeck.transform);
             enemyObjectDeck.Add(tempCard);
         }
@@ -221,6 +312,7 @@ public class CardBattleManager : MonoBehaviour
 
     public void Update()
     {
+        //デバッグ用勝利コマンド
         if (Input.GetKeyDown(KeyCode.W))
         {
             PhaseWin();
@@ -352,7 +444,7 @@ public class CardBattleManager : MonoBehaviour
             }
             DamageView spellNameView = Instantiate(_damageViewPrefab, _enemyMonsterPositionList[0].transform.position, Quaternion.identity);
             spellNameView.Setup(0, combo[i].CardName, Color.white, _cameraComponent);
-            spellNameView.transform.position += new Vector3(0, 2, -3);
+            spellNameView.transform.position += _damageViewPos;
             spellNameView.Activate();
             Debug.Log("敵コンボ数：" + combo.Count);
             Debug.Log($"敵は{combo[i].CardName}をプレイした");

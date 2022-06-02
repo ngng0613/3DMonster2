@@ -7631,6 +7631,9 @@ MonoBehaviour:
     type: 3}
   _playerDeck: {fileID: 1394623840}
   _enemyDeck: {fileID: 1609058966}
+  _numberOfDrawCard: 3
+  _deckPos: {x: 200, y: -500, z: -1000}
+  _damageViewPos: {x: 0, y: 0, z: 0}
   _debugMonsters:
   - {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9, type: 3}
   - {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9, type: 3}
@@ -7652,7 +7655,6 @@ MonoBehaviour:
   _gameResultManager: {fileID: 557189255}
   _cardObjectPrefab: {fileID: 7982862276775126173, guid: 318fed3647a9bbc439af41824303560b,
     type: 3}
-  _playerMonsterObjectsList: []
   _enemyMonsterObjectsList:
   - {fileID: 256424442}
   - {fileID: 0}
@@ -7671,12 +7673,8 @@ MonoBehaviour:
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
-  _playerMonsterLookPositionList: []
-  _enemyMonsterLookPositionList: []
   _damageViewPrefab: {fileID: 4876555772437428324, guid: 1ea9304caa6d67a42aea2b11fe19cad3,
     type: 3}
-  _damageWeakColor: {r: 1, g: 0.73361737, b: 0.5235849, a: 1}
-  _damageResistColor: {r: 0.48584908, g: 0.7365771, b: 1, a: 1}
   _fade: {fileID: 1908121368}
   _gameVictoryObjects: {fileID: 0}
   _gameLoseObjects: {fileID: 0}
@@ -15796,6 +15794,8 @@ MonoBehaviour:
   Status: {fileID: 0}
   IconImage: {fileID: 627606964}
   Text: {fileID: 1738092946}
+  _iconTextParent: {fileID: 0}
+  _iconText: {fileID: 0}
   _tweenSpeed: 1
 --- !u!114 &1738092946 stripped
 MonoBehaviour:

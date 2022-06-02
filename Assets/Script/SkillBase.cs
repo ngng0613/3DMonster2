@@ -44,7 +44,6 @@ public class SkillBase : MonoBehaviour
 
     }
     [SerializeField] SkillType _skillType;
-    [SerializeField] Element.BattleElement _skillElement;
 
     public SkillBase(string name, GameObject effect)
     {
@@ -103,9 +102,5 @@ public class SkillBase : MonoBehaviour
     public AudioClip GetEffectSE()
     {
         return _effectSound;
-    }
-    public Element.BattleElement GetElement()
-    {
-        return _skillElement;
     }
 }
