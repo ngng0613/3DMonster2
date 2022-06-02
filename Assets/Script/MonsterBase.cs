@@ -3,33 +3,56 @@ using UnityEngine;
 
 public class MonsterBase : MonoBehaviour
 {
-    //ID
+    /// <summary>
+    /// ID
+    /// </summary>
     [SerializeField] int _id;
-    //個別ID
+    /// <summary>
+    /// 個別ID
+    /// </summary>
     [SerializeField] float _individualID;
-    //名前
+    /// <summary>
+    /// 名前
+    /// </summary>
     [SerializeField] string _monsterName;
-    //ニックネーム
+    /// <summary>
+    /// ニックネーム
+    /// </summary>
     [SerializeField] string _nickName;
-    //イメージ
+    /// <summary>
+    /// イメージ
+    /// </summary>
     [SerializeField] Sprite _image;
-    //最大HP
+    /// <summary>
+    /// 最大HP
+    /// </summary>
     [SerializeField] int _maxHp;
-    //現在のHP
+    /// <summary>
+    /// 現在のHP
+    /// </summary>
     [SerializeField] int _currentHp;
-    //最大MP
+    /// <summary>
+    /// 最大MP
+    /// </summary>
     [SerializeField] int _maxMp;
-    //現在のMP
+    /// <summary>
+    /// 現在のMP
+    /// </summary>
     [SerializeField] int _currentMp;
-    //ベースのPrefab
+    /// <summary>
+    /// ベースのPrefab
+    /// </summary>
     [SerializeField] GameObject _myPrefab;
-    //倒したときのもらえる経験値
+    /// <summary>
+    /// 倒したときのもらえる経験値
+    /// </summary>
     [SerializeField] int _getExp;
-    //倒したときにもらえるお金
+    /// <summary>
+    /// 倒したときにもらえるお金
+    /// </summary>
     [SerializeField] int _money;
 
     [SerializeField] MonsterBase _evolutionyMonster;
-
 
     [SerializeField] List<StatusEffectBase> _statusEffectList = new List<StatusEffectBase>();
 
