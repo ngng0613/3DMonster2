@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 895e610e897157148b902400a5447130,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -23162,6 +23162,46 @@ PrefabInstance:
     - target: {fileID: 3464690602211228475, guid: bc7999cd7bab03249834aab13fc70b16,
         type: 3}
       propertyPath: m_IgnoreReversedGraphics
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_text
+      value: "\u64CD\u4F5C\u65B9\u6CD5\uFF1A\u30C9\u30E9\u30C3\u30B0\uFF06\u30C9\u30ED\u30C3\u30D7"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602217077301, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464690602278108161, guid: bc7999cd7bab03249834aab13fc70b16,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6265434369526066611, guid: bc7999cd7bab03249834aab13fc70b16,
