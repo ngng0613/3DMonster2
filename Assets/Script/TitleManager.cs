@@ -15,6 +15,7 @@ public class TitleManager : MonoBehaviour
     [SerializeField] List<MonsterBase> _monsterList;
     [SerializeField] int _monsterMaxCount;
 
+    bool _Start = false;
     public void Start()
     {
         GameManager.Instance.PlayeraPos = _firstPlayerPos;
@@ -30,7 +31,12 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     public void ChangeScene()
     {
-
+        //すでにこの関数が呼ばれているなら、処理を停止する
+        if (_Start == true)
+        {
+            return;
+        }
+        _Start = true;
         GameManager.Instance.MonsterList = _monsterList;
         foreach (var item in GameManager.Instance.MonsterList)
         {
