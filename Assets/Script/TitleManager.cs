@@ -50,9 +50,7 @@ public class TitleManager : MonoBehaviour
             }
             _monsterList[i].InParty = true;
         }
-        GameManager.Instance.MonsterParty.Add(_monsterList[0]);
-        GameManager.Instance.MonsterParty.Add(_monsterList[1]);
-        GameManager.Instance.MonsterParty.Add(_monsterList[2]);
+
         GameManager.Instance.MonsterMaxCount = _monsterMaxCount;
         GameManager.Instance.MonsterPartyIdList = new List<int>() { 0, 1, 2 };
         GameManager.Instance.PlayerMonster.MaxMp = GameManager.Instance.MonsterParty.Sum(x => x.MaxMp);
