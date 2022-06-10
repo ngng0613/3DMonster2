@@ -97,7 +97,7 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
             {
                 if (hit.gameObject.CompareTag(_slotTagName1))
                 {
-                    ///モンスタースロットにセットされた
+                    //モンスタースロットにセットされた
                     this.gameObject.transform.position = hit.gameObject.transform.position;
                     SetMonsterSlot.Invoke(Monster, 1, this);
                     _isSet = true;
@@ -105,14 +105,14 @@ public class PartOfMonsterList : MonoBehaviour, IPointerUpHandler
                 }
                 else if (hit.gameObject.CompareTag(_slotTagName2))
                 {
-                    ///モンスタースロットにセットされた
+                    //モンスタースロットにセットされた
                     this.gameObject.transform.position = hit.gameObject.transform.position;
                     SetMonsterSlot.Invoke(Monster, 2, this);
                     _isSet = true;
                 }
                 else if (hit.gameObject.CompareTag(_slotTagName3))
                 {
-                    ///モンスタースロットにセットされた
+                    //モンスタースロットにセットされた
                     this.gameObject.transform.position = hit.gameObject.transform.position;
                     SetMonsterSlot.Invoke(Monster, 3, this);
                     _isSet = true;

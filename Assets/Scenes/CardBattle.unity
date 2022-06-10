@@ -7633,7 +7633,7 @@ MonoBehaviour:
   _enemyDeck: {fileID: 1609058966}
   _numberOfDrawCard: 3
   _deckPos: {x: 200, y: -500, z: -1000}
-  _damageViewPos: {x: 0, y: 0, z: 0}
+  _damageViewPos: {x: 0, y: 2, z: -3}
   _debugMonsters:
   - {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9, type: 3}
   - {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9, type: 3}

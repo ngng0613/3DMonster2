@@ -794,6 +794,7 @@ public class CardBattleManager : MonoBehaviour
     void BackToMap()
     {
         GameManager.Instance.PlayerHp = _playerMonsterBaseList[0].CurrentHp;
+        GameManager.Instance.PlayerMonster.StatusEffectList = new List<StatusEffectBase>();
         SceneManager.LoadScene(GameManager.Instance.FieldMapName);
     }
 }

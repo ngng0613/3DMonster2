@@ -5640,7 +5640,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30EA\u30EA\u30FC\u30B9"
+  m_text: "\u9003\u304C\u3059"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: abc29f66190ae3d46864d38afdd6c973, type: 2}
   m_sharedMaterial: {fileID: -6295462911554822156, guid: abc29f66190ae3d46864d38afdd6c973,
@@ -5710,7 +5710,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 290415408}
-    characterCount: 4
+    characterCount: 3
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -23676,7 +23676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1279556348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37834,6 +37834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d1d45f3186b4a4685798e834c381b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _monsterList: []
   _monsterParty:
   - {fileID: 0}
   - {fileID: 0}
@@ -42834,7 +42835,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u7834\u68C4"
+  m_text: "\u9003\u304C\u3059"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27bbfd11c64067c40a62cd2b78c7df48, type: 2}
   m_sharedMaterial: {fileID: -6295462911554822156, guid: 27bbfd11c64067c40a62cd2b78c7df48,
@@ -42904,7 +42905,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 3423705157373858290}
-    characterCount: 2
+    characterCount: 3
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -44396,7 +44397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30E2\u30F3\u30B9\u30BF\u30FC\u30EA\u30EA\u30FC\u30B9\n"
+  m_text: "\u30E2\u30F3\u30B9\u30BF\u30FC\u3092\u9003\u304C\u3059\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: abc29f66190ae3d46864d38afdd6c973, type: 2}
   m_sharedMaterial: {fileID: -6295462911554822156, guid: abc29f66190ae3d46864d38afdd6c973,
@@ -45484,7 +45485,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30E2\u30F3\u30B9\u30BF\u30FC\u30EA\u30EA\u30FC\u30B9"
+  m_text: "\u30E2\u30F3\u30B9\u30BF\u30FC\u3092\u9003\u304C\u3059"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: abc29f66190ae3d46864d38afdd6c973, type: 2}
   m_sharedMaterial: {fileID: -6295462911554822156, guid: abc29f66190ae3d46864d38afdd6c973,
