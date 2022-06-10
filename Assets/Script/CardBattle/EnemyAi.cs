@@ -136,12 +136,13 @@ public class EnemyAi : MonoBehaviour
         }
         else
         {
+            Debug.Log("コンボなし");
             //もしコンボがないなら左端から使える分だけカードをプレイする
             int tempMp = _monster.CurrentMp;
             int i = 0;
             while (true)
             {
-                if (handList[i].Cost < tempMp)
+                if (handList[i].Cost <= tempMp)
                 {
                     useCardList.Add(handList[i]);
                     tempMp -= handList[i].Cost;

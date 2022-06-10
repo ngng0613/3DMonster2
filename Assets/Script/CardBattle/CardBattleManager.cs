@@ -363,7 +363,7 @@ public class CardBattleManager : MonoBehaviour
     {
         _phase = Phase.Player;
         _playerMonsterBaseList[0].CurrentMp = _playerMonsterBaseList[0].MaxMp;
-        UpdateMana();
+
         List<StatusEffectBase> statusList = _playerMonsterBaseList[0].StatusEffectList;
         for (int i = 0; i < statusList.Count; i++)
         {
@@ -386,12 +386,14 @@ public class CardBattleManager : MonoBehaviour
         }
         _playerStatusIconView.UpdateView();
 
+
         int numberOfDraw = 3;
         for (int i = 0; i < numberOfDraw; i++)
         {
             yield return DrawCard();
             yield return Wait(0.3f);
         }
+        UpdateMana();
     }
 
     /// <summary>
@@ -400,9 +402,31 @@ public class CardBattleManager : MonoBehaviour
     void UpdateMana()
     {
         _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
-        if (_playerMonsterBaseList[0].CurrentMp <= 0 && _phase == Phase.Player)
+
+        if (_phase == Phase.Player)
         {
-            _turnEndButton.SetActive(false);
+            //手札全体の中で最小コストのカードを探し、そのカードのコストを一時的に保存する
+            int minimumCostInHand = Int32.MaxValue;
+            foreach (var card in _hand.CardList)
+            {
+                if (card.Data.Cost < minimumCostInHand)
+                {
+                    minimumCostInHand = card.Data.Cost;
+                }
+            }
+
+            if (_hand.CardList.Count == 0)
+            {
+                _turnEndButton.SetActive(false);
+            }
+            else if (_playerMonsterBaseList[0].CurrentMp <= 0 || minimumCostInHand > _playerMonsterBaseList[0].CurrentMp)
+            {
+                _turnEndButton.SetActive(false);
+            }
+            else
+            {
+                _turnEndButton.SetActive(true);
+            }
         }
 
         _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0].CurrentMp);
@@ -732,6 +756,7 @@ public class CardBattleManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             _enemyStatusIconView.UpdateView();
             CheckIfDead();
+            UpdateMana();
             _isPlayingCard = false;
         }
     }
