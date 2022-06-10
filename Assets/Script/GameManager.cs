@@ -29,6 +29,4 @@ public class GameManager
     {
         SceneManager.LoadSceneAsync(sceneName);
     }
-
-
 }

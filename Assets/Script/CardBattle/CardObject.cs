@@ -16,6 +16,7 @@ public class CardObject : MonoBehaviour
     [SerializeField] TextMeshProUGUI _costText;
     [SerializeField] TextMeshProUGUI _flavourtText;
     [SerializeField] Image _image;
+    [SerializeField] Image _arrowImage;
     [SerializeField] float _playArea;
 
     int _sortingOrder = 0;
@@ -52,6 +53,9 @@ public class CardObject : MonoBehaviour
         _handUpdateDelegate = handUpdate;
         _remove = remove;
         UpdateText();
+        Color tempColor = _arrowImage.color;
+        tempColor.a = 0;
+        _arrowImage.color = tempColor;
     }
 
 
@@ -104,6 +108,9 @@ public class CardObject : MonoBehaviour
             this.gameObject.transform.DOLocalMoveY(156, 0.2f);
             this.gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.2f);
             _canvas.sortingOrder = 50;
+            Color tempColor = _arrowImage.color;
+            tempColor.a = 1;
+            _arrowImage.color = tempColor;
         }
     }
     public void OnPointerExit()
@@ -113,6 +120,9 @@ public class CardObject : MonoBehaviour
             this.gameObject.transform.DOLocalMoveY(0, 0.2f);
             this.gameObject.transform.DOScale(Vector3.one, 0.2f);
             _canvas.sortingOrder = _sortingOrder;
+            Color tempColor = _arrowImage.color;
+            tempColor.a = 0;
+            _arrowImage.color = tempColor;
         }
 
     }
