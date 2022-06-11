@@ -19,6 +19,8 @@ public class TitleManager : MonoBehaviour
     public void Start()
     {
         GameManager.Instance.PlayeraPos = _firstPlayerPos;
+        //フレーム抜け回避のため（これを書かないと、マップで当たり判定ぬけする）
+        Application.targetFrameRate = 60;
 
         GameManager.Instance.FriendCount = 0;
         GameManager.Instance.CaptureCount = 0;
