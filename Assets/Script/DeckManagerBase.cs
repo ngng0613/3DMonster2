@@ -56,10 +56,7 @@ public class DeckManagerBase : MonoBehaviour
             part.Release = ReleaseFromParty;
             _parts[i] = part;
             part.Id = i;
-
-
         }
-
     }
 
     /// <summary>

@@ -11,6 +11,7 @@ public class DamageCalculator : MonoBehaviour
     public int Calculate(MonsterBase a, MonsterBase b, CardSpellBase spell)
     {
         int effectValue = 0;
+        //先に負傷状態による追加ダメージを影響値に反映
         foreach (var state in b.StatusEffectList)
         {
             if (state.Name == Damage.Name)
@@ -18,6 +19,9 @@ public class DamageCalculator : MonoBehaviour
                 effectValue += state.Count;
                 Debug.Log("負傷している　負傷値：" + effectValue);
             }
+        }
+        foreach (var state in b.StatusEffectList)
+        {
             if (state.Name == Guard.Name)
             {
                 int decreaseValue = spell.EffectValue + effectValue;

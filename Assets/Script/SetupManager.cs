@@ -37,6 +37,7 @@ public class SetupManager : MonoBehaviour
                 }
                 _monsterList[i].InParty = true;
             }
+            GameManager.Instance.MonsterParty = new List<MonsterBase>();
             GameManager.Instance.MonsterParty.Add(_monsterList[0]);
             GameManager.Instance.MonsterParty.Add(_monsterList[1]);
             GameManager.Instance.MonsterParty.Add(_monsterList[2]);
