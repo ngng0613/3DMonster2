@@ -10,6 +10,7 @@ public class TitleManager : MonoBehaviour
     [SerializeField] Fade _fade;
     [SerializeField] string _fieldSceneName;
     [SerializeField] Vector3 _firstPlayerPos;
+    [SerializeField] int _playerHp;
 
 
     [SerializeField] List<MonsterBase> _monsterList;
@@ -18,9 +19,12 @@ public class TitleManager : MonoBehaviour
     bool _Start = false;
     public void Start()
     {
-        GameManager.Instance.PlayeraPos = _firstPlayerPos;
         //フレーム抜け回避のため（これを書かないと、マップで当たり判定ぬけする）
         Application.targetFrameRate = 60;
+
+        GameManager.Instance.PlayeraPos = _firstPlayerPos;
+        GameManager.Instance.PlayerHp = _playerHp;
+        GameManager.Instance.PlayerMonster.MaxHp = _playerHp;
 
         GameManager.Instance.FriendCount = 0;
         GameManager.Instance.CaptureCount = 0;
