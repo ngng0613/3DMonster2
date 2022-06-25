@@ -458,7 +458,10 @@ public class CardBattleManager : MonoBehaviour
     IEnumerator PhaseEnemyTurn()
     {
         _phase = Phase.Enemy;
-        _enemyMonsterBaseList[0].CurrentMp = _enemyMonsterBaseList[0].MaxMp;
+        _enemyAi.UpdateHandCountView();
+
+        //敵はMP2倍
+        _enemyMonsterBaseList[0].CurrentMp = _enemyMonsterBaseList[0].MaxMp * 2;
         List<CardData> combo = _enemyAi.Think();
         for (int i = 0; i < combo.Count; i++)
         {
@@ -572,12 +575,16 @@ public class CardBattleManager : MonoBehaviour
                         break;
                 }
                 _enemyStatusIconView.UpdateView();
+
+                _enemyAi.Hand.RemoveCard(combo[i]);
+                _enemyAi.UpdateHandCountView();
                 UpdateMana();
                 CheckIfDead();
                 yield return new WaitForSeconds(0.5f);
             }
             yield return new WaitForSeconds(0.5f);
         }
+        _enemyAi.UpdateHandCountView();
         yield return PhaseDraw();
     }
     public void CheckIfDead()

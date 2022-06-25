@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
 public class EnemyAi : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] Deck _deck;
     [SerializeField] Hand _hand;
     [SerializeField] int _mana = 0;
+    [SerializeField] TextMeshProUGUI _handCount;
 
     [SerializeField] int _ratingScore = 0;
     ComboData _decidedCombo = null;
@@ -34,6 +36,8 @@ public class EnemyAi : MonoBehaviour
             if (card != null)
             {
                 _hand.AddHand(card);
+                UpdateHandCountView();
+
             }
         }
     }
@@ -53,10 +57,8 @@ public class EnemyAi : MonoBehaviour
         {
             handList.Add(cardObjectList[i].Data);
         }
-
         //使用可能なコンボのデータを入れるList
         List<ComboData> compareComboList = new List<ComboData>();
-
         for (int i = 0; i < handList.Count; i++)
         {
             Debug.Log(handList[i]);
@@ -130,9 +132,8 @@ public class EnemyAi : MonoBehaviour
             for (int i = 0; i < _decidedCombo.OrderOfCards.Count; i++)
             {
                 useCardList.Add(_decidedCombo.OrderOfCards[i]);
-                _hand.RemoveCard(_decidedCombo.OrderOfCards[i]);
+                //_hand.RemoveCard(_decidedCombo.OrderOfCards[i]);
             }
-
         }
         else
         {
@@ -161,6 +162,21 @@ public class EnemyAi : MonoBehaviour
         Debug.Log("使用カード枚数" + useCardList.Count);
         return useCardList;
     }
+    /// <summary>
+    /// 敵の手札枚数表示を更新する
+    /// </summary>
+    public void UpdateHandCountView()
+    {
+        _handCount.text = "×" + _hand.CardList.Count;
+    }
+    /// <summary>
+    /// 敵の手札枚数表示を更新する
+    /// </summary>
+    public void UpdateHandCountView(int count)
+    {
+        _handCount.text = "×" + count;
+    }
+
 }
 
 [System.Serializable]
