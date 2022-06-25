@@ -40,6 +40,10 @@ public class CardBattleManager : MonoBehaviour
     [SerializeField] Deck _enemyDeck;
 
     [SerializeField] int _numberOfDrawCard;
+    /// <summary>
+    /// バトルエフェクトの再生をするクラス
+    /// </summary>
+    [SerializeField] EffectAnimation _effectAnim;
 
 
 
@@ -691,6 +695,7 @@ public class CardBattleManager : MonoBehaviour
             switch (partOfSpell.Type)
             {
                 case SpellType.Attack:
+                    _effectAnim.PlayAnimation(0);
                     AttackCoroutine(partOfSpell);
                     break;
                 case SpellType.Guard:
