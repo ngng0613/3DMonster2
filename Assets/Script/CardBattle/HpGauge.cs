@@ -15,7 +15,6 @@ public class HpGauge : MonoBehaviour
     [SerializeField] TextMeshProUGUI _mpText;
     [SerializeField] TextMeshProUGUI _maxMpText;
 
-    string _monsterName = "";
     int _maxHp = 0;
     int _currentHp = 0;
     float _displayHp = 0;
@@ -26,8 +25,6 @@ public class HpGauge : MonoBehaviour
     [SerializeField] float _tweenTime = 1.0f;
     [SerializeField] bool _lookCamera = false;
 
-
-
     private void Update()
     {
         if (!_setupCompleted)
@@ -37,46 +34,53 @@ public class HpGauge : MonoBehaviour
         _hpGauge.transform.localScale = new Vector3(_displayHp / _maxHp, 1, 1);
     }
 
-    public void Setup(MonsterBase monster, Camera cameraComponent, Sprite elementIcon)
+    /// <summary>
+    /// 初期設定
+    /// </summary>
+    /// <param name="name">表示する名前</param>
+    /// <param name="maxHp">最大HP</param>
+    public void SetData(string name, int maxHp)
     {
-        _monsterName = monster.NickName;
-        _nameText.text = _monsterName;
-        _maxHp = monster.MaxHp;
-        _currentHp = monster.CurrentHp;
-        _displayHp = _currentHp;
-        _currentMp = monster.CurrentMp;
-        if (_mpText != null)
-        {
-            _mpText.text = _currentMp.ToString();
-        }
-        if (_maxMpText != null)
-        {
-            _maxMpText.text = monster.MaxMp.ToString();
-        }
-
-        _cameraComponent = cameraComponent;
-        if (elementIcon != null)
-        {
-            _elementImage.sprite = elementIcon;
-        }
-        UpdateHp(_currentHp);
-        if (_cameraComponent != null && _lookCamera == true)
-        {
-            transform.rotation = _cameraComponent.transform.rotation;
-        }
-        _setupCompleted = true;
+        _nameText.text = name;
+        _maxHp = maxHp;
     }
 
-    public void UpdateHp(int currentHp)
+    /// <summary>
+    /// プレイヤーの残りHPを参照し、HPの値を更新する
+    /// </summary>
+    public void UpdateHp()
     {
-        _currentHp = currentHp;
+        _currentHp = GameManager.Instance.PlayerCurrentHp;
 
         Sequence sequence = DOTween.Sequence();
         sequence.Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime));
     }
-    public void UpdateMp(int currentMp)
+    /// <summary>
+    /// プレイヤーの残りMPを参照し、MPの値を更新する
+    /// </summary>
+    public void UpdateMp()
     {
-        _currentMp = currentMp;
+        _currentMp = GameManager.Instance.PlayerCurrentMp;
+        _mpText.text = _currentMp.ToString();
+    }
+    /// <summary>
+    /// 指定されたモンスターの残りHPを参照し、HPの値を更新する
+    /// </summary>
+    /// <param name="monster">参照するモンスター</param>
+    public void UpdateHp(MonsterBase monster)
+    {
+        _currentHp = monster.CurrentHp;
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime));
+    }
+    /// <summary>
+    /// 指定されたモンスターの残りMPを参照し、MPの値を更新する
+    /// </summary>
+    /// <param name="monster">参照するモンスター</param>
+    public void UpdateMp(MonsterBase monster)
+    {
+        _currentMp = monster.CurrentMp;
         _mpText.text = _currentMp.ToString();
     }
 

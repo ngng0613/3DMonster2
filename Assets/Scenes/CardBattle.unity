@@ -3429,18 +3429,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550200205}
   m_CullTransparentMesh: 0
---- !u!114 &557159683 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7682027077128245700, guid: 45c91303b4dfb70408a172f9bdf984b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 58316262}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cec274c185eec534584f65d3c0577628, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &557189250
 GameObject:
   m_ObjectHideFlags: 0
@@ -5472,7 +5460,6 @@ GameObject:
   - component: {fileID: 783636377}
   - component: {fileID: 783636374}
   - component: {fileID: 783636376}
-  - component: {fileID: 783636375}
   - component: {fileID: 783636378}
   m_Layer: 0
   m_Name: Main Camera
@@ -5524,18 +5511,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &783636375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 783636373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b771839b66d73c49af2644ef5119182, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &783636376
 AudioListener:
   m_ObjectHideFlags: 0
@@ -7859,6 +7834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08d63a1d13b3902438425500ac19e44c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debugPlayerHp: 50
   _stageDataForDebug: {fileID: 5174454014666628032, guid: 756349c1aafcd2e469177108689fb4ae,
     type: 3}
   _playerDeck: {fileID: 1394623840}
@@ -7900,8 +7876,6 @@ MonoBehaviour:
   - {fileID: 256424443}
   - {fileID: 0}
   - {fileID: 0}
-  _playerMonsterBaseList:
-  - {fileID: 557159683}
   _enemyMonsterBaseList:
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
   - {fileID: 5779784985857337837, guid: c13e14ad1fa76a54bbd36b8b2b199dee, type: 3}
@@ -17363,9 +17337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2387df6e14cfbad4bb225253e32b9fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Monster: {fileID: 0}
   StatusEffectBaseList: []
-  _stateIconList: []
   _stateIconPrefab: {fileID: 8649040872233690660, guid: 3fcedb55dd7011c4991224f7c55d6535,
     type: 3}
 --- !u!1 &1972212886

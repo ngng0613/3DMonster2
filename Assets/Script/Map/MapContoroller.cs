@@ -215,7 +215,7 @@ public class MapContoroller : MonoBehaviour
     public void RestPoint()
     {
         GameManager.Instance.PlayeraPos = _player.transform.position;
-        GameManager.Instance.PlayerHp = GameManager.Instance.PlayerMonster.MaxHp;
+        GameManager.Instance.PlayerMaxHp = GameManager.Instance.PlayerMaxHp;
         _restPointMessage.Activate();
         _isMoving = false;
         UpdateNextMap();

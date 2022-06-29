@@ -5,18 +5,17 @@ using DG.Tweening;
 
 public class StatusIconView : MonoBehaviour
 {
-    public MonsterBase Monster;
-    public List<StatusEffectBase> StatusEffectBaseList;
-    public List<StateIcon> _stateIconList;
+    [SerializeField] List<StatusEffectBase> StatusEffectBaseList;
+    List<StateIcon> _stateIconList = new List<StateIcon>();
     [SerializeField] StateIcon _stateIconPrefab;
-    public void UpdateView()
+    public void UpdateView(List<StatusEffectBase> statusEffectBaseList)
     {
+        StatusEffectBaseList = statusEffectBaseList;
         for (int i = 0; i < _stateIconList.Count; i++)
         {
             Destroy(_stateIconList[i].gameObject);
         }
         _stateIconList.Clear();
-        StatusEffectBaseList = Monster.StatusEffectList;
         for (int i = 0; i < StatusEffectBaseList.Count; i++)
         {
             StatusEffectBase statusEffect = StatusEffectBaseList[i];

@@ -88,6 +88,10 @@ public class CardObject : MonoBehaviour
                     {
                         _playedActionDelegate.Invoke(_cardData);
                     }
+                    else
+                    {
+                        Debug.Log("効果がない");
+                    }
                     _remove.Invoke(this);
 
                     this.transform.DOKill();

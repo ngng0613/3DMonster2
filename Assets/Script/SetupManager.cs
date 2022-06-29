@@ -48,7 +48,8 @@ public class SetupManager : MonoBehaviour
             {
                 mp += GameManager.Instance.MonsterParty[i].MaxMp;
             }
-            GameManager.Instance.PlayerMonster.MaxMp = mp;
+            GameManager.Instance.PlayerMaxMp = mp;
+            GameManager.Instance.PlayerCurrentMp = mp;
             Debug.LogWarning("モンスターリストを初期化しました");
 
         }

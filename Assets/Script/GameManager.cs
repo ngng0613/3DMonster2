@@ -10,12 +10,34 @@ public class GameManager
 
     public bool IsFirst = true;
 
+    /// <summary>
+    /// 現在連れているモンスターのリスト
+    /// </summary>
     public List<MonsterBase> MonsterList = new List<MonsterBase>();
+    /// <summary>
+    /// 現在戦闘要員として編成中のモンスターのリスト
+    /// </summary>
     public List<MonsterBase> MonsterParty = new List<MonsterBase>();
-    public List<int> MonsterPartyIdList = new List<int>() { 0,1,2};
+    /// <summary>
+    /// 現在戦闘要員として編成中のモンスターのIDのリスト
+    /// </summary>
+    public List<int> MonsterPartyIdList = new List<int>() { 0, 1, 2 };
+    /// <summary>
+    /// マップ上のプレイヤーの位置情報
+    /// </summary>
     public Vector2 PlayeraPos;
-    public MonsterBase PlayerMonster = new MonsterBase("Player", 50, 5);
-    public int PlayerHp = 50;
+    /// <summary>
+    /// プレイヤーの名前
+    /// </summary>
+    public string PlayerName = "Player";
+    /// <summary>
+    /// プレイヤーの最大HP
+    /// </summary>
+    public int PlayerMaxHp = 15;
+    public int PlayerCurrentHp = 15;
+    public int PlayerMaxMp = 3;
+    public int PlayerCurrentMp = 0;
+    public List<StatusEffectBase> PlayerStatusEffectList = new List<StatusEffectBase>();
     public int MonsterMaxCount = 6;
     public int BattleCount = 0;
     public int CaptureCount = 0;

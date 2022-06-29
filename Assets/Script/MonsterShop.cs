@@ -21,8 +21,6 @@ public class MonsterShop : DeckManagerBase
         this.gameObject.SetActive(true);
         _dontSet.Setup();
 
-        int partyCount = 0;
-
         for (int i = 0; i < GameManager.Instance.MonsterList.Count; i++)
         {
             if (i >= _subSlotPosition.Length)

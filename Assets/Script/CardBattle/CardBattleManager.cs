@@ -18,6 +18,8 @@ public enum Side
 
 public class CardBattleManager : MonoBehaviour
 {
+    [SerializeField] int _debugPlayerHp;
+
     /// <summary>
     /// Dotween用のシークエンス
     /// </summary>
@@ -153,10 +155,6 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     [SerializeField] List<Transform> _enemyMonsterPositionList = new List<Transform>();
     /// <summary>
-    /// 味方モンスターデータのリスト
-    /// </summary>
-    [SerializeField] List<MonsterBase> _playerMonsterBaseList = new List<MonsterBase>();
-    /// <summary>
     /// 敵モンスターデータのリスト
     /// </summary>
     [SerializeField] List<MonsterBase> _enemyMonsterBaseList = new List<MonsterBase>();
@@ -229,21 +227,16 @@ public class CardBattleManager : MonoBehaviour
         //初期化
         //戦闘開始回数を増やす
         GameManager.Instance.BattleCount++;
-        //ゲームマネージャーから一旦プレイヤーの情報を得る
-        MonsterBase playerMonster = GameManager.Instance.PlayerMonster;
-        //playerMonster.StatusEffectList = new List<StatusEffectBase>();
-        playerMonster.CurrentHp = GameManager.Instance.PlayerHp;
-        if (GameManager.Instance.MonsterParty.Count == 0)
+
+        //もしプレイヤーのHPが0の場合、デバッグ用データを代入する
+        if (GameManager.Instance.PlayerMaxHp <= 0)
         {
-            GameManager.Instance.MonsterParty = _debugMonsters;
+            Debug.Log("デバッグ用のHPを使用します");
+            GameManager.Instance.PlayerMaxHp = _debugPlayerHp;
+            GameManager.Instance.PlayerCurrentHp = _debugPlayerHp;
+
         }
-        List<MonsterBase> monsterParty = GameManager.Instance.MonsterParty;
-        playerMonster.MaxMp = monsterParty.Sum(x => x.MaxMp);
-        Debug.Log("MaxMp = " + playerMonster.MaxMp);
-        _playerMonsterBaseList[0] = playerMonster;
-        _playerHpGauge.Setup(playerMonster, _cameraComponent, null);
-        _playerStatusIconView.Monster = _playerMonsterBaseList[0];
-        _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
+
         _resultManager.BackToMap = this.BackToMap;
 
         //ステージデータ読み込み
@@ -267,9 +260,15 @@ public class CardBattleManager : MonoBehaviour
                 }
             }
         }
+        //お互いのHPゲージの表示の設定をする
+        _playerHpGauge.SetData(GameManager.Instance.PlayerName, GameManager.Instance.PlayerMaxHp);
+        _enemyHpGauge.SetData(_enemyMonsterBaseList[0].MonsterName, _enemyMonsterBaseList[0].MaxHp);
+        _playerHpGauge.UpdateHp();
+        _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0]);
+        _playerHpGauge.UpdateMp();
 
         //一度ゲームオブジェクトのデッキをつくる
-        monsterParty = GameManager.Instance.MonsterParty;
+        List<MonsterBase>monsterParty = GameManager.Instance.MonsterParty;
 
         List<CardObject> playerObjectDeck = new List<CardObject>();
         for (int i = 0; i < monsterParty.Count; i++)
@@ -311,6 +310,12 @@ public class CardBattleManager : MonoBehaviour
         //カード使用時の処理の追加
         _enemyAi.Hand.Setup(PlayCard, _enemyDeck.Trash);
 
+
+
+        GameManager.Instance.PlayerMaxMp = monsterParty.Sum(x => x.MaxMp);
+        GameManager.Instance.PlayerCurrentMp = GameManager.Instance.PlayerMaxMp;
+        Debug.Log("MaxMp = " + GameManager.Instance.PlayerMaxMp);
+        GameManager.Instance.PlayerStatusEffectList = new List<StatusEffectBase>();
         PhaseStart();
     }
 
@@ -366,9 +371,9 @@ public class CardBattleManager : MonoBehaviour
     IEnumerator PhaseDraw()
     {
         _phase = Phase.Player;
-        _playerMonsterBaseList[0].CurrentMp = _playerMonsterBaseList[0].MaxMp;
-
-        List<StatusEffectBase> statusList = _playerMonsterBaseList[0].StatusEffectList;
+        GameManager.Instance.PlayerCurrentMp = GameManager.Instance.PlayerMaxMp;
+        UpdateMana();
+        List<StatusEffectBase> statusList = GameManager.Instance.PlayerStatusEffectList;
         for (int i = 0; i < statusList.Count; i++)
         {
             if (statusList[i].Count > 0)
@@ -388,7 +393,7 @@ public class CardBattleManager : MonoBehaviour
 
             }
         }
-        _playerStatusIconView.UpdateView();
+        _playerStatusIconView.UpdateView(GameManager.Instance.PlayerStatusEffectList);
 
 
         int numberOfDraw = 3;
@@ -397,7 +402,7 @@ public class CardBattleManager : MonoBehaviour
             yield return DrawCard();
             yield return Wait(0.3f);
         }
-        UpdateMana();
+
     }
 
     /// <summary>
@@ -405,7 +410,7 @@ public class CardBattleManager : MonoBehaviour
     /// </summary>
     void UpdateMana()
     {
-        _playerHpGauge.UpdateMp(_playerMonsterBaseList[0].CurrentMp);
+        _playerHpGauge.UpdateMp();
 
         if (_phase == Phase.Player)
         {
@@ -423,7 +428,7 @@ public class CardBattleManager : MonoBehaviour
             {
                 _turnEndButton.SetActive(false);
             }
-            else if (_playerMonsterBaseList[0].CurrentMp <= 0 || minimumCostInHand > _playerMonsterBaseList[0].CurrentMp)
+            else if (GameManager.Instance.PlayerCurrentMp <= 0 || minimumCostInHand > GameManager.Instance.PlayerCurrentMp)
             {
                 _turnEndButton.SetActive(false);
             }
@@ -433,7 +438,7 @@ public class CardBattleManager : MonoBehaviour
             }
         }
 
-        _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0].CurrentMp);
+        _enemyHpGauge.UpdateMp(_enemyMonsterBaseList[0]);
     }
 
     /// <summary>
@@ -469,7 +474,7 @@ public class CardBattleManager : MonoBehaviour
         List<CardData> combo = _enemyAi.Think();
         for (int i = 0; i < combo.Count; i++)
         {
-            if (_playerMonsterBaseList[0].CurrentHp <= 0 || _enemyMonsterBaseList[0].CurrentHp <= 0)
+            if (GameManager.Instance.PlayerCurrentHp <= 0 || _enemyMonsterBaseList[0].CurrentHp <= 0)
             {
                 yield break;
             }
@@ -497,18 +502,17 @@ public class CardBattleManager : MonoBehaviour
                 {
                     case SpellType.Attack:
 
-                        int damage = _damageCalculator.Calculate(_enemyMonsterBaseList[0], _playerMonsterBaseList[0], partOfSpell);
+                        int damage = _damageCalculator.Calculate(_enemyMonsterBaseList[0].StatusEffectList, GameManager.Instance.PlayerStatusEffectList, partOfSpell);
 
-                        _playerMonsterBaseList[0].TakeDamage(damage);
+                        GameManager.Instance.PlayerCurrentHp -= damage;
                         _playerStatusIconView.IconPopup(_guardStatusEffect);
                         //ダメージ処理
                         DamageView damageView = Instantiate(_damageViewPrefab, _playerMonstersPositionList[0].transform.position, Quaternion.identity);
                         damageView.transform.position += new Vector3(0, 2, -3);
                         damageView.Setup(damage, "", Color.white, _cameraComponent);
                         damageView.Activate();
-                        _playerHpGauge.UpdateHp(_playerMonsterBaseList[0].CurrentHp);
+                        _playerHpGauge.UpdateHp();
                         _playerHpGauge.gameObject.transform.DOShakePosition(0.5f, 0.5f, 100);
-                        //_playerStatusIconView.UpdateView();
                         break;
                     case SpellType.Guard:
 
@@ -523,7 +527,7 @@ public class CardBattleManager : MonoBehaviour
                         ///敵から見て、敵はプレイヤー
                         if (partOfSpell.Target == SpellTarget.Enemy)
                         {
-                            foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
+                            foreach (var tempStatus in GameManager.Instance.PlayerStatusEffectList)
                             {
                                 if (status.Name == tempStatus.Name)
                                 {
@@ -535,9 +539,9 @@ public class CardBattleManager : MonoBehaviour
                             if (alreadyHave == false)
                             {
                                 status.Count = partOfSpell.EffectValue;
-                                _playerMonsterBaseList[0].StatusEffectList.Add(status);
+                                GameManager.Instance.PlayerStatusEffectList.Add(status);
                             }
-                            _playerStatusIconView.UpdateView();
+                            _playerStatusIconView.UpdateView(GameManager.Instance.PlayerStatusEffectList);
                         }
                         else if (partOfSpell.Target == SpellTarget.Player)
                         {
@@ -555,7 +559,7 @@ public class CardBattleManager : MonoBehaviour
                                 status.Count = partOfSpell.EffectValue;
                                 _enemyMonsterBaseList[0].StatusEffectList.Add(status);
                             }
-                            _enemyStatusIconView.UpdateView();
+                            _enemyStatusIconView.UpdateView(_enemyMonsterBaseList[0].StatusEffectList);
                         }
 
                         break;
@@ -572,13 +576,13 @@ public class CardBattleManager : MonoBehaviour
                         {
                             _enemyMonsterBaseList[0].CurrentHp = _enemyMonsterBaseList[0].MaxHp;
                         }
-                        _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
+                        _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0]);
 
                         break;
                     default:
                         break;
                 }
-                _enemyStatusIconView.UpdateView();
+                _enemyStatusIconView.UpdateView(_enemyMonsterBaseList[0].StatusEffectList);
 
                 _enemyAi.Hand.RemoveCard(combo[i]);
                 _enemyAi.UpdateHandCountView();
@@ -589,11 +593,15 @@ public class CardBattleManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         _enemyAi.UpdateHandCountView();
+        if (_phase == Phase.Player)
+        {
+            yield return null;
+        }
         yield return PhaseDraw();
     }
     public void CheckIfDead()
     {
-        if (_playerMonsterBaseList[0].CurrentHp <= 0)
+        if (GameManager.Instance.PlayerCurrentHp <= 0)
         {
             PhaseLose();
         }
@@ -625,9 +633,9 @@ public class CardBattleManager : MonoBehaviour
     /// <returns></returns>
     public bool CheckIfCanUseCardPlayerSide(CardData card)
     {
-        if (_playerMonsterBaseList[0].CurrentMp >= card.Cost)
+        if (GameManager.Instance.PlayerCurrentMp >= card.Cost)
         {
-            _playerMonsterBaseList[0].CurrentMp -= card.Cost;
+            GameManager.Instance.PlayerCurrentMp -= card.Cost;
             UpdateMana();
             return true;
         }
@@ -665,7 +673,7 @@ public class CardBattleManager : MonoBehaviour
         if (_phase == Phase.Player)
         {
             StartCoroutine(PlayCardCorotine(card));
-            _playerStatusIconView.UpdateView();
+            _playerStatusIconView.UpdateView(GameManager.Instance.PlayerStatusEffectList);
         }
     }
 
@@ -678,7 +686,7 @@ public class CardBattleManager : MonoBehaviour
     {
         for (int i = 0; i < card.CardSpellBases.Count; i++)
         {
-            if (_playerMonsterBaseList[0].CurrentHp <= 0 || _enemyMonsterBaseList[0].CurrentHp <= 0)
+            if (GameManager.Instance.PlayerCurrentHp <= 0 || _enemyMonsterBaseList[0].CurrentHp <= 0)
             {
                 yield break;
             }
@@ -722,11 +730,11 @@ public class CardBattleManager : MonoBehaviour
                             status.Count = partOfSpell.EffectValue;
                             _enemyMonsterBaseList[0].StatusEffectList.Add(status);
                         }
-                        _enemyStatusIconView.UpdateView();
+                        _enemyStatusIconView.UpdateView(_enemyMonsterBaseList[0].StatusEffectList);
                     }
                     else if (partOfSpell.Target == SpellTarget.Player)
                     {
-                        foreach (var tempStatus in _playerMonsterBaseList[0].StatusEffectList)
+                        foreach (var tempStatus in GameManager.Instance.PlayerStatusEffectList)
                         {
                             if (status.Name == tempStatus.Name)
                             {
@@ -738,9 +746,9 @@ public class CardBattleManager : MonoBehaviour
                         if (alreadyHave == false)
                         {
                             status.Count = partOfSpell.EffectValue;
-                            _playerMonsterBaseList[0].StatusEffectList.Add(status);
+                            GameManager.Instance.PlayerStatusEffectList.Add(status);
                         }
-                        _playerStatusIconView.UpdateView();
+                        _playerStatusIconView.UpdateView(GameManager.Instance.PlayerStatusEffectList);
                     }
 
                     break;
@@ -752,21 +760,21 @@ public class CardBattleManager : MonoBehaviour
                     break;
                 case SpellType.Heal:
 
-                    _playerMonsterBaseList[0].CurrentHp += partOfSpell.EffectValue;
-                    if (_playerMonsterBaseList[0].CurrentHp > _playerMonsterBaseList[0].MaxHp)
+                    GameManager.Instance.PlayerCurrentHp += partOfSpell.EffectValue;
+                    if (GameManager.Instance.PlayerCurrentHp > GameManager.Instance.PlayerMaxHp)
                     {
-                        _playerMonsterBaseList[0].CurrentHp = _playerMonsterBaseList[0].MaxHp;
+                        GameManager.Instance.PlayerCurrentHp = GameManager.Instance.PlayerMaxHp;
                     }
-                    _playerHpGauge.UpdateHp(_playerMonsterBaseList[0].CurrentHp);
+                    _playerHpGauge.UpdateHp();
 
                     break;
 
                 default:
                     break;
             }
-            _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0].CurrentHp);
+            _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0]);
             yield return new WaitForSeconds(0.5f);
-            _enemyStatusIconView.UpdateView();
+            _enemyStatusIconView.UpdateView(_enemyMonsterBaseList[0].StatusEffectList);
             CheckIfDead();
             UpdateMana();
             _isPlayingCard = false;
@@ -780,7 +788,7 @@ public class CardBattleManager : MonoBehaviour
     void AttackCoroutine(CardSpellBase spell)
     {
 
-        int damage = _damageCalculator.Calculate(_playerMonsterBaseList[0], _enemyMonsterBaseList[0], spell);
+        int damage = _damageCalculator.Calculate(GameManager.Instance.PlayerStatusEffectList, _enemyMonsterBaseList[0].StatusEffectList, spell);
 
         _enemyMonsterBaseList[0].TakeDamage(damage);
         _enemyStatusIconView.IconPopup(_guardStatusEffect);
@@ -816,8 +824,7 @@ public class CardBattleManager : MonoBehaviour
         enemyMonsterBase = enemyObject.GetComponent<MonsterBase>();
         _enemyMonsterBaseList[enemyNumber] = enemyMonsterBase;
         //敵ステータスの表示
-        _enemyHpGauge.Setup(enemyMonsterBase, _cameraComponent, null);
-        _enemyStatusIconView.Monster = _enemyMonsterBaseList[0];
+        _enemyHpGauge.UpdateHp(_enemyMonsterBaseList[0]);
     }
 
     /// <summary>
@@ -830,8 +837,8 @@ public class CardBattleManager : MonoBehaviour
 
     void BackToMap()
     {
-        GameManager.Instance.PlayerHp = _playerMonsterBaseList[0].CurrentHp;
-        GameManager.Instance.PlayerMonster.StatusEffectList = new List<StatusEffectBase>();
+        GameManager.Instance.PlayerMaxHp = GameManager.Instance.PlayerCurrentHp;
+        GameManager.Instance.PlayerStatusEffectList = new List<StatusEffectBase>();
         SceneManager.LoadScene(GameManager.Instance.FieldMapName);
     }
 }
