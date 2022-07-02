@@ -372,7 +372,7 @@ public class CardBattleManager : MonoBehaviour
     {
         _phase = Phase.Player;
         GameManager.Instance.PlayerCurrentMp = GameManager.Instance.PlayerMaxMp;
-        UpdateMana();
+    
         List<StatusEffectBase> statusList = GameManager.Instance.PlayerStatusEffectList;
         for (int i = 0; i < statusList.Count; i++)
         {
@@ -402,7 +402,7 @@ public class CardBattleManager : MonoBehaviour
             yield return DrawCard();
             yield return Wait(0.3f);
         }
-
+        UpdateMana();
     }
 
     /// <summary>
