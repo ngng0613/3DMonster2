@@ -21,13 +21,13 @@ public class HpGauge : MonoBehaviour
     int _currentMp = 0;
     [SerializeField] Camera _cameraComponent;
 
-    [SerializeField] bool _setupCompleted = false;
+    [SerializeField] bool _updateGauge = false;
     [SerializeField] float _tweenTime = 1.0f;
     [SerializeField] bool _lookCamera = false;
 
     private void Update()
     {
-        if (!_setupCompleted)
+        if (!_updateGauge)
         {
             return;
         }
@@ -53,7 +53,9 @@ public class HpGauge : MonoBehaviour
         _currentHp = GameManager.Instance.PlayerCurrentHp;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime));
+        sequence.OnStart(() => { _updateGauge = true; })
+            .Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime))
+            .OnComplete(() => { _updateGauge = false; });
     }
     /// <summary>
     /// プレイヤーの残りMPを参照し、MPの値を更新する
@@ -72,7 +74,9 @@ public class HpGauge : MonoBehaviour
         _currentHp = monster.CurrentHp;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime));
+        sequence.OnStart(() => { _updateGauge = true; })
+            .Append(DOTween.To(() => _displayHp, (x) => { _displayHp = x; _hpText.text = $"{(int)_displayHp} / {_maxHp} "; }, _currentHp, _tweenTime))
+            .OnComplete(() => { _updateGauge = false; });
     }
     /// <summary>
     /// 指定されたモンスターの残りMPを参照し、MPの値を更新する

@@ -837,7 +837,6 @@ public class CardBattleManager : MonoBehaviour
 
     void BackToMap()
     {
-        GameManager.Instance.PlayerMaxHp = GameManager.Instance.PlayerCurrentHp;
         GameManager.Instance.PlayerStatusEffectList = new List<StatusEffectBase>();
         SceneManager.LoadScene(GameManager.Instance.FieldMapName);
     }
